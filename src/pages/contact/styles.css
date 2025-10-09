@@ -1,0 +1,149 @@
+/* Contact Page Specific Styles */
+.la-contact-page-main {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 0;
+  min-height: 60vh;
+  color: #fff;
+}
+
+.la-contact-page-main__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.la-contact-page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.la-contact-page-content__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.2;
+  margin: 0 0 30px 0;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.la-contact-page-content__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 60px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.la-contact-page-content__contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.la-contact-page-content__contact-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.la-contact-page-content__contact-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.la-contact-page-content__contact-item:hover::before {
+  left: 100%;
+}
+
+.la-contact-page-content__contact-item:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.la-contact-page-content__contact-item h3 {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0 0 20px 0;
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.la-contact-page-content__contact-item p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .la-contact-page-main {
+    padding: 60px 0;
+  }
+
+  .la-contact-page-main__inner {
+    padding: 0 20px;
+  }
+
+  .la-contact-page-content__title {
+    font-size: 36px;
+  }
+
+  .la-contact-page-content__description {
+    font-size: 18px;
+  }
+
+  .la-contact-page-content__contact-info {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .la-contact-page-content__contact-item {
+    padding: 30px;
+  }
+
+  .la-contact-page-content__contact-item h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .la-contact-page-content__title {
+    font-size: 28px;
+  }
+
+  .la-contact-page-content__description {
+    font-size: 16px;
+  }
+
+  .la-contact-page-content__contact-item {
+    padding: 20px;
+  }
+}

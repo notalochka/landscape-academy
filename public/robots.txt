@@ -1,4 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+
+# Allow all crawlers
 User-agent: *
 Allow: /
 
-Sitemap: https://your-domain.com/sitemap.xml
+# Disallow admin panel
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://landscape-academy.com.ua/sitemap.xml

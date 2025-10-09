@@ -11,8 +11,9 @@ const Menu = () => {
             src="/logo_academy.png" 
             alt="Landscape Academy"
             width={150}
-            height={50}
+            height={150}
             priority
+            style={{ objectFit: 'contain' }}
           />
         </Link>
         <nav className="la-menu__nav" aria-label="Primary">

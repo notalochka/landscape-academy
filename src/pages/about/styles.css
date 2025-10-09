@@ -1,0 +1,311 @@
+/* About Page Specific Styles */
+
+/* Hero Section */
+.la-about-hero {
+  background: #000;
+  color: #fff;
+  padding: 120px 0;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.la-about-hero__content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.la-about-hero__title {
+  margin: 0;
+  text-align: center;
+}
+
+.la-about-hero__title-small {
+  display: block;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.la-about-hero__title-large {
+  display: block;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.la-about-hero__description {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.la-about-hero__text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.la-about-hero__cta {
+  background: #fff;
+  color: #000;
+  border: 2px solid #fff;
+  padding: 16px 32px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  border-radius: 0;
+}
+
+.la-about-hero__cta:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* Mission and Values Section */
+.la-about-mission {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.la-about-mission__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.la-about-mission__header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.la-about-mission__logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.la-about-mission__logo-icon {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 4px;
+  position: relative;
+}
+
+.la-about-mission__logo-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: white;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.la-about-mission__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 0;
+  color: #303030;
+  text-transform: uppercase;
+}
+
+.la-about-mission__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+}
+
+.la-about-mission__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.la-about-mission__bullet {
+  width: 8px;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.la-about-mission__item p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #303030;
+  margin: 0;
+}
+
+/* About Description Section */
+.la-about-description {
+  background: #000;
+  color: #fff;
+  padding: 80px 0;
+}
+
+.la-about-description__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.la-about-description__content {
+  background: #000;
+  border-radius: 60px;
+  padding: 80px 60px;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.la-about-description__text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #fff;
+  margin: 0 0 30px 0;
+}
+
+.la-about-description__text:last-child {
+  margin-bottom: 0;
+}
+
+.la-about-description__text strong {
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .la-about-hero__content {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+
+  .la-about-hero__description {
+    align-items: center;
+  }
+
+  .la-about-hero__cta {
+    align-self: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .la-about-hero {
+    padding: 80px 0;
+  }
+
+  .la-about-hero__content {
+    padding: 0 20px;
+    gap: 40px;
+  }
+
+  .la-about-hero__title-small {
+    font-size: 36px;
+  }
+
+  .la-about-hero__title-large {
+    font-size: 48px;
+  }
+
+  .la-about-hero__text {
+    font-size: 16px;
+  }
+
+  .la-about-mission {
+    padding: 60px 0;
+  }
+
+  .la-about-mission__inner {
+    padding: 0 20px;
+  }
+
+  .la-about-mission__title {
+    font-size: 24px;
+  }
+
+  .la-about-mission__item p {
+    font-size: 16px;
+  }
+
+  .la-about-description {
+    padding: 60px 0;
+  }
+
+  .la-about-description__inner {
+    padding: 0 20px;
+  }
+
+  .la-about-description__content {
+    padding: 60px 40px;
+    border-radius: 40px;
+  }
+
+  .la-about-description__text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .la-about-hero__title-small {
+    font-size: 28px;
+  }
+
+  .la-about-hero__title-large {
+    font-size: 36px;
+  }
+
+  .la-about-hero__text {
+    font-size: 14px;
+  }
+
+  .la-about-mission__title {
+    font-size: 20px;
+  }
+
+  .la-about-mission__item p {
+    font-size: 14px;
+  }
+
+  .la-about-description__content {
+    padding: 40px 20px;
+    border-radius: 20px;
+  }
+
+  .la-about-description__text {
+    font-size: 14px;
+  }
+}

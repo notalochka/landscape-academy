@@ -1,18 +1,22 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
     <footer className="la-footer">
       <div className="la-footer__inner">
         <div className="la-footer__section">
-          <Image
-            className="la-footer__logo"
-            src="/logo_academy.png"
-            alt="Landscape Academy"
-            width={150}
-            height={50}
-          />
+          <Link href="/" className="la-footer__logo-link">
+            <Image
+              className="la-footer__logo"
+              src="/logo_academy.png"
+              alt="Landscape Academy"
+              width={150}
+              height={150}
+              style={{ objectFit: 'contain' }}
+            />
+          </Link>
         </div>
 
         <div className="la-footer__section">
@@ -30,6 +34,19 @@ const Footer = () => {
           <h3 className="la-footer__title">Email</h3>
           <a href="mailto:landscaperua@ukr.net" className="la-footer__link">landscaperua@ukr.net</a>
         </div>
+      </div>
+      
+      <div className="la-footer__bottom">
+        <p className="la-footer__credit">
+          <a 
+            href="https://telebots.site/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="la-footer__credit-link"
+          >
+            TeleBots | Розробка сайтів
+          </a>
+        </p>
       </div>
     </footer>
   );

@@ -23,7 +23,8 @@ const Contact = () => {
     setMessage({ type: "", text: "" });
 
     try {
-      const response = await axios.post('/api/contact', formData);
+      // Відправляємо в Telegram
+      const response = await axios.post('/api/telegram/send', formData);
       
       if (response.data.success) {
         setMessage({ 
@@ -44,7 +45,7 @@ const Contact = () => {
   };
 
   return (
-    <section className="la-contact">
+    <section className="la-contact" id="contact">
       <div className="la-contact__inner">
         <div className="la-contact__content">
           <div className="la-contact__text">

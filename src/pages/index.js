@@ -1,26 +1,30 @@
 import React from "react";
-import Head from "next/head";
-import Menu from "../components/Menu/Menu";
+import SEO from "../components/SEO/SEO";
+import Header from "../components/Header/Header";
 import Hero from "../components/Hero/Hero";
 import Programs from "../components/Programs/Programs";
 import Contact from "../components/Contact/Contact";
 import Footer from "../components/Footer/Footer";
+import { pagesSEO, organizationSchema, websiteSchema } from "../config/seo";
 
 export default function Home() {
+  const homeSEO = pagesSEO.home;
+  
+  // Combine structured data schemas
+  const structuredData = [organizationSchema, websiteSchema];
+
   return (
     <>
-      <Head>
-        <title>Landscape Academy - Школа ландшафтного дизайну</title>
-        <meta name="description" content="Навчайтесь ландшафтному дизайну в Landscape Academy. Професійні курси, практичні заняття та сертифікація." />
-        <meta name="keywords" content="ландшафтний дизайн, курси, навчання, сад, парк, дизайн" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Landscape Academy - Школа ландшафтного дизайну" />
-        <meta property="og:description" content="Навчайтесь ландшафтному дизайну в Landscape Academy. Професійні курси, практичні заняття та сертифікація." />
-        <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO
+        title={homeSEO.title}
+        description={homeSEO.description}
+        keywords={homeSEO.keywords}
+        ogImage={homeSEO.ogImage}
+        canonical={homeSEO.canonical}
+        structuredData={structuredData}
+      />
       <div>
-        <Menu />
+        <Header />
         <Hero />
         <Programs />
         <Contact />

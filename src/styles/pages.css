@@ -1,0 +1,181 @@
+/* Shared Page Styles */
+.la-page-main {
+  background: #fff;
+  padding: 80px 0;
+  min-height: 60vh;
+}
+
+.la-page-main__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.la-page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.la-page-content__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.2;
+  margin: 0 0 30px 0;
+  color: #303030;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.la-page-content__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0 0 60px 0;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.la-page-content__features,
+.la-page-content__courses,
+.la-page-content__info,
+.la-page-content__students,
+.la-page-content__contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.la-page-content__feature,
+.la-page-content__course,
+.la-page-content__info-item,
+.la-page-content__contact-item {
+  background: #f8f9fa;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.la-page-content__feature h3,
+.la-page-content__course h3,
+.la-page-content__info-item h3,
+.la-page-content__contact-item h3 {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0 0 20px 0;
+  color: #303030;
+  text-transform: uppercase;
+}
+
+.la-page-content__feature p,
+.la-page-content__course p,
+.la-page-content__info-item p,
+.la-page-content__contact-item p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+.la-page-content__student {
+  background: #f8f9fa;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.la-page-content__student-placeholder {
+  width: 120px;
+  height: 120px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  margin: 0 auto 20px auto;
+}
+
+.la-page-content__student h3 {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 0 15px 0;
+  color: #303030;
+}
+
+.la-page-content__student p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .la-page-main {
+    padding: 60px 0;
+  }
+
+  .la-page-main__inner {
+    padding: 0 20px;
+  }
+
+  .la-page-content__title {
+    font-size: 36px;
+  }
+
+  .la-page-content__description {
+    font-size: 18px;
+  }
+
+  .la-page-content__features,
+  .la-page-content__courses,
+  .la-page-content__info,
+  .la-page-content__students,
+  .la-page-content__contact-info {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .la-page-content__feature,
+  .la-page-content__course,
+  .la-page-content__info-item,
+  .la-page-content__contact-item,
+  .la-page-content__student {
+    padding: 30px;
+  }
+
+  .la-page-content__feature h3,
+  .la-page-content__course h3,
+  .la-page-content__info-item h3,
+  .la-page-content__contact-item h3 {
+    font-size: 20px;
+  }
+
+  .la-page-content__student h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .la-page-content__title {
+    font-size: 28px;
+  }
+
+  .la-page-content__description {
+    font-size: 16px;
+  }
+
+  .la-page-content__feature,
+  .la-page-content__course,
+  .la-page-content__info-item,
+  .la-page-content__contact-item,
+  .la-page-content__student {
+    padding: 20px;
+  }
+}

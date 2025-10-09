@@ -69,6 +69,18 @@
   font-size: 48px;
   line-height: 1.12;
   text-transform: uppercase;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.la-hero__cta:hover {
+  background: #1a1a1a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.la-hero__cta:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .la-hero__description {
