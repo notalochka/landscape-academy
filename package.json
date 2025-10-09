@@ -1,0 +1,23 @@
+{
+  "name": "landscape-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Школа ландшафтного дизайну - сучасна онлайн платформа",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "^15.5.4"
+  }
+}
