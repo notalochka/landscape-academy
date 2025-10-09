@@ -1,0 +1,12 @@
+/* Bender font faces. Place font files in src/assets/fonts/Bender/ */
+@font-face {
+  font-family: "Bender";
+  src: url("../assets/fonts/Bender/Bender-Regular.woff2") format("woff2"),
+       url("../assets/fonts/Bender/Bender-Regular.woff") format("woff"),
+       url("../assets/fonts/Bender/Bender-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+

@@ -1,0 +1,84 @@
+.la-menu {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.la-menu__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.la-menu__logo img {
+  display: block;
+  height: 36px;
+}
+
+.la-menu__nav {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.la-menu__link {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #303030;
+  text-decoration: none;
+  position: relative;
+}
+
+.la-menu__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: transparent;
+  transition: background 0.2s ease-in-out;
+}
+
+.la-menu__link:hover::after,
+.la-menu__link:focus::after {
+  background: #303030;
+}
+
+.la-menu__cta {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #303030;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+
+/* Desktop only for now: hide on very small screens if needed */
+@media (max-width: 767px) {
+  .la-menu__nav {
+    display: none;
+  }
+}
+
+
+
+
+

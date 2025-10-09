@@ -1,0 +1,98 @@
+.la-footer {
+  background: #D3D3D3;
+  padding: 50px 0;
+}
+
+.la-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.la-footer__section {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.la-footer__logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 1px solid #CCCCCC;
+  margin: 0 0 0 60px;
+}
+
+.la-footer__title {
+  margin: 5px 0 31px 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #303030;
+}
+
+.la-footer__text {
+  margin: 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #303030;
+  text-transform: uppercase;
+}
+
+.la-footer__text:last-child {
+  text-decoration: underline;
+}
+
+.la-footer__link {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #303030;
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+
+
+@media (max-width: 768px) {
+  .la-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

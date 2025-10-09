@@ -1,0 +1,93 @@
+.la-hero {
+  padding: 48px 0 0;
+}
+
+.la-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.la-hero__title-block {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 100px;
+  padding: 64px 48px;
+  text-align: left;
+  /* Full-bleed across viewport */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.la-hero__content {
+  position: static;
+  padding-left: 140px;
+}
+
+.la-hero__title {
+  margin: 0 0 24px 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 80px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  max-width: 50%;
+}
+
+.la-hero__subtitle {
+  margin: 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 37px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  max-width: 30%;
+}
+
+.la-hero__cta-wrap {
+  margin-top: 77px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.la-hero__cta {
+  padding: 18px 60px;
+  border-radius: 45px;
+  border: none;
+  cursor: pointer;
+  background: #303030;
+  color: #ffffff;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+
+.la-hero__description {
+  margin: 102px auto 0 auto;
+  max-width: 1000px;
+  text-align: center;
+  color: #303030;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 40px;
+  line-height: 1.0;
+}
+
+@media (max-width: 1024px) {
+  .la-hero__title { font-size: 72px; }
+  .la-hero__subtitle { font-size: 40px; }
+  .la-hero__cta { font-size: 40px; }
+  .la-hero__description { font-size: 32px; }
+}
+
+
