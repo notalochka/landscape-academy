@@ -9,6 +9,8 @@ const nextConfig = {
   trailingSlash: true,
   // Відключаємо Image Optimization для статичного експорту
   assetPrefix: '',
+  generateEtags: false,
+  poweredByHeader: false,
 }
 
 module.exports = nextConfig
