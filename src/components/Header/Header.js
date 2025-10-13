@@ -30,7 +30,7 @@ const Header = ({ showBanner = false, bannerTitle = "LANDSCAPER ACADEMY" }) => {
           </Link>
           <nav className="la-header__menu" aria-label="Primary">
             <Link className="la-header__link" href="/">ГОЛОВНА</Link>
-            <Link className="la-header__link" href="/flagship">ФЛАГМАНСЬКИЙ КУРС</Link>
+            <Link className="la-header__link" href="/flagship">LANDSCAPER 5.0</Link>
             <Link className="la-header__link" href="/courses">КУРСИ АКАДЕМІЇ</Link>
             <Link className="la-header__link" href="/about">ПРО АКАДЕМІЮ</Link>
             <Link className="la-header__link" href="/blog">БЛОГ</Link>

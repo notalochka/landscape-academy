@@ -3,10 +3,15 @@ import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO, organizationSchema } from "../../config/seo";
 
 const AboutPage = () => {
   const aboutSEO = pagesSEO.about;
+  const [heroRef, heroVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [missionRef, missionVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [descriptionRef, descriptionVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <>
@@ -23,7 +28,7 @@ const AboutPage = () => {
       <Header showBanner={true} bannerTitle="ПРО АКАДЕМІЮ" />
 
       {/* Hero Section */}
-      <section className="la-about-hero">
+      <section ref={heroRef} className={`la-about-hero animate-fade-in-up ${heroVisible ? 'is-visible' : ''}`}>
         <div className="la-about-hero__content">
           <h1 className="la-about-hero__title">
             <span className="la-about-hero__title-small">ПРО</span>
@@ -42,7 +47,7 @@ const AboutPage = () => {
       </section>
 
       {/* Mission and Values Section */}
-      <section className="la-about-mission">
+      <section ref={missionRef} className={`la-about-mission animate-fade-in-up ${missionVisible ? 'is-visible' : ''}`}>
         <div className="la-about-mission__inner">
           <div className="la-about-mission__header">
             <div className="la-about-mission__logo">
@@ -73,7 +78,7 @@ const AboutPage = () => {
       </section>
 
       {/* About Section */}
-      <section className="la-about-description">
+      <section ref={descriptionRef} className={`la-about-description animate-fade-in-up ${descriptionVisible ? 'is-visible' : ''}`}>
         <div className="la-about-description__inner">
           <div className="la-about-description__content">
             <p className="la-about-description__text">
@@ -96,7 +101,9 @@ const AboutPage = () => {
       </section>
 
       {/* Contact Section */}
-      <Contact />
+      <div ref={contactRef} className={`animate-fade-in-up ${contactVisible ? 'is-visible' : ''}`}>
+        <Contact />
+      </div>
       
       {/* Footer */}
       <Footer />

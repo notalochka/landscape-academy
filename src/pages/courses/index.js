@@ -3,10 +3,13 @@ import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO } from "../../config/seo";
 
 const CoursesPage = () => {
   const coursesSEO = pagesSEO.courses;
+  const [contentRef, contentVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <>
@@ -24,7 +27,7 @@ const CoursesPage = () => {
       {/* Main Content */}
       <main className="la-courses-main">
         <div className="la-courses-main__inner">
-          <section className="la-courses-content">
+          <section ref={contentRef} className={`la-courses-content animate-fade-in-up ${contentVisible ? 'is-visible' : ''}`}>
             <h1 className="la-courses-content__title">Наші курси</h1>
             <p className="la-courses-content__description">
               Landscape Academy пропонує широкий спектр курсів для різних рівнів підготовки - 
@@ -50,7 +53,9 @@ const CoursesPage = () => {
       </main>
 
       {/* Contact Section */}
-      <Contact />
+      <div ref={contactRef} className={`animate-fade-in-up ${contactVisible ? 'is-visible' : ''}`}>
+        <Contact />
+      </div>
       
       {/* Footer */}
       <Footer />

@@ -1,19 +1,11 @@
-// API для відправки повідомлень в Telegram через webhook
+// API для відправки повідомлень в Telegram
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { name, phone, question } = req.body;
-
-  // Перевірка наявності обов'язкових полів
-  if (!name || !phone) {
-    return res.status(400).json({ 
-      success: false, 
-      message: 'Ім\'я та телефон обов\'язкові' 
-    });
-  }
+  const { type, data, name, phone, question } = req.body;
 
   // Отримання даних бота з змінних середовища
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -23,12 +15,49 @@ export default async function handler(req, res) {
     console.error('Telegram credentials not configured');
     return res.status(500).json({ 
       success: false, 
-      message: 'Telegram не налаштований. Зверніться до адміністратора.' 
+      message: 'Telegram не налаштований' 
     });
   }
 
-  // Форматування повідомлення
-  const message = `
+  let message = '';
+
+  // Форматування повідомлення залежно від типу
+  if (type === 'event_registration_paid') {
+    message = `
+💰 *ПЛАТНА РЕЄСТРАЦІЯ НА ПОДІЮ*
+
+🎯 *Подія:* ${data.eventTitle}
+👤 *Ім'я:* ${data.userName}
+📱 *Телефон:* ${data.userPhone}
+${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
+💵 *Сума:* ${data.price}
+✅ *Статус:* ОПЛАЧЕНО
+🔑 *ID транзакції:* ${data.transactionId || 'N/A'}
+
+📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
+`;
+  } else if (type === 'event_registration_free') {
+    message = `
+🎁 *БЕЗКОШТОВНА РЕЄСТРАЦІЯ НА ПОДІЮ*
+
+🎯 *Подія:* ${data.eventTitle}
+👤 *Ім'я:* ${data.userName}
+📱 *Телефон:* ${data.userPhone}
+${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
+✅ *Статус:* ЗАРЕЄСТРОВАНО
+
+📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
+`;
+  } else {
+    // Стандартна заявка (контактна форма)
+    if (!name || !phone) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Ім\'я та телефон обов\'язкові' 
+      });
+    }
+
+    message = `
 🌿 *Нова заявка з Landscape Academy*
 
 👤 *Ім'я:* ${name}
@@ -37,6 +66,7 @@ ${question ? `💬 *Питання:* ${question}` : ''}
 
 📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
 `;
+  }
 
   try {
     // Відправка повідомлення в Telegram

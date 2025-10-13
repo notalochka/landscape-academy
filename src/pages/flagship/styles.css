@@ -196,8 +196,8 @@
   text-align: start;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   min-height: 140px;
 }
 
@@ -262,7 +262,7 @@
   padding: 30px;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .la-flagship-order__title {
@@ -294,7 +294,7 @@
 .la-flagship-order__pricing {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   gap: 10px;
 }
 
@@ -451,7 +451,7 @@
   margin: 0 auto;
   padding: 0;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   gap: 100px;
 }
 
@@ -655,7 +655,7 @@
 .la-flagship-students__header {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 30px;
 }
 

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { getFeaturedBlogs } from "../../data/blogs";
+import Link from "next/link";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const ProgramCard = ({ title, subtitle, delay = "" }) => {
@@ -23,6 +23,14 @@ const ProgramCard = ({ title, subtitle, delay = "" }) => {
 const BlogCard = ({ blog, isLarge = false, delay = "" }) => {
   const [cardRef, cardVisible] = useScrollAnimation({ threshold: 0.2 });
   
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('uk-UA', { 
+      day: '2-digit', 
+      month: 'long'
+    }).toLowerCase();
+  };
+  
   return (
     <div 
       ref={cardRef}
@@ -31,8 +39,8 @@ const BlogCard = ({ blog, isLarge = false, delay = "" }) => {
       <div className="la-blog__content">
         <h3 className="la-blog__title">{blog.title}</h3>
         <div className="la-blog__footer">
-          <span className="la-blog__date">{blog.date}</span>
-          <span className="la-blog__description">[{blog.category}]</span>
+          <span className="la-blog__date">{formatDate(blog.createdAt)}</span>
+          <span className="la-blog__description">[{blog.tag}]</span>
         </div>
       </div>
     </div>
@@ -42,7 +50,25 @@ const BlogCard = ({ blog, isLarge = false, delay = "" }) => {
 const Programs = () => {
   const [headerRef, headerVisible] = useScrollAnimation({ threshold: 0.2 });
   const [libraryHeaderRef, libraryHeaderVisible] = useScrollAnimation({ threshold: 0.2 });
-  const featuredBlogs = getFeaturedBlogs();
+  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('/api/blog?published=true');
+        const result = await response.json();
+        
+        if (result.success) {
+          // Взяти перші 3 блоги
+          setFeaturedBlogs(result.data.slice(0, 3));
+        }
+      } catch (error) {
+        console.error('Помилка завантаження блогів:', error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
     <>
@@ -93,19 +119,33 @@ const Programs = () => {
           </div>
 
           <div className="la-library__grid">
-            <BlogCard 
-              blog={featuredBlogs[0]}
-              isLarge={true}
-              delay="animate-delay-100"
-            />
-            <BlogCard 
-              blog={featuredBlogs[1]}
-              delay="animate-delay-200"
-            />
-            <BlogCard 
-              blog={featuredBlogs[2]}
-              delay="animate-delay-300"
-            />
+            {featuredBlogs.length > 0 && (
+              <>
+                <Link href={`/blog/${featuredBlogs[0].id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <BlogCard 
+                    blog={featuredBlogs[0]}
+                    isLarge={true}
+                    delay="animate-delay-100"
+                  />
+                </Link>
+                {featuredBlogs[1] && (
+                  <Link href={`/blog/${featuredBlogs[1].id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <BlogCard 
+                      blog={featuredBlogs[1]}
+                      delay="animate-delay-200"
+                    />
+                  </Link>
+                )}
+                {featuredBlogs[2] && (
+                  <Link href={`/blog/${featuredBlogs[2].id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <BlogCard 
+                      blog={featuredBlogs[2]}
+                      delay="animate-delay-300"
+                    />
+                  </Link>
+                )}
+              </>
+            )}
           </div>
 
           <div className="la-library__navigation">

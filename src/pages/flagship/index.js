@@ -4,6 +4,7 @@ import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO, courseSchema } from "../../config/seo";
 
 const FlagshipPage = () => {
@@ -11,6 +12,17 @@ const FlagshipPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  const [mainRef, mainVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [studentsRef, studentsVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [infoRef, infoVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [orderRef, orderVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [targetRef, targetVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [authorRef, authorVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [skillsRef, skillsVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [questionsRef, questionsVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [programRef, programVisible] = useScrollAnimation({ threshold: 0.1 });
+  const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
   
   // Course structured data
   const flagshipCourseData = courseSchema({
@@ -63,7 +75,7 @@ const FlagshipPage = () => {
       <Header showBanner={false} />
 
       {/* Main Content */}
-      <main className="la-flagship-main">
+      <main ref={mainRef} className={`la-flagship-main animate-fade-in-up ${mainVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-main__inner">
           <section className="la-flagship-content">
             <div className="la-flagship-content__header">
@@ -93,7 +105,7 @@ const FlagshipPage = () => {
 
 
       {/* Students Carousel Section */}
-      <section className="la-flagship-students">
+      <section ref={studentsRef} className={`la-flagship-students animate-fade-in-up ${studentsVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-students__inner">
           <div className="la-flagship-students__header">
             <Image
@@ -166,7 +178,7 @@ const FlagshipPage = () => {
         </div>
       </section>
       {/* Course Info Section */}
-      <section className="la-flagship-course-info">
+      <section ref={infoRef} className={`la-flagship-course-info animate-fade-in-up ${infoVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-course-info__inner">
           <div className="la-flagship-course-info__details">
             <div className="la-flagship-course-info__item">
@@ -209,7 +221,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Order Section */}
-      <section className="la-flagship-order">
+      <section ref={orderRef} className={`la-flagship-order animate-fade-in-up ${orderVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-order__inner">
           <p className="la-flagship-order__text">
             ЗАПИШІТЬСЯ ЗАРАЗ І ПОЧНІТЬ РЕАЛІЗОВУВАТИ СВОЇ ПРОФЕСІЙНІ АМБІЦІЇ З НАМИ. ЧАС РОБИТИ КРОК ВПЕРЕД — JUST DO IT.
@@ -232,7 +244,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Target Audience Section */}
-      <section className="la-flagship-target">
+      <section ref={targetRef} className={`la-flagship-target animate-fade-in-up ${targetVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-target__inner">
             <h2 className="la-flagship-target__title">ДЛЯ КОГО ЦЕЙ КУРС?</h2>
         </div>
@@ -280,7 +292,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Author Section */}
-      <section className="la-flagship-author">
+      <section ref={authorRef} className={`la-flagship-author animate-fade-in-up ${authorVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-author__inner">
           <div className="la-flagship-author__content">
             <div className="la-flagship-author__info">
@@ -326,7 +338,7 @@ const FlagshipPage = () => {
         </div>
       </section>
 
-      <section className="la-flagship-skills">
+      <section ref={skillsRef} className={`la-flagship-skills animate-fade-in-up ${skillsVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-skills__inner">
             <h2 className="la-flagship-skills__title">навички які ви зможете опанувати:</h2>
         </div>
@@ -368,7 +380,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Contact Questions Section */}
-      <section className="la-flagship-contact-questions">
+      <section ref={questionsRef} className={`la-flagship-contact-questions animate-fade-in-up ${questionsVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-contact-questions__inner">
           <div className="la-flagship-contact-questions__block"></div>
           <div className="la-flagship-contact-questions__content">
@@ -382,7 +394,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Course Program Section */}
-      <section className="la-flagship-course-program">
+      <section ref={programRef} className={`la-flagship-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
         <div className="la-flagship-course-program__inner">
           <div className="la-flagship-course-program__header">
             <div className="la-flagship-course-program__left">
@@ -411,9 +423,9 @@ const FlagshipPage = () => {
             <button 
               className="la-flagship-course-program__toggle-btn"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              aria-label={isDropdownOpen ? "Закрити програму" : "Відкрити програму"}
+              aria-label={isDropdownOpen ? 'Закрити програму' : 'Відкрити програму'}
             >
-              <span className={`la-flagship-course-program__toggle-icon ${isDropdownOpen ? 'open' : ''}`}>
+              <span className={isDropdownOpen ? 'la-flagship-course-program__toggle-icon open' : 'la-flagship-course-program__toggle-icon'}>
                 <span></span>
               </span>
             </button>
@@ -702,10 +714,7 @@ const FlagshipPage = () => {
         <div className="la-flagship-course-program__line"></div>
       </section>
 
-      {/* Contact Section */}
       <Contact />
-      
-      {/* Footer */}
       <Footer />
     </>
   );
