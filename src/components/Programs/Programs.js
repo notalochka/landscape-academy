@@ -81,9 +81,14 @@ const Programs = () => {
             ref={libraryHeaderRef}
             className={`la-library__header animate-fade-in ${libraryHeaderVisible ? 'is-visible' : ''}`}
           >
-            <div className="la-library__logo">
-              <div className="la-library__logo-icon"></div>
-            </div>
+            <Image
+              className="la-library__logo"
+              src="/logo_academy.png"
+              alt="Landscape Academy"
+              width={150}
+              height={150}
+              style={{ objectFit: 'contain' }}
+            />
             <span className="la-library__eyebrow">БІБЛІОТЕКА КОРИСНИХ МАТЕРІАЛІВ</span>
           </div>
 

@@ -5,7 +5,6 @@ import '../styles/animations.css';
 import '../components/Contact/Contact.css';
 import '../components/Footer/Footer.css';
 import '../components/Hero/Hero.css';
-import '../components/Menu/Menu.css';
 import '../components/Programs/Programs.css';
 import '../components/Header/Header.css';
 import './flagship/styles.css';

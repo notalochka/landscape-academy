@@ -19,7 +19,7 @@ const ContactPage = () => {
       />
 
       {/* Header Section */}
-      <Header showBanner={true} bannerTitle="КОНТАКТИ" />
+      <Header showBanner={false} />
 
       {/* Contact Section */}
       <Contact />
