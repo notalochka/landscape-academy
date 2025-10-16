@@ -9,6 +9,8 @@ import '../components/Programs/Programs.css';
 import '../components/Header/Header.css';
 import './flagship/styles.css';
 import './courses/styles.css';
+import './course-1/styles.css';
+import './course-2/styles.css';
 import './about/styles.css';
 import './students/styles.css';
 import './contact/styles.css';

@@ -1,12 +1,81 @@
 /* Courses Page Specific Styles */
+
+/* Hero Section */
+.la-courses-hero {
+  background: #E9E9E9;
+  display: flex;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.la-courses-hero__inner {
+  background: #000000;
+  height: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.la-courses-hero__left {
+  flex: 0 0 60%;
+}
+
+.la-courses-hero__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 96px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #B2B2B2;
+  margin: 0 0 20px 0;
+}
+
+.la-courses-hero__subtitle {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 60px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-courses-hero__right {
+  flex: 1;
+  text-align: right;
+}
+
+.la-courses-hero__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-align: right;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+}
+
 .la-courses-main {
-  background: #fff;
+  background: #E9E9E9;
   padding: 80px 0;
   min-height: 60vh;
 }
 
 .la-courses-main__inner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -14,87 +83,191 @@
 .la-courses-content {
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
-.la-courses-content__title {
+.la-courses-content__slogan {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 1.2;
-  margin: 0 0 30px 0;
-  color: #303030;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0%;
   text-transform: uppercase;
-}
-
-.la-courses-content__description {
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 20px;
-  line-height: 1.6;
-  color: #666;
+  color: #000000;
   margin: 0 0 60px 0;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .la-courses-content__courses {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
   margin-top: 60px;
 }
 
+.la-courses-content__course-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.la-courses-content__course-link:hover {
+  transform: translateY(-20px);
+}
+
+.la-courses-content__course-link:hover .la-courses-content__course {
+  background: #333333;
+}
+
+
 .la-courses-content__course {
-  background: #f8f9fa;
+  background: #000000;
   padding: 40px;
-  border-radius: 12px;
-  border: 2px solid #e0e0e0;
+  border-radius: 0;
+  border: none;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
 }
 
-.la-courses-content__course::before {
+.la-courses-content__course > *:last-child {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.la-courses-content__course-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 30px 0;
+}
+
+.la-courses-content__course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 50%;
+}
+
+.la-courses-content__course-duration-row {
+  display: flex;
+  justify-content: right;
+  gap: 2px;
+  height: 80px;
+}
+
+.la-courses-content__course-arrow {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.la-courses-content__course-arrow span {
+  width: 50px;
+  height: 2px;
+  background: #ffffff;
+  position: relative;
+  transform: rotate(-42.58deg);
+}
+
+.la-courses-content__course-arrow span::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.5s ease;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #ffffff;;
+  border-top: 2px solid #ffffff;;
+  transform: translateY(-50%) rotate(45deg);
 }
 
-.la-courses-content__course:hover::before {
-  left: 100%;
-}
-
-.la-courses-content__course:hover {
-  border-color: #000;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.la-courses-content__course h3 {
+.la-courses-content__course-duration {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 400;
+  font-style: normal;
   font-size: 24px;
-  margin: 0 0 20px 0;
-  color: #303030;
+  line-height: 1.12;
+  letter-spacing: 0%;
   text-transform: uppercase;
-}
-
-.la-courses-content__course p {
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #666;
+  color: #ffffff;
   margin: 0;
 }
 
+.la-courses-content__course-date {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-courses-content__course-price {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
+  .la-courses-hero {
+    height: 400px;
+  }
+
+  .la-courses-hero__inner {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .la-courses-hero__right {
+    text-align: left;
+  }
+
+  .la-courses-hero__description {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .la-courses-hero__title {
+    font-size: 64px;
+    color: #B2B2B2;
+  }
+
+  .la-courses-hero__subtitle {
+    font-size: 48px;
+  }
+
+  .la-courses-hero__description {
+    font-size: 18px;
+  }
+
   .la-courses-main {
     padding: 60px 0;
   }
@@ -111,6 +284,10 @@
     font-size: 18px;
   }
 
+  .la-courses-content__slogan {
+    font-size: 28px;
+  }
+
   .la-courses-content__courses {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -121,21 +298,55 @@
     padding: 30px;
   }
 
-  .la-courses-content__course h3 {
+  .la-courses-content__course-title {
+    font-size: 36px;
+  }
+
+  .la-courses-content__course-duration,
+  .la-courses-content__course-date,
+  .la-courses-content__course-price {
     font-size: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .la-courses-content__title {
-    font-size: 28px;
+  .la-courses-hero {
+    height: 350px;
   }
 
-  .la-courses-content__description {
+  .la-courses-hero__inner {
+    gap: 30px;
+    padding: 0 15px;
+  }
+
+  .la-courses-hero__title {
+    font-size: 48px;
+    color: #B2B2B2;
+  }
+
+  .la-courses-hero__subtitle {
+    font-size: 36px;
+  }
+
+  .la-courses-hero__description {
     font-size: 16px;
+  }
+
+  .la-courses-content__slogan {
+    font-size: 24px;
   }
 
   .la-courses-content__course {
     padding: 20px;
+  }
+
+  .la-courses-content__course-title {
+    font-size: 28px;
+  }
+
+  .la-courses-content__course-duration,
+  .la-courses-content__course-date,
+  .la-courses-content__course-price {
+    font-size: 18px;
   }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
@@ -22,31 +23,64 @@ const CoursesPage = () => {
       />
 
       {/* Header Section */}
-      <Header showBanner={true} bannerTitle="КУРСИ АКАДЕМІЇ" />
+      <Header showBanner={false} />
+
+      {/* Hero Section */}
+      <section className="la-courses-hero">
+        <div className="la-courses-hero__inner">
+          <div className="la-courses-hero__left">
+            <h1 className="la-courses-hero__title">КУРСИ</h1>
+            <h2 className="la-courses-hero__subtitle">LANDSCAPER ACADEMY</h2>
+          </div>
+          <div className="la-courses-hero__right">
+            <p className="la-courses-hero__description">
+              РОЗВИВАЙТЕСЬ У ЛАНДШАФТНОМУ ДИЗАЙНІ — ВІД ОСНОВ ПЛАНУВАННЯ ТА БОТАНІКИ ДО СУЧАСНИХ ТЕХНОЛОГІЙ ОЗЕЛЕНЕННЯ Й СКЛАДНИХ РЕАЛЬНИХ ПРОЄКТІВ. СТАВАЙТЕ ВПЕВНЕНІШИМИ З LANDSCAPER ACADEMY.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Main Content */}
       <main className="la-courses-main">
         <div className="la-courses-main__inner">
           <section ref={contentRef} className={`la-courses-content animate-fade-in-up ${contentVisible ? 'is-visible' : ''}`}>
-            <h1 className="la-courses-content__title">Наші курси</h1>
-            <p className="la-courses-content__description">
-              Landscape Academy пропонує широкий спектр курсів для різних рівнів підготовки - 
-              від початківців до професіоналів.
-            </p>
+            <h1 className="la-courses-content__slogan">
+              ВЧИСЬ, ПРОЕКТУЙ, ВТІЛЮЙ — ОНЛАЙН З LANDSCAPER ACADEMY.
+            </h1>
             
             <div className="la-courses-content__courses">
-              <div className="la-courses-content__course">
-                <h3>Landscaper 5.0</h3>
-                <p>Перетвори хобі у бізнес. Комплексний курс для початківців.</p>
-              </div>
-              <div className="la-courses-content__course">
-                <h3>ШІ рендер на телефоні</h3>
-                <p>Від ескізу до WOW за 5 хвилин. Сучасні технології в дизайні.</p>
-              </div>
-              <div className="la-courses-content__course">
-                <h3>Метод роботи практикуючого ландшафтного дизайнера</h3>
-                <p>Або в чому секрет виходу на високий чек.</p>
-              </div>
+              <Link href="/course-1" className="la-courses-content__course-link">
+                <div className="la-courses-content__course">
+                  <h3 className="la-courses-content__course-title">ШІ РЕНДЕР НА ТЕЛЕФОНІ</h3>
+                  <div className="la-courses-content__course-details">
+                    <div className="la-courses-content__course-duration-row">
+                      <div className="la-courses-content__course-arrow">
+                        <span></span>
+                      </div>
+                      <p className="la-courses-content__course-duration">3 МІСЯЦІ</p>
+                    </div>
+                    <p className="la-courses-content__course-date">ОСІНЬ 2025</p>
+                    <p className="la-courses-content__course-price">ВАРТІСТЬ: 1000 ГРН.</p>
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/course-2" className="la-courses-content__course-link">
+                <div className="la-courses-content__course">
+                  <h3 className="la-courses-content__course-title">МЕТОД РОБОТИ ПРАКТИКУЮЧОГО ЛАНДШАФТНОГО ДИЗАЙНЕРА</h3>
+                  <div className="la-courses-content__course-details">
+                    <div className="la-courses-content__course-duration-row">
+                      <div className="la-courses-content__course-arrow">
+                        <span></span>
+                      </div>
+                      <p className="la-courses-content__course-duration">3 МІСЯЦІ</p>
+                    </div>
+                    <p className="la-courses-content__course-date">ОСІНЬ 2025</p>
+                    <p className="la-courses-content__course-price">ВАРТІСТЬ: 1000 ГРН.</p>
+                  </div>
+                  
+                </div>
+              </Link>
             </div>
           </section>
         </div>
