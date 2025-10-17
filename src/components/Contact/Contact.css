@@ -83,6 +83,7 @@
   color: #303030;
   outline: none;
   transition: background-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .la-contact__textarea {
@@ -102,6 +103,7 @@
   outline: none;
   transition: background-color 0.2s ease;
   resize: none;
+  box-sizing: border-box;
 }
 
 .la-contact__input:focus,
@@ -155,20 +157,142 @@
 }
 
 @media (max-width: 768px) {
+  .la-contact__inner {
+    padding: 40px 20px 0 20px;
+  }
+  
   .la-contact__content {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
   }
   
   .la-contact__title {
-    font-size: 36px;
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 20px;
   }
   
-  .la-contact__subtitle {
+  .la-contact__description {
+    font-size: 16px;
+    margin: 30px 0 0 0;
+    line-height: 1.3;
+  }
+  
+  .la-contact__form {
+    gap: 20px;
+  }
+  
+  .la-contact__field {
+    gap: 8px;
+  }
+  
+  .la-contact__label {
+    font-size: 16px;
+  }
+  
+  .la-contact__input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__textarea {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__button {
+    width: 100%;
+    height: 60px;
+    font-size: 18px;
+    border-radius: 30px;
+    margin: 20px 0 40px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .la-contact__inner {
+    padding: 30px 15px 0 15px;
+  }
+  
+  .la-contact__title {
+    font-size: 28px;
+  }
+  
+  .la-contact__description {
+    font-size: 14px;
+    margin: 25px 0 0 0;
+  }
+  
+  .la-contact__label {
+    font-size: 14px;
+  }
+  
+  .la-contact__input {
+    height: 45px;
+    font-size: 13px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__textarea {
+    height: 100px;
+    font-size: 13px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__button {
+    height: 55px;
+    font-size: 16px;
+    margin: 15px 0 30px 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .la-contact__inner {
+    padding: 25px 10px 0 10px;
+  }
+  
+  .la-contact__title {
     font-size: 24px;
   }
   
   .la-contact__description {
-    font-size: 18px;
+    font-size: 13px;
+    margin: 20px 0 0 0;
+  }
+  
+  .la-contact__label {
+    font-size: 13px;
+  }
+  
+  .la-contact__input {
+    height: 40px;
+    font-size: 12px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__textarea {
+    height: 90px;
+    font-size: 12px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  .la-contact__button {
+    height: 50px;
+    font-size: 14px;
+    margin: 10px 0 25px 0;
   }
 }

@@ -82,7 +82,7 @@ const Course2Page = () => {
       <section className="la-course-2__problem">
         <div className="la-course-2__problem-container">
           <h2 className="la-course-2__problem-title">
-            КОЛИ КЛІЄНТ КАЖЕ "НЕ РОЗУМІЮ, ЯК ЦЕ ВИГЛЯДАТИМЕ"
+            КОЛИ КЛІЄНТ КАЖЕ &quot;НЕ РОЗУМІЮ, ЯК ЦЕ ВИГЛЯДАТИМЕ&quot;
           </h2>
           <div className="la-course-2__problem-content">
             <div className="la-course-2__problem-left">
@@ -117,7 +117,7 @@ const Course2Page = () => {
             </li>
             <li>Ціни низькі, бо немає обґрунтування вартості
             </li>
-            <li>Клієнти сприймають вас як "озеленювача", а не дизайнера</li>
+            <li>Клієнти сприймають вас як &quot;озеленювача&quot;, а не дизайнера</li>
           </ul>
           </div>
           <div className="la-course-2__result-block">

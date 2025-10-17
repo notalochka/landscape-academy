@@ -82,13 +82,13 @@ const Course1Page = () => {
       <section className="la-course-1__problem">
         <div className="la-course-1__problem-container">
           <h2 className="la-course-1__problem-title">
-            КОЛИ КЛІЄНТ КАЖЕ "НЕ РОЗУМІЮ, ЯК ЦЕ ВИГЛЯДАТИМЕ"
+            КОЛИ КЛІЄНТ КАЖЕ &quot;НЕ РОЗУМІЮ, ЯК ЦЕ ВИГЛЯДАТИМЕ&quot;
           </h2>
           <div className="la-course-1__problem-content">
             <div className="la-course-1__problem-left">
               <div className="la-course-1__problem-text">
                 <p>
-    Знайома ситуація? Ви показуєте креслення свого проєкту, пояснюєте кожну деталь, а клієнт дивиться на папір з виразом "я нічого не бачу". Тому що люди не читають креслення — вони дивляться на картинки.
+    Знайома ситуація? Ви показуєте креслення свого проєкту, пояснюєте кожну деталь, а клієнт дивиться на папір з виразом &quot;я нічого не бачу&quot;. Тому що люди не читають креслення — вони дивляться на картинки.
 
              </p>
                 <p>Клієнти приймають рішення серцем, а не розумом. Їм потрібно ПОБАЧИТИ, як їхній простір оживе. І якщо цієї картинки немає — немає і продажу.
@@ -112,13 +112,13 @@ const Course1Page = () => {
           <div className="la-course-1__result-container">
           <ul className="la-course-1__result-list">
             <li>Години роботи в 3ds Max або SketchUp</li>
-            <li>Потужний комп'ютер, який гуде як літак</li>
+            <li>Потужний комп&apos;ютер, який гуде як літак</li>
             <li>Купу плагінів та налаштувань</li>
             <li>І все одно результат не завжди вражає</li>
           </ul>
           </div>
           <div className="la-course-1__result-block">
-            <p>Результат? Більшість дизайнерів показують клієнтам "сирі" ескізи або купують дорогі рендери на стороні.</p>
+            <p>Результат? Більшість дизайнерів показують клієнтам &quot;сирі&quot; ескізи або купують дорогі рендери на стороні.</p>
           </div>
         
        </section>
@@ -159,7 +159,7 @@ const Course1Page = () => {
               <div className="la-course-1-target__item">
                 <span className="la-course-1-target__number">01</span>
                 <p className="la-course-1-target__text">
-                Ландшафтним дизайнерам, які втомилися від "а покажіть, як це виглядатиме"
+                Ландшафтним дизайнерам, які втомилися від &quot;а покажіть, як це виглядатиме&quot;
                 </p>
               </div>
               <div className="la-course-1-target__item">
@@ -171,7 +171,7 @@ const Course1Page = () => {
               <div className="la-course-1-target__item">
                 <span className="la-course-1-target__number">03</span>
                 <p className="la-course-1-target__text">
-                Інтер'єрним дизайнерам для зонування приватних територій
+                Інтер&apos;єрним дизайнерам для зонування приватних територій
                 </p>
               </div>
               <div className="la-course-1-target__item">
@@ -257,7 +257,7 @@ const Course1Page = () => {
             Хочете вражати клієнтів вже на першій зустрічі
             </li>
             <li className="la-course-1-skills__item">
-            Втомилися програвати конкурентам через "некрасиві" презентації
+            Втомилися програвати конкурентам через &quot;некрасиві&quot; презентації
             </li>
             <li className="la-course-1-skills__item">
             Розумієте, що візуалізація — це 50% успіху продажу
@@ -379,7 +379,7 @@ const Course1Page = () => {
                       
                       <li className="la-course-1-course-program__lesson">
                         <p className="la-course-1-course-program__lesson-title">
-                        Галерея "До і після" — реальні роботи студентів
+                        Галерея &quot;До і після&quot; — реальні роботи студентів
                         </p>
                       </li>
                       <li className="la-course-1-course-program__lesson">

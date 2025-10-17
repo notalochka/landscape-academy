@@ -1,0 +1,1085 @@
+/* Events Calendar Styles */
+.la-events-calendar {
+  padding: 80px 0;
+  background: #E9E9E9;
+}
+
+.la-events-calendar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.la-events-calendar__header {
+  display: flex;
+  align-items: center;
+  gap: 58px;
+  margin-bottom: 94px;
+}
+
+.la-events-calendar__logo {
+  height: 72px;
+  width: 73px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.la-events-calendar__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #303030;
+}
+
+.la-events-calendar__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.la-event-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.la-event-card {
+  background: #000000;
+  border-radius: 46px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.la-event-card__image {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+.la-event-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.la-event-card__content {
+  padding: 42px 42px 78px 42px;
+  color: #ffffff;
+}
+
+.la-event-card__title {
+  margin: 0 0 24px 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.la-event-card__dates {
+  margin-bottom: 12px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #ffffff;
+}
+
+.la-event-card__time {
+  margin-bottom: 12px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #B0B0B0;
+}
+
+.la-event-card__location {
+  margin-bottom: 12px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #B0B0B0;
+}
+
+.la-event-card__price {
+  margin-bottom: 24px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.la-event-card__desc {
+  margin: 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: #ffffff;
+}
+
+.la-event-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.la-event-cta__btn {
+  display: inline-block;
+  padding: 24px 80px;
+  border-radius: 45px;
+  border: none;
+  background: #303030;
+  color: #ffffff;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.la-event-cta__btn:hover {
+  background: #1a1a1a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.la-event-cta__btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.la-calendar {
+  background: #000000;
+  border-radius: 46px;
+  padding: 42px;
+  color: #ffffff;
+}
+
+.la-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.la-calendar__month {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: capitalize;
+  color: #ffffff;
+}
+
+.la-calendar__nav {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.la-calendar__nav:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.la-calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.la-calendar__weekday {
+  text-align: center;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #B0B0B0;
+  padding: 8px 0;
+}
+
+.la-calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.la-calendar__day,
+.la-calendar__empty {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.la-calendar__empty {
+  cursor: default;
+}
+
+.la-calendar__day:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.la-calendar__day--today {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid #ffffff;
+  font-weight: 600;
+}
+
+.la-calendar__day--events {
+  cursor: pointer;
+  border: 2px solid #6C6C6C;
+}
+
+.la-calendar__day--events:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.la-calendar__day--today.la-calendar__day--events {
+  border: 2px solid #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.la-calendar__dot {
+  position: absolute;
+  bottom: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* Programs Section Styles */
+.la-programs {
+  padding: 80px 0 40px;
+}
+
+.la-programs__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.la-programs__header {
+  display: flex;
+  align-items: center;
+  gap: 58px;
+  margin-bottom: 94px;
+}
+
+.la-programs__logo {
+  height: 72px;
+  width: 73px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.la-programs__eyebrow {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #303030;
+}
+
+.la-programs__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+}
+
+.la-program__card {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 46px;
+  padding: 78px 42px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.la-program__title {
+  margin: 0 0 30px 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 64px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.la-program__subtitle {
+  margin: 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.la-program__arrow {
+  margin-top: 80px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.la-program__arrow span {
+  display: inline-block;
+  width: 223px;
+  height: 2px;
+  background: #ffffff;
+  position: relative;
+}
+
+.la-program__arrow span::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #ffffff;
+  border-top: 2px solid #ffffff;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.la-programs__grid > .la-program__card:last-child {
+  grid-column: 1 / -1;
+  min-height: 320px;
+}
+
+.la-programs__grid > .la-program__card:last-child .la-program__subtitle {
+  max-width: 40%;
+}
+
+/* Library Section Styles */
+.la-library {
+  padding: 80px 0;
+  background: #E9E9E9;
+}
+
+.la-library__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.la-library__header {
+  display: flex;
+  align-items: center;
+  gap: 58px;
+  margin-bottom: 94px;
+}
+
+.la-library__logo {
+  height: 72px;
+  width: 73px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.la-library__eyebrow {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #303030;
+}
+
+.la-library__carousel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.la-library__slide {
+  position: static;
+  opacity: 1;
+  transform: none;
+}
+
+.la-library__slide--active {
+  opacity: 1;
+  transform: none;
+}
+
+.la-blog__card {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.la-blog__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.la-blog__title {
+  margin: 0 0 20px 0;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  flex-grow: 1;
+}
+
+.la-blog__card--large .la-blog__title {
+  font-size: 48px;
+}
+
+.la-blog__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+.la-blog__date {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+.la-blog__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.la-library__navigation {
+  display: none;
+}
+
+.la-library__arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.la-library__arrow span {
+  width: 30px;
+  height: 2px;
+  background: #303030;
+  position: relative;
+}
+
+.la-library__arrow--left span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid #303030;
+  border-bottom: 2px solid #303030;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.la-library__arrow--right span::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #303030;
+  border-top: 2px solid #303030;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .la-events-calendar__header,
+  .la-programs__header,
+  .la-library__header {
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  .la-events-calendar__title,
+  .la-programs__eyebrow,
+  .la-library__eyebrow {
+    font-size: 24px;
+  }
+
+  .la-events-calendar__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .la-event-cta__btn {
+    font-size: 36px;
+    padding: 20px 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .la-events-calendar {
+    padding: 40px 0;
+  }
+
+  .la-events-calendar__inner {
+    padding: 0 15px;
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-events-calendar__header,
+  .la-programs__header,
+  .la-library__header {
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .la-events-calendar__logo,
+  .la-programs__logo,
+  .la-library__logo {
+    height: 40px;
+    width: 40px;
+  }
+
+  .la-events-calendar__title,
+  .la-programs__eyebrow,
+  .la-library__eyebrow {
+    font-size: 20px;
+  }
+
+  .la-event-card__title {
+    font-size: 24px;
+  }
+
+  .la-event-cta__btn {
+    font-size: 24px;
+    padding: 16px 40px;
+  }
+
+  .la-calendar__month {
+    font-size: 20px;
+  }
+
+  .la-calendar {
+    padding: 20px;
+  }
+
+  .la-programs {
+    padding: 40px 0 20px;
+  }
+
+  .la-programs__inner {
+    padding: 0 20px;
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-programs__grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .la-program__card {
+    padding: 40px 30px;
+    min-height: 200px;
+    border-radius: 30px;
+  }
+
+  .la-program__title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .la-program__subtitle {
+    font-size: 20px;
+  }
+
+  .la-program__arrow {
+    margin-top: 30px;
+  }
+
+  .la-program__arrow span {
+    width: 120px;
+  }
+
+  .la-library {
+    padding: 40px 0;
+  }
+
+  .la-library__inner {
+    padding: 0 20px;
+    max-width: none;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .la-library__carousel {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+
+  .la-library__slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .la-library__slide--active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .la-blog__card {
+    width: auto !important;
+    height: auto !important;
+    min-height: 200px;
+    border-radius: 20px;
+    max-width: 100%;
+    flex-shrink: 0;
+  }
+
+
+  .la-library__slide .la-blog__card {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+    position: relative;
+  }
+
+  .la-library__navigation {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .la-library__arrow {
+    width: 35px;
+    height: 35px;
+  }
+
+  .la-library__arrow span {
+    width: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .la-events-calendar {
+    padding: 30px 0;
+  }
+
+  .la-events-calendar__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-programs__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-library__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-events-calendar__header,
+  .la-programs__header,
+  .la-library__header {
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .la-events-calendar__logo,
+  .la-programs__logo,
+  .la-library__logo {
+    height: 35px;
+    width: 35px;
+  }
+
+  .la-events-calendar__title,
+  .la-programs__eyebrow,
+  .la-library__eyebrow {
+    font-size: 18px;
+  }
+
+  .la-event-card__content {
+    padding: 30px 25px 50px 25px;
+  }
+
+  .la-event-card__title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .la-event-card__dates,
+  .la-event-card__price {
+    font-size: 16px;
+  }
+
+  .la-event-card__time,
+  .la-event-card__location,
+  .la-event-card__desc {
+    font-size: 14px;
+  }
+
+  .la-event-cta__btn {
+    font-size: 20px;
+    padding: 14px 32px;
+  }
+
+  .la-calendar {
+    padding: 15px;
+  }
+
+  .la-calendar__month {
+    font-size: 18px;
+  }
+
+  .la-calendar__weekday {
+    font-size: 12px;
+  }
+
+  .la-calendar__day,
+  .la-calendar__empty {
+    font-size: 14px;
+  }
+
+  .la-programs {
+    padding: 30px 0 15px;
+  }
+
+  .la-programs__grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .la-program__card {
+    padding: 35px 25px;
+    min-height: 180px;
+    border-radius: 25px;
+  }
+
+  .la-program__title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    line-height: 1.1;
+  }
+
+  .la-program__subtitle {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .la-program__arrow {
+    margin-top: 25px;
+  }
+
+  .la-program__arrow span {
+    width: 100px;
+  }
+
+  .la-programs__grid > .la-program__card:last-child .la-program__subtitle {
+    max-width: none;
+  }
+
+  .la-library {
+    padding: 30px 0;
+  }
+
+  .la-library__inner {
+    overflow: hidden;
+  }
+
+  .la-library__carousel {
+    height: 220px;
+  }
+
+  .la-blog__card {
+    padding: 25px;
+    min-height: 150px;
+    border-radius: 15px;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
+
+  .la-library__slide .la-blog__card {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
+  .la-blog__title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .la-library__navigation {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .la-library__arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .la-library__arrow span {
+    width: 20px;
+  }
+
+  .la-blog__card--large .la-blog__title {
+    font-size: 32px;
+  }
+
+  .la-blog__date,
+  .la-blog__description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .la-events-calendar {
+    padding: 25px 0;
+  }
+
+  .la-events-calendar__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-programs__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-library__inner {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .la-events-calendar__header,
+  .la-programs__header,
+  .la-library__header {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .la-events-calendar__logo,
+  .la-programs__logo,
+  .la-library__logo {
+    height: 30px;
+    width: 30px;
+  }
+
+  .la-events-calendar__title,
+  .la-programs__eyebrow,
+  .la-library__eyebrow {
+    font-size: 16px;
+  }
+
+  .la-event-card__content {
+    padding: 25px 20px 40px 20px;
+  }
+
+  .la-event-card__title {
+    font-size: 18px;
+  }
+
+  .la-event-cta__btn {
+    font-size: 18px;
+    padding: 12px 28px;
+  }
+
+  .la-calendar {
+    padding: 12px;
+  }
+
+  .la-programs {
+    padding: 25px 0 12px;
+  }
+
+  .la-programs__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .la-program__card {
+    padding: 30px 20px;
+    min-height: 160px;
+    border-radius: 20px;
+  }
+
+  .la-program__title {
+    font-size: 24px;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .la-program__subtitle {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .la-program__arrow {
+    margin-top: 20px;
+  }
+
+  .la-program__arrow span {
+    width: 80px;
+  }
+
+  .la-programs__grid > .la-program__card:last-child .la-program__subtitle {
+    max-width: none;
+  }
+
+  .la-library {
+    padding: 25px 0;
+  }
+
+  .la-library__inner {
+    overflow: hidden;
+  }
+
+  .la-library__carousel {
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .la-blog__card {
+    padding: 20px;
+    min-height: 130px;
+    border-radius: 12px;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
+
+  .la-library__slide .la-blog__card {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
+  .la-blog__title {
+    font-size: 20px;
+  }
+
+  .la-library__navigation {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .la-library__arrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .la-library__arrow span {
+    width: 18px;
+  }
+
+  .la-blog__card--large .la-blog__title {
+    font-size: 28px;
+  }
+}
+

@@ -4,6 +4,8 @@ export default function Document() {
   return (
     <Html lang="uk">
       <Head>
+        {/* Viewport for proper mobile scaling */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         {/* Preconnect to external domains for better performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
