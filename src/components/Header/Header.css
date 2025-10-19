@@ -2,8 +2,6 @@
 .la-header {
   background: #ffffff;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .la-header__nav {
@@ -15,11 +13,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 40px;
-  max-width: none;
-  margin: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .la-header__logo {
@@ -256,13 +252,53 @@
   }
 }
 
+/* Адаптивні стилі для планшетів */
+@media (max-width: 1025px) {
+  .la-header__nav-inner {
+    padding: 18px 30px;
+  }
+
+  .la-header__logo img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .la-header__menu--desktop {
+    gap: 15px;
+  }
+
+  .la-header__link {
+    font-size: 15px;
+  }
+
+  .la-header__cta--desktop {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 900px) {
+  .la-header__nav-inner {
+    padding: 16px 25px;
+  }
+
+  .la-header__menu--desktop {
+    gap: 20px;
+  }
+
+  .la-header__link {
+    font-size: 10px;
+  }
+
+  .la-header__cta--desktop {
+    padding: 9px 18px;
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 768px) {
   .la-header__nav-inner {
     padding: 15px 20px;
-    max-width: none;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .la-header__logo img {
@@ -300,20 +336,30 @@
   .la-header__title {
     font-size: 36px;
   }
+
+  /* Приховування логотипу при відкритому мобільному меню */
+  .la-header__logo--hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
 }
 
 @media (max-width: 480px) {
   .la-header__nav-inner {
-    padding: 12px 15px;
-    max-width: none;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 20px;
   }
 
   .la-header__logo img {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Приховування логотипу при відкритому мобільному меню */
+  .la-header__logo--hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
   .la-header__mobile-nav {
@@ -330,46 +376,6 @@
   }
 }
 
-@media (max-width: 375px) {
-  .la-header__nav-inner {
-    padding: 10px 15px;
-    max-width: none;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .la-header__logo img {
-    width: 30px;
-    height: 30px;
-  }
-
-  .la-header__mobile-nav {
-    padding: 25px 15px;
-    gap: 20px;
-  }
-
-  .la-header__mobile-link {
-    font-size: 18px;
-  }
-
-  .la-header__mobile-menu-header {
-    padding: 15px;
-  }
-
-  .la-header__mobile-menu-logo img {
-    width: 35px;
-    height: 35px;
-  }
-
-  .la-header__mobile-menu-label {
-    font-size: 12px;
-  }
-
-  .la-header__close-btn {
-    font-size: 20px;
-  }
-}
 
 /* Hamburger Animation */
 .la-header__menu-toggle.active .la-header__hamburger:nth-child(1) {

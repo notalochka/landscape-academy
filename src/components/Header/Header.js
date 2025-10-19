@@ -34,7 +34,7 @@ const Header = ({ showBanner = false, bannerTitle = "LANDSCAPER ACADEMY" }) => {
     <header className="la-header">
       <div className="la-header__nav">
         <div className="la-header__nav-inner">
-          <Link href="/" className="la-header__logo" aria-label="Landscape Academy">
+          <Link href="/" className={`la-header__logo ${isMenuOpen ? 'la-header__logo--hidden' : ''}`} aria-label="Landscape Academy">
             <Image 
               src="/logo_academy.png" 
               alt="Landscape Academy"

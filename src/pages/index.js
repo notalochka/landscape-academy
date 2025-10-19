@@ -32,10 +32,10 @@ function formatRange(startDate, endDate) {
 const WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
 // Program Card Component
-const ProgramCard = ({ title, subtitle, delay = "" }) => {
+const ProgramCard = ({ title, subtitle, delay = "", href = null }) => {
   const [cardRef, cardVisible] = useScrollAnimation({ threshold: 0.2 });
   
-  return (
+  const cardContent = (
     <div 
       ref={cardRef}
       className={`la-program__card hover-lift animate-fade-in-up ${delay} ${cardVisible ? 'is-visible' : ''}`}
@@ -47,6 +47,16 @@ const ProgramCard = ({ title, subtitle, delay = "" }) => {
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="la-program__link">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 };
 
 // Blog Card Component
@@ -363,12 +373,13 @@ export default function Home() {
             </div>
 
             <div className="la-programs__grid">
-              <ProgramCard title="Landscaper 5.0" subtitle="Перетвори хобі у бізнес" delay="animate-delay-100" />
-              <ProgramCard title="ШІ рендер на телефоні" subtitle="Від ескізу до WOW за 5 хвилин" delay="animate-delay-200" />
+              <ProgramCard title="Landscaper 5.0" subtitle="Перетвори хобі у бізнес" delay="animate-delay-100" href="/flagship" />
+              <ProgramCard title="ШІ рендер на телефоні" subtitle="Від ескізу до WOW за 5 хвилин" delay="animate-delay-200" href="/course-1" />
               <ProgramCard
                 title="Метод роботи практикуючого ландшафтного дизайнера"
                 subtitle="Або в чому секрет виходу на високий чек"
                 delay="animate-delay-300"
+                href="/course-2"
               />
             </div>
           </div>

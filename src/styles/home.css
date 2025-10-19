@@ -335,16 +335,33 @@
   gap: 64px;
 }
 
+.la-program__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.la-program__link:hover {
+  text-decoration: none;
+}
+
+.la-program__link:hover .la-program__card {
+  transform: translateY(-8px);
+}
+
 .la-program__card {
   background: #000000;
   color: #ffffff;
   border-radius: 46px;
   padding: 78px 42px;
-  min-height: 260px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
+  transition: transform 0.3s ease;
 }
 
 .la-program__title {
@@ -395,12 +412,14 @@
   transform: translateY(-50%) rotate(45deg);
 }
 
-.la-programs__grid > .la-program__card:last-child {
+.la-programs__grid > .la-program__card:last-child,
+.la-programs__grid > .la-program__link:last-child {
   grid-column: 1 / -1;
   min-height: 320px;
 }
 
-.la-programs__grid > .la-program__card:last-child .la-program__subtitle {
+.la-programs__grid > .la-program__card:last-child .la-program__subtitle,
+.la-programs__grid > .la-program__link:last-child .la-program__subtitle {
   max-width: 40%;
 }
 
@@ -584,13 +603,341 @@
   }
 
   .la-events-calendar__grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 40px;
+  }
+
+  .la-event-section {
+    order: 2;
+  }
+
+  .la-calendar {
+    order: 1;
   }
 
   .la-event-cta__btn {
     font-size: 36px;
     padding: 20px 60px;
+  }
+}
+
+/* Адаптивні стилі для планшетів */
+@media (max-width: 1024px) {
+  .la-events-calendar {
+    padding: 50px 0;
+  }
+  
+  .la-events-calendar__inner {
+    padding: 0 25px;
+  }
+  
+  .la-events-calendar__header {
+    gap: 55px;
+    margin-bottom: 50px;
+  }
+  
+  .la-events-calendar__logo {
+    height: 70px;
+    width: 71px;
+  }
+  
+  .la-events-calendar__title {
+    font-size: 30px;
+  }
+  
+  .la-events-calendar__grid {
+    gap: 60px;
+    align-items: center;
+  }
+  
+  .la-event-section {
+    gap: 38px;
+  }
+  
+  .la-event-card__title {
+    font-size: 30px;
+  }
+  
+  .la-event-card__dates {
+    font-size: 19px;
+  }
+  
+  .la-event-card__time {
+    font-size: 17px;
+  }
+  
+  .la-event-card__location {
+    font-size: 17px;
+  }
+  
+  .la-event-card__price {
+    font-size: 19px;
+  }
+  
+  .la-event-card__desc {
+    font-size: 17px;
+  }
+  
+  .la-event-cta__btn {
+    font-size: 22px;
+    padding: 19px 55px;
+  }
+}
+
+@media (max-width: 900px) {
+  .la-events-calendar {
+    padding: 60px 0;
+  }
+  
+  .la-events-calendar__inner {
+    padding: 0 25px;
+  }
+  
+  .la-events-calendar__header {
+    gap: 45px;
+    margin-bottom: 70px;
+  }
+  
+  .la-events-calendar__logo {
+    height: 60px;
+    width: 61px;
+  }
+  
+  .la-events-calendar__title {
+    font-size: 26px;
+  }
+  
+  .la-events-calendar__grid {
+    gap: 50px;
+  }
+  
+  .la-event-section {
+    gap: 30px;
+  }
+  
+  .la-event-card__title {
+    font-size: 26px;
+  }
+  
+  .la-event-card__dates {
+    font-size: 17px;
+  }
+  
+  .la-event-card__time {
+    font-size: 15px;
+  }
+  
+  .la-event-card__location {
+    font-size: 15px;
+  }
+  
+  .la-event-card__price {
+    font-size: 17px;
+  }
+  
+  .la-event-card__desc {
+    font-size: 15px;
+  }
+  
+  .la-event-cta__btn {
+    font-size: 18px;
+    padding: 16px 45px;
+  }
+}
+
+/* Адаптивні стилі для навчальних програм */
+@media (max-width: 1024px) {
+  .la-programs {
+    padding: 50px 0 35px;
+  }
+  
+  .la-programs__inner {
+    padding: 0 30px;
+  }
+  
+  .la-programs__header {
+    gap: 50px;
+    margin-bottom: 30px;
+  }
+  
+  .la-programs__logo {
+    height: 65px;
+    width: 66px;
+  }
+  
+  .la-programs__eyebrow {
+    font-size: 28px;
+  }
+  
+  .la-programs__grid {
+    gap: 30px;
+  }
+  
+  .la-program__card {
+    padding: 70px 38px;
+    border-radius: 42px;
+  }
+  
+  .la-program__title {
+    font-size: 48px;
+  }
+  
+  .la-program__subtitle {
+    font-size: 25px;
+  }
+  
+  .la-programs__grid > .la-program__card:last-child,
+  .la-programs__grid > .la-program__link:last-child {
+    min-height: 300px;
+  }
+  
+  .la-programs__grid > .la-program__card:last-child .la-program__subtitle,
+  .la-programs__grid > .la-program__link:last-child .la-program__subtitle {
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 900px) {
+  .la-programs {
+    padding: 30px 0 30px;
+  }
+  
+  .la-programs__inner {
+    padding: 0 25px;
+  }
+  
+  .la-programs__header {
+    gap: 45px;
+    margin-bottom: 30px;
+  }
+  
+  .la-programs__logo {
+    height: 60px;
+    width: 61px;
+  }
+  
+  .la-programs__eyebrow {
+    font-size: 26px;
+  }
+  
+  .la-programs__grid {
+    gap: 35px;
+  }
+  
+  .la-program__card {
+    padding: 65px 35px;
+    border-radius: 40px;
+    height: 250px;
+  }
+  
+  .la-program__title {
+    font-size: 36px;
+  }
+  
+  .la-program__subtitle {
+    font-size: 25px;
+  }
+  
+  .la-programs__grid > .la-program__card:last-child,
+  .la-programs__grid > .la-program__link:last-child {
+    min-height: 280px;
+  }
+  
+  .la-programs__grid > .la-program__card:last-child .la-program__subtitle,
+  .la-programs__grid > .la-program__link:last-child .la-program__subtitle {
+    max-width: 50%;
+  }
+}
+
+/* Адаптивні стилі для бібліотеки */
+@media (max-width: 1024px) {
+  .la-library {
+    padding: 70px 0;
+  }
+  
+  .la-library__inner {
+    padding: 0 30px;
+  }
+  
+  .la-library__header {
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+  
+  .la-library__logo {
+    height: 65px;
+    width: 66px;
+  }
+  
+  .la-library__eyebrow {
+    font-size: 28px;
+  }
+  
+  .la-library__carousel {
+    gap: 25px;
+    margin-bottom: 35px;
+  }
+  
+  .la-blog__card {
+    padding: 35px;
+    min-height: 180px;
+    border-radius: 18px;
+  }
+  
+  .la-blog__title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .la-blog__date,
+  .la-blog__description {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .la-library {
+    padding: 60px 0;
+  }
+  
+  .la-library__inner {
+    padding: 0 25px;
+  }
+  
+  .la-library__header {
+    gap: 45px;
+    margin-bottom: 30px;
+  }
+  
+  .la-library__logo {
+    height: 60px;
+    width: 61px;
+  }
+  
+  .la-library__eyebrow {
+    font-size: 26px;
+  }
+  
+  .la-library__carousel {
+    gap: 22px;
+    margin-bottom: 30px;
+  }
+  
+  .la-blog__card {
+    padding: 32px;
+    min-height: 170px;
+    border-radius: 16px;
+  }
+  
+  .la-blog__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  
+  .la-blog__date,
+  .la-blog__description {
+    font-size: 15px;
   }
 }
 
@@ -603,7 +950,7 @@
     padding: 0 15px;
     max-width: none;
     margin: 0;
-    width: 100%;
+    width: auto;
   }
 
   .la-events-calendar__header,
@@ -651,7 +998,7 @@
     padding: 0 20px;
     max-width: none;
     margin: 0;
-    width: 100%;
+    width: auto;
   }
 
   .la-programs__grid {
@@ -661,7 +1008,7 @@
 
   .la-program__card {
     padding: 40px 30px;
-    min-height: 200px;
+    height: 200px;
     border-radius: 30px;
   }
 
@@ -687,27 +1034,40 @@
   }
 
   .la-library__inner {
-    padding: 0 20px;
-    max-width: none;
-    margin: 0;
-    width: 100%;
     overflow: hidden;
+    width: auto;
   }
 
   .la-library__carousel {
     position: relative;
-    width: 100%;
-    height: 250px;
+    height: 270px;
     margin-bottom: 2px;
     overflow: hidden;
   }
+
+  .la-blog__card {
+    padding: 25px;
+    min-height: 150px;
+    border-radius: 15px;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
+
+  .la-library__slide .la-blog__card {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+
 
   .la-library__slide {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 450px;
+    height: 200px;
     opacity: 0;
     transform: translateX(100%);
     transition: all 0.5s ease-in-out;
@@ -716,6 +1076,8 @@
   .la-library__slide--active {
     opacity: 1;
     transform: translateX(0);
+    width: 450px;
+    height: 200px;
   }
 
   .la-blog__card {
@@ -753,13 +1115,13 @@
 
 @media (max-width: 480px) {
   .la-events-calendar {
-    padding: 30px 0;
+    padding: 0;
   }
 
   .la-events-calendar__inner {
-    max-width: none;
+    max-width: 100%;
     margin: 0;
-    width: 100%;
+    padding: 0;
   }
 
   .la-programs__inner {
@@ -778,20 +1140,39 @@
   .la-programs__header,
   .la-library__header {
     gap: 15px;
-    margin-bottom: 25px;
+    padding: 30px 20px;
+    margin-bottom: 0px;
+    
   }
 
   .la-events-calendar__logo,
   .la-programs__logo,
   .la-library__logo {
-    height: 35px;
-    width: 35px;
+    height: 18px;
+    width: 18px;
   }
 
   .la-events-calendar__title,
   .la-programs__eyebrow,
   .la-library__eyebrow {
-    font-size: 18px;
+    font-size: 11px;
+  }
+  .la-events-calendar__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+
+  .la-event-section {
+    gap: 20px;
+    order: 2;
+  }
+
+  .la-calendar {
+    order: 1;
+    margin: 0 auto;
+    border-radius: 20px;
   }
 
   .la-event-card__content {
@@ -812,6 +1193,9 @@
   .la-event-card__location,
   .la-event-card__desc {
     font-size: 14px;
+  }
+  .la-event-card__image {
+    height: auto;
   }
 
   .la-event-cta__btn {
@@ -839,7 +1223,11 @@
   .la-programs {
     padding: 30px 0 15px;
   }
-
+  .la-programs__inner {
+    max-width: none;
+    margin: 0;
+    width: auto;
+  }
   .la-programs__grid {
     grid-template-columns: 1fr;
     gap: 25px;
@@ -847,8 +1235,8 @@
 
   .la-program__card {
     padding: 35px 25px;
-    min-height: 180px;
-    border-radius: 25px;
+    height: 200px;
+    border-radius: 60px;
   }
 
   .la-program__title {
@@ -864,13 +1252,16 @@
 
   .la-program__arrow {
     margin-top: 25px;
+    width: 100px;
+    margin: 0 30px 0 auto;
   }
 
   .la-program__arrow span {
     width: 100px;
   }
 
-  .la-programs__grid > .la-program__card:last-child .la-program__subtitle {
+  .la-programs__grid > .la-program__card:last-child .la-program__subtitle,
+  .la-programs__grid > .la-program__link:last-child .la-program__subtitle {
     max-width: none;
   }
 
@@ -880,6 +1271,7 @@
 
   .la-library__inner {
     overflow: hidden;
+    width: auto;
   }
 
   .la-library__carousel {
@@ -890,16 +1282,18 @@
     padding: 25px;
     min-height: 150px;
     border-radius: 15px;
-    width: auto !important;
-    height: auto !important;
-    max-width: 100%;
+    width: 330px;
+    height: 220px;
   }
 
 
-  .la-library__slide .la-blog__card {
-    width: auto !important;
-    height: auto !important;
-    max-width: 100%;
+  .la-library__slide {
+    width: 330px;
+    height: 220px;
+  }
+  .la-library__slide--active {
+    width: 300px;
+    height: 220px;
   }
 
   .la-blog__title {
@@ -929,157 +1323,6 @@
   .la-blog__date,
   .la-blog__description {
     font-size: 14px;
-  }
-}
-
-@media (max-width: 375px) {
-  .la-events-calendar {
-    padding: 25px 0;
-  }
-
-  .la-events-calendar__inner {
-    max-width: none;
-    margin: 0;
-    width: 100%;
-  }
-
-  .la-programs__inner {
-    max-width: none;
-    margin: 0;
-    width: 100%;
-  }
-
-  .la-library__inner {
-    max-width: none;
-    margin: 0;
-    width: 100%;
-  }
-
-  .la-events-calendar__header,
-  .la-programs__header,
-  .la-library__header {
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .la-events-calendar__logo,
-  .la-programs__logo,
-  .la-library__logo {
-    height: 30px;
-    width: 30px;
-  }
-
-  .la-events-calendar__title,
-  .la-programs__eyebrow,
-  .la-library__eyebrow {
-    font-size: 16px;
-  }
-
-  .la-event-card__content {
-    padding: 25px 20px 40px 20px;
-  }
-
-  .la-event-card__title {
-    font-size: 18px;
-  }
-
-  .la-event-cta__btn {
-    font-size: 18px;
-    padding: 12px 28px;
-  }
-
-  .la-calendar {
-    padding: 12px;
-  }
-
-  .la-programs {
-    padding: 25px 0 12px;
-  }
-
-  .la-programs__grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .la-program__card {
-    padding: 30px 20px;
-    min-height: 160px;
-    border-radius: 20px;
-  }
-
-  .la-program__title {
-    font-size: 24px;
-    margin-bottom: 12px;
-    line-height: 1.1;
-  }
-
-  .la-program__subtitle {
-    font-size: 16px;
-    line-height: 1.2;
-  }
-
-  .la-program__arrow {
-    margin-top: 20px;
-  }
-
-  .la-program__arrow span {
-    width: 80px;
-  }
-
-  .la-programs__grid > .la-program__card:last-child .la-program__subtitle {
-    max-width: none;
-  }
-
-  .la-library {
-    padding: 25px 0;
-  }
-
-  .la-library__inner {
-    overflow: hidden;
-  }
-
-  .la-library__carousel {
-    height: 200px;
-    margin-bottom: 10px;
-  }
-
-  .la-blog__card {
-    padding: 20px;
-    min-height: 130px;
-    border-radius: 12px;
-    width: auto !important;
-    height: auto !important;
-    max-width: 100%;
-  }
-
-
-  .la-library__slide .la-blog__card {
-    width: auto !important;
-    height: auto !important;
-    max-width: 100%;
-  }
-
-  .la-blog__title {
-    font-size: 20px;
-  }
-
-  .la-library__navigation {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-  }
-
-  .la-library__arrow {
-    width: 28px;
-    height: 28px;
-  }
-
-  .la-library__arrow span {
-    width: 18px;
-  }
-
-  .la-blog__card--large .la-blog__title {
-    font-size: 28px;
   }
 }
 
