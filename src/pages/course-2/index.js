@@ -190,6 +190,15 @@ const Course2Page = () => {
                 </div>
                 <span className="la-course-2-author__label">АВТОР КУРСУ</span>
               </div>
+              <div className="la-course-1-author__photo-mobile">
+                  <Image
+                    src="/methods-author-photo.png"
+                    alt="Анастасія Яковець"
+                    width={611}
+                    height={833}
+                    className="la-course-1-author__image"
+                  />
+              </div>
               
               <h2 className="la-course-2-author__name">Анастасія Яковець</h2>
               
@@ -212,7 +221,7 @@ const Course2Page = () => {
           <div className="la-course-2-author__photo">
             <Image
               src="/methods-author-photo.png"
-              alt="Комар Микола"
+              alt="Анастасія Яковець"
               width={611}
               height={833}
               className="la-course-2-author__image"
@@ -235,139 +244,150 @@ const Course2Page = () => {
           </div>
         </div>
       </section>
-
+=
       {/* Course Program Section */}
-      <section ref={programRef} className={`la-course-2-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
-        <div className="la-course-2-course-program__inner">
-          <div className="la-course-2-course-program__header">
-            <div className="la-course-2-course-program__left">
-              <p className="la-course-2-course-program__motto">
-              в чому секрет <br />виходу на високий <br />чек
+      <section id="la-course-2-course-program" ref={programRef} className={`la-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
+        <div className="la-course-program__inner">
+          <div className="la-course-program__header">
+            <div className="la-course-program__left">
+              <p className="la-course-program__motto">
+              в чому секрет виходу <br />на високий чек
               </p>
             </div>
-            <div className="la-course-2-course-program__right">
-              <h2 className="la-course-2-course-program__title">Що входить в курс</h2>
-              <div className="la-course-2-course-program__schedule">
-                <p className="la-course-2-course-program__schedule-text"></p>
-                <p className="la-course-2-course-program__schedule-text"></p>
-                <p className="la-course-2-course-program__schedule-text"></p>
+            <div className="la-course-program__right">
+              <h2 className="la-course-program__title">курс: Метод роботи практикуючого ландшафтного дизайнера</h2>
+              <div className="la-course-program__schedule">
+                <p className="la-course-program__schedule-text">ВЕБІНАРИ</p>
+                <p className="la-course-program__schedule-text">ПН-ПТ</p>
+                <p className="la-course-program__schedule-text">15:00-19:00</p>
               </div>
             </div>
           </div>
-          
-          <div className="la-course-2-course-program__line"></div>
-          
-          <div className="la-course-2-course-program__toggle">
-            <h3 className="la-course-2-course-program__course-title">
-            курс: Метод роботи практикуючого ландшафтного дизайнера
+        </div>
+        
+        <div className="la-course-program__line"></div>
+        
+        <div className="la-course-program__inner">
+          <div className="la-course-program__toggle">
+            <h3 className="la-course-program__course-title">
+             ПРОГРАМА КУРСУ
             </h3>
             <button 
-              className="la-course-2-course-program__toggle-btn"
+              className="la-course-program__toggle-btn"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               aria-label={isDropdownOpen ? 'Закрити програму' : 'Відкрити програму'}
             >
-              <span className="la-course-2-course-program__toggle-text">ДЕТАЛЬНО</span>
-              <span className={isDropdownOpen ? 'la-course-2-course-program__toggle-arrow open' : 'la-course-2-course-program__toggle-arrow'}>
+              <span className="la-course-program__toggle-text">ДЕТАЛЬНО</span>
+              <span className={isDropdownOpen ? 'la-course-program__toggle-arrow open' : 'la-course-program__toggle-arrow'}>
                 <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
             </button>
           </div>
+        </div>
           
           {isDropdownOpen && (
             <>
-              <div className="la-course-2-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-course-2-course-program__content">
-                <div className="la-course-2-course-program__module">
-                  <div className="la-course-2-course-program__module-info">
-                    <h4 className="la-course-2-course-program__module-number">5 відеоуроків</h4>
-                    <h5 className="la-course-2-course-program__module-title">
-                      Доступ у будь-який час з будь-якого пристрою — навчайтеся в зручному темпі. Робочі шаблони у PDF — всі необхідні документи готові до використання.
-                    </h5>
-                  </div>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">5 відеоуроків</h4>
+                    <h5 className="la-course-program__module-title">Доступ у будь-який час з будь-якого пристрою — навчайтеся в зручному темпі.
+                      <br />
+                      Робочі шаблони у PDF — всі необхідні документи готові до використання.</h5>
+                    </div>
                   
-                  <div className="la-course-2-course-program__lessons">
-                    <ul className="la-course-2-course-program__lesson-list">
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Урок 1: Пошук клієнтів та перше спілкування 
                         </p>
                       </li>
                       
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Урок 2: Перша зустріч на ділянці
                         </p>
                       </li>
                       
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
-                        Урок 3: Комерційна пропозиція
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 3: Комерційна пропозиція 
                         </p>
                       </li>
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
-                        Урок 4: Етапи проєктування
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 4: Етапи проєктування  
                         </p>
                       </li>
-                    </ul>
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 5: Презентація проєкту
+                        </p>
+                      </li>                      
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="la-course-2-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-course-2-course-program__content">
-                <div className="la-course-2-course-program__module">
-                  <div className="la-course-2-course-program__module-info">
-                    <h4 className="la-course-2-course-program__module-number">Ви отримуєте шаблони, які працюють:
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">Ви отримуєте шаблони, які працюють:
                     </h4>
-                  </div>
+                    </div>
                   
-                  <div className="la-course-2-course-program__lessons">
-                    <ul className="la-course-2-course-program__lesson-list">
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Анкету клієнта для збору всієї необхідної інформації
                         </p>
                       </li>
                       
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Комерційну пропозицію, яка обґрунтовує вашу ціну
                         </p>
                       </li>
-                      
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Договір на проєктування з актами затвердження етапів
                         </p>
                       </li>
-                      <li className="la-course-2-course-program__lesson">
-                        <p className="la-course-2-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Алгоритми презентації для гарантованого схвалення
                         </p>
                       </li>
-                    </ul>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="la-course-2-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              
-              <div className="la-course-2-course-program__content">
-                <h4 className="la-course-2-course-program__module-conclusion">
-                Все готове до використання — просто підставляєте свої дані та починаєте працювати професійно вже завтра.
-                </h4>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <h4 className="la-course-program__module-number">Все готове до використання — просто підставляєте свої дані та починаєте працювати професійно вже завтра.</h4>
+                  </div>
+                </div>
               </div>
-
             </>
           )}
-        </div>
-        <div className="la-course-2-course-program__line"></div>
+        
+        <div className="la-course-program__line"></div>
       </section>
 
        {/* Order Section */}

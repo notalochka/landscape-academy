@@ -293,8 +293,137 @@ const Course1Page = () => {
       </section>
 
       {/* Course Program Section */}
-      <section ref={programRef} className={`la-course-1-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
+      <section id="la-course-1-course-program" ref={programRef} className={`la-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
+        <div className="la-course-program__inner">
+          <div className="la-course-program__header">
+            <div className="la-course-program__left">
+              <p className="la-course-program__motto">
+              Від ескізу до WOW <br />за 5 хвилин
+              </p>
+            </div>
+            <div className="la-course-program__right">
+              <h2 className="la-course-program__title">курс: ШІ рендер на телефоні</h2>
+              <div className="la-course-program__schedule">
+                <p className="la-course-program__schedule-text">ВЕБІНАРИ</p>
+                <p className="la-course-program__schedule-text">ПН-ПТ</p>
+                <p className="la-course-program__schedule-text">15:00-19:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
         
+        <div className="la-course-program__line"></div>
+        
+        <div className="la-course-program__inner">
+          <div className="la-course-program__toggle">
+            <h3 className="la-course-program__course-title">
+             ПРОГРАМА КУРСУ
+            </h3>
+            <button 
+              className="la-course-program__toggle-btn"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              aria-label={isDropdownOpen ? 'Закрити програму' : 'Відкрити програму'}
+            >
+              <span className="la-course-program__toggle-text">ДЕТАЛЬНО</span>
+              <span className={isDropdownOpen ? 'la-course-program__toggle-arrow open' : 'la-course-program__toggle-arrow'}>
+                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+          
+          {isDropdownOpen && (
+            <>
+              <div className="la-course-program__line"></div>
+              
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">3 практичні уроки</h4>
+                    <h5 className="la-course-program__module-title">в записі:</h5>
+                    </div>
+                  
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 1: Що таке ШІ і як він працює для дизайнерів
+                        </p>
+                      </li>
+                      
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 2: Як створювати візуалізацію за допомогою GPT
+                        </p>
+                      </li>
+                      
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Урок 3: Як використовувати промпти на різних платформах
+                        </p>
+                      </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="la-course-program__line"></div>
+              
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number"></h4>
+                    </div>
+                  
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Доступ до LANDSCAPER Render Assistant
+                        </p>
+                      </li>
+                      
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Закритий Telegram-чат з підтримкою та живими кейсами
+                        </p>
+                      </li>
+                      
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Галерея &quot;До і після&quot; — реальні роботи студентів
+                        </p>
+                      </li>
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
+                        Шаблони промптів для різних стилів 
+                        </p>
+                      </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="la-course-program__line"></div>
+              
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <h4 className="la-course-program__module-number">ВАЖЛИВО: в безкоштовній версії ChatGPT ви зможете робити 2 рендера в день. Якщо необхідно більше - потрбно додатково платна версія ChatGPT 20$.
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        
+        <div className="la-course-program__line"></div>
       </section>
 
        {/* Order Section */}
