@@ -1031,42 +1031,27 @@
 }
 
 .la-course-2-course-program__toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.8;
 }
 
-.la-course-2-course-program__toggle-icon {
-  width: 20px;
-  height: 20px;
-  position: relative;
+.la-course-2-course-program__toggle-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.la-course-2-course-program__toggle-arrow {
+  display: flex;
+  align-items: center;
   transition: transform 0.3s ease;
 }
 
-.la-course-2-course-program__toggle-icon span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 2px;
-  background: #ffffff;
-  transition: all 0.3s ease;
-}
-
-.la-course-2-course-program__toggle-icon span::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 2px;
-  height: 16px;
-  background: #ffffff;
-  transition: all 0.3s ease;
-}
-
-.la-course-2-course-program__toggle-icon.open span::before {
-  transform: translate(-50%, -50%) rotate(90deg);
-  opacity: 0;
+.la-course-2-course-program__toggle-arrow.open {
+  transform: rotate(180deg);
 }
 
 .la-course-2-course-program__content {

@@ -266,8 +266,11 @@ const Course2Page = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               aria-label={isDropdownOpen ? 'Закрити програму' : 'Відкрити програму'}
             >
-              <span className={isDropdownOpen ? 'la-course-2-course-program__toggle-icon open' : 'la-course-2-course-program__toggle-icon'}>
-                <span></span>
+              <span className="la-course-2-course-program__toggle-text">ДЕТАЛЬНО</span>
+              <span className={isDropdownOpen ? 'la-course-2-course-program__toggle-arrow open' : 'la-course-2-course-program__toggle-arrow'}>
+                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </span>
             </button>
           </div>

@@ -1,0 +1,404 @@
+/* Course Program Section - Universal Styles */
+.la-course-program {
+  background: #000000;
+  padding: 80px 0;
+}
+
+.la-course-program__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.la-course-program__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+.la-course-program__left {
+  flex: 1;
+  margin-top: auto;
+}
+
+.la-course-program__motto {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 33px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-course-program__right {
+  flex: 1;
+  text-align: right;
+}
+
+.la-course-program__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 64px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-align: right;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 54px 0;
+}
+
+.la-course-program__schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.la-course-program__schedule-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 33px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-course-program__line {
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+}
+
+.la-course-program__toggle {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.la-course-program__course-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 54px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-course-program__toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.3s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.la-course-program__toggle-btn:hover {
+  opacity: 0.8;
+}
+
+.la-course-program__toggle-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.la-course-program__toggle-arrow {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+  color: #ffffff;
+}
+
+.la-course-program__toggle-arrow svg {
+  color: #ffffff;
+  stroke: #ffffff;
+  width: 20px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.la-course-program__toggle-arrow.open {
+  transform: rotate(180deg);
+}
+
+.la-course-program__content {
+  margin: 70px 0;
+}
+
+.la-course-program__module {
+  display: flex;
+  gap: 150px;
+  align-items: flex-start;
+}
+
+.la-course-program__module-info {
+  flex: 0 0 400px;
+}
+
+.la-course-program__module-number {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+}
+
+.la-course-program__module-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 40px 0;
+}
+
+.la-course-program__module-conclusion {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-course-program__lessons {
+  flex: 1;
+}
+
+.la-course-program__lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.la-course-program__lesson {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  padding-left: 30px;
+}
+
+.la-course-program__lesson::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.la-course-program__lesson-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.la-course-program__lesson-description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Responsive Design */
+
+/* Medium screens */
+@media (max-width: 1024px) {
+  .la-course-program__inner {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 900px) {
+  .la-course-program__inner {
+    max-width: 900px;
+    padding: 0 40px;
+  }
+}
+
+/* Tablet and smaller desktops */
+@media (max-width: 768px) {
+  .la-course-program {
+    padding: 60px 0;
+  }
+
+  .la-course-program__inner {
+    padding: 0 20px;
+  }
+
+  .la-course-program__header {
+    flex-direction: column-reverse;
+    gap: 30px;
+    align-items: flex-start;
+  }
+
+  .la-course-program__right {
+    text-align: right;
+  }
+
+  .la-course-program__title {
+    font-size: 48px;
+    text-align: left;
+    margin: 0 0 30px 0;
+  }
+
+  .la-course-program__motto {
+    font-size: 28px;
+  }
+
+  .la-course-program__schedule-text {
+    font-size: 28px;
+  }
+
+  .la-course-program__course-title {
+    font-size: 48px;
+  }
+
+  .la-course-program__toggle {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .la-course-program__content {
+    margin: 50px 0;
+  }
+
+  .la-course-program__module {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .la-course-program__module-info {
+    flex: none;
+  }
+
+  .la-course-program__module-number {
+    font-size: 28px;
+  }
+
+  .la-course-program__module-title {
+    font-size: 28px;
+  }
+
+  .la-course-program__module-conclusion {
+    font-size: 28px;
+  }
+
+  .la-course-program__lesson-title {
+    font-size: 28px;
+  }
+
+  .la-course-program__lesson-description {
+    font-size: 18px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+  .la-course-program {
+    padding: 40px 0;
+  }
+
+  .la-course-program__inner {
+    padding: 0 15px;
+  }
+
+  .la-course-program__title {
+    font-size: 36px;
+    text-align: right;
+    margin: 0 0 20px 0;
+  }
+
+  .la-course-program__motto {
+    font-size: 24px;
+  }
+
+  .la-course-program__schedule-text {
+    font-size: 24px;
+  }
+
+  .la-course-program__course-title {
+    font-size: 32px;
+  }
+
+  .la-course-program__toggle-text {
+    font-size: 16px;
+  }
+
+  .la-course-program__module-number {
+    font-size: 24px;
+  }
+
+  .la-course-program__module-title {
+    font-size: 24px;
+    margin: 0 0 20px 0;
+  }
+
+  .la-course-program__module-conclusion {
+    font-size: 24px;
+  }
+
+  .la-course-program__lesson {
+    padding-left: 25px;
+  }
+
+  .la-course-program__lesson::before {
+    font-size: 20px;
+  }
+
+  .la-course-program__lesson-title {
+    font-size: 24px;
+  }
+
+  .la-course-program__lesson-description {
+    font-size: 16px;
+  }
+}

@@ -3,6 +3,7 @@ import '../styles/fonts.css';
 import '../styles/pages.css';
 import '../styles/animations.css';
 import '../styles/home.css';
+import '../styles/course-program.css';
 import '../components/Contact/Contact.css';
 import '../components/Footer/Footer.css';
 import '../components/Hero/Hero.css';

@@ -440,40 +440,40 @@ const FlagshipPage = () => {
       </section>
 
       {/* Course Program Section */}
-      <section id="la-flagship-course-program" ref={programRef} className={`la-flagship-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
-        <div className="la-flagship-course-program__inner">
-          <div className="la-flagship-course-program__header">
-            <div className="la-flagship-course-program__left">
-              <p className="la-flagship-course-program__motto">
+      <section id="la-flagship-course-program" ref={programRef} className={`la-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
+        <div className="la-course-program__inner">
+          <div className="la-course-program__header">
+            <div className="la-course-program__left">
+              <p className="la-course-program__motto">
                 ВІД ІДЕЇ ДО
                 РЕАЛЬНОСТІ, <br />ВІД МРІЇ ДО ДІЇ.
               </p>
             </div>
-            <div className="la-flagship-course-program__right">
-              <h2 className="la-flagship-course-program__title">LANDSCAPER 5.0 : ПЕРЕТВОРИ ХОБІ У БІЗНЕС</h2>
-              <div className="la-flagship-course-program__schedule">
-                <p className="la-flagship-course-program__schedule-text">ВЕБІНАРИ</p>
-                <p className="la-flagship-course-program__schedule-text">ПН-ПТ</p>
-                <p className="la-flagship-course-program__schedule-text">15:00-19:00</p>
+            <div className="la-course-program__right">
+              <h2 className="la-course-program__title">LANDSCAPER 5.0 : ПЕРЕТВОРИ ХОБІ У БІЗНЕС</h2>
+              <div className="la-course-program__schedule">
+                <p className="la-course-program__schedule-text">ВЕБІНАРИ</p>
+                <p className="la-course-program__schedule-text">ПН-ПТ</p>
+                <p className="la-course-program__schedule-text">15:00-19:00</p>
               </div>
             </div>
           </div>
         </div>
         
-        <div className="la-flagship-course-program__line"></div>
+        <div className="la-course-program__line"></div>
         
-        <div className="la-flagship-course-program__inner">
-          <div className="la-flagship-course-program__toggle">
-            <h3 className="la-flagship-course-program__course-title">
+        <div className="la-course-program__inner">
+          <div className="la-course-program__toggle">
+            <h3 className="la-course-program__course-title">
              ПРОГРАМА КУРСУ
             </h3>
             <button 
-              className="la-flagship-course-program__toggle-btn"
+              className="la-course-program__toggle-btn"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               aria-label={isDropdownOpen ? 'Закрити програму' : 'Відкрити програму'}
             >
-              <span className="la-flagship-course-program__toggle-text">ДЕТАЛЬНО</span>
-              <span className={isDropdownOpen ? 'la-flagship-course-program__toggle-arrow open' : 'la-flagship-course-program__toggle-arrow'}>
+              <span className="la-course-program__toggle-text">ДЕТАЛЬНО</span>
+              <span className={isDropdownOpen ? 'la-course-program__toggle-arrow open' : 'la-course-program__toggle-arrow'}>
                 <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 1L10 10L19 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -484,41 +484,41 @@ const FlagshipPage = () => {
           
           {isDropdownOpen && (
             <>
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 1</h4>
-                    <h5 className="la-flagship-course-program__module-title">АНАЛІЗ СИТУАЦІЇ</h5>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 1</h4>
+                    <h5 className="la-course-program__module-title">АНАЛІЗ СИТУАЦІЇ</h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 1 - СИТУАЦІЯ НА РИНКУ
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( НАША РЕАЛЬНІСТЬ, ТРЕНДИ, ПРОБЛЕМИ ТА МОЖЛИВОСТІ)
                         </p>
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 2 - НАПРЯМКИ РОЗВИТКУ
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( ПЕРСПЕКТИВИ І НАПРЯМКИ В НІШІ ЛД)
                         </p>
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 3 - МАСШТАБ ОСОБИСТОСТІ
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( ШЛЯХИ ПРОФЕСІЙНОГО РОЗВИТКУ)
                         </p>
                       </li>
@@ -528,49 +528,49 @@ const FlagshipPage = () => {
                 </div>
               </div>
 
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 2</h4>
-                    <h5 className="la-flagship-course-program__module-title">ЕКСПЕРТНІСТЬ</h5>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 2</h4>
+                    <h5 className="la-course-program__module-title">ЕКСПЕРТНІСТЬ</h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 1 - Розпаковка експертності
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( пошук своїх сильних сторін)
                         </p>
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 2 - Фундамент експертності
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( аналіз наявних результатів)
                         </p>
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 3 - Кейси в ЛД
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( важливість збору кейсів)
                         </p>
                       </li>
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           УРОК 4 - Школа бренду
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( як створите власний бренд)
                         </p>
                       </li>
@@ -580,34 +580,34 @@ const FlagshipPage = () => {
                 </div>
               </div>
 
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 3</h4>
-                    <h5 className="la-flagship-course-program__module-title">самопрезентація</h5>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 3</h4>
+                    <h5 className="la-course-program__module-title">самопрезентація</h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Практична робота 1 - Робота в групі з експертністю.
                         </p>
                         
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Практична робота 2 - Продай себе за хвилину. 
                         </p>
                         
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                          Практична робота 3 - Пізнай свого клієнта.
                         </p>
                         
@@ -618,36 +618,36 @@ const FlagshipPage = () => {
                 </div>
               </div>
               
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 4</h4>
-                    <h5 className="la-flagship-course-program__module-title">собівартість</h5>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 4</h4>
+                    <h5 className="la-course-program__module-title">собівартість</h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                         Практична робота 1- Рахуємо собівартість робочого дня
                         </p>
                       
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           Практична робота 2 - Скидаєм баласт 
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                           ( Аналіз клієнтів)
                         </p>
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           Урок 1 - Оптимізація та ефективність
                         </p>
                         
@@ -658,45 +658,45 @@ const FlagshipPage = () => {
                 </div>
               </div>
               
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 5</h4>
-                    <h5 className="la-flagship-course-program__module-title">підвищення ціни</h5>
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 5</h4>
+                    <h5 className="la-course-program__module-title">підвищення ціни</h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           Урок 1 - Коли піднімати ціни.
                         </p>
                       
                       </li>
                       
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           Урок 2 - Сервіс.
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Скрипт
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Бріф
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Договір
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Збір даних
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Портфоліо
                         </p>
-                        <p className="la-flagship-course-program__lesson-description">
+                        <p className="la-course-program__lesson-description">
                         - Перше враження
                         </p>
                       </li>
@@ -707,39 +707,39 @@ const FlagshipPage = () => {
                 </div>
               </div>
 
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ 6</h4>
-                    <h5 className="la-flagship-course-program__module-title">план ефективності
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ 6</h4>
+                    <h5 className="la-course-program__module-title">план ефективності
                     </h5>
                     </div>
                   
-                    <div className="la-flagship-course-program__lessons">
-                      <ul className="la-flagship-course-program__lesson-list">
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                    <div className="la-course-program__lessons">
+                      <ul className="la-course-program__lesson-list">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                           Урок 1 - Обмежуючі переконання
                         </p>
                       
                       </li>
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                          Практична робота 1 - Ставимо мету
                         </p>
                       
                       </li>
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                          Практична робота 2 - Плануємо дохід та чек
                         </p>
                       
                       </li>
-                      <li className="la-flagship-course-program__lesson">
-                        <p className="la-flagship-course-program__lesson-title">
+                      <li className="la-course-program__lesson">
+                        <p className="la-course-program__lesson-title">
                          Урок 2 - Отримання навичок
                         </p>
                       
@@ -750,20 +750,20 @@ const FlagshipPage = () => {
                 </div>
               </div>
 
-              <div className="la-flagship-course-program__line"></div>
+              <div className="la-course-program__line"></div>
               
-              <div className="la-flagship-course-program__inner">
-                <div className="la-flagship-course-program__content">
-                  <div className="la-flagship-course-program__module">
-                    <div className="la-flagship-course-program__module-info">
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ Бонус 7</h4>
-                    <h5 className="la-flagship-course-program__module-title">Бухгалтерія в ЛД
+              <div className="la-course-program__inner">
+                <div className="la-course-program__content">
+                  <div className="la-course-program__module">
+                    <div className="la-course-program__module-info">
+                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 7</h4>
+                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
                     </h5>
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ Бонус 8</h4>
-                    <h5 className="la-flagship-course-program__module-title">Бухгалтерія в ЛД
+                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 8</h4>
+                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
                     </h5>
-                    <h4 className="la-flagship-course-program__module-number">МОДУЛЬ Бонус 9</h4>
-                    <h5 className="la-flagship-course-program__module-title">Бухгалтерія в ЛД
+                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 9</h4>
+                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
                     </h5>
                   </div>
                   </div>
@@ -772,7 +772,7 @@ const FlagshipPage = () => {
             </>
           )}
         
-        <div className="la-flagship-course-program__line"></div>
+        <div className="la-course-program__line"></div>
       </section>
 
       <Contact />
