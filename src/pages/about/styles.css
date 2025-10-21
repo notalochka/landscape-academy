@@ -1,131 +1,115 @@
-/* About Page Specific Styles */
-
 /* Hero Section */
 .la-about-hero {
   background: #000;
   color: #fff;
-  padding: 120px 0;
-  min-height: 80vh;
+  padding: 100px  0 70px 0;
+  min-height: auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.la-about-hero-inner{
+  padding: 0  200px 0 200px;
 }
 
-.la-about-hero__content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.la-about-hero__title {
-  margin: 0;
-  text-align: center;
-}
-
-.la-about-hero__title-small {
-  display: block;
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 400;
-  font-size: 48px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-
-.la-about-hero__title-large {
+.la-about-hero__title{
   display: block;
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 700;
   font-size: 72px;
   line-height: 1.1;
   text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
-.la-about-hero__description {
+.la-about-hero__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px  200px 0 200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.la-about-hero__left {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
 }
+
+.la-about-hero__right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 
 .la-about-hero__text {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 700;
   line-height: 1.6;
   margin: 0;
   text-transform: uppercase;
+  color: #fff;
 }
 
 .la-about-hero__cta {
   background: #fff;
   color: #000;
-  border: 2px solid #fff;
+  border: none;
   padding: 16px 32px;
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: flex-start;
-  border-radius: 0;
+  border-radius: 50px;
+  height: 80px;
+  white-space: nowrap;
 }
 
 .la-about-hero__cta:hover {
-  background: transparent;
-  color: #fff;
+  background: #cbc9c9;
+  color: #000;
 }
 
 /* Mission and Values Section */
 .la-about-mission {
-  background: #fff;
+  background: #e9e9e9;
   padding: 80px 0;
 }
 
 .la-about-mission__inner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0;
 }
 
 .la-about-mission__header {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+  padding: 0 60px;
 }
 
 .la-about-mission__logo {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
-  background: #808080;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.la-about-mission__logo-icon {
-  width: 24px;
-  height: 24px;
-  background: transparent;
-  border: 2px solid white;
-  border-radius: 4px;
-  position: relative;
-}
-
-.la-about-mission__logo-icon::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
-  background: white;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+.la-about-mission__logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .la-about-mission__title {
@@ -141,8 +125,8 @@
 .la-about-mission__list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  max-width: 800px;
+  gap: 2px;
+  padding: 0 60px;
 }
 
 .la-about-mission__item {
@@ -152,17 +136,17 @@
 }
 
 .la-about-mission__bullet {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: #000;
   border-radius: 50%;
-  margin-top: 8px;
+  align-self: center;
   flex-shrink: 0;
 }
 
 .la-about-mission__item p {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 30px;
   line-height: 1.6;
   color: #303030;
   margin: 0;
@@ -170,32 +154,33 @@
 
 /* About Description Section */
 .la-about-description {
-  background: #000;
-  color: #fff;
-  padding: 80px 0;
+  background: #e9e9e9;
+  padding: 0;
 }
 
 .la-about-description__inner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .la-about-description__content {
   background: #000;
   border-radius: 60px;
-  padding: 80px 60px;
+  padding: 60px 100px;
   text-align: center;
   max-width: 1000px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .la-about-description__text {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 35px;
   line-height: 1.8;
   color: #fff;
-  margin: 0 0 30px 0;
+  margin: 0;
 }
 
 .la-about-description__text:last-child {
@@ -203,109 +188,587 @@
 }
 
 .la-about-description__text strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .la-about-hero__content {
-    grid-template-columns: 1fr;
-    gap: 60px;
-    text-align: center;
-  }
+/* Team Section */
+.la-about-team {
+  background: #e9e9e9;
+  padding: 80px 0;
+}
 
-  .la-about-hero__description {
-    align-items: center;
-  }
+.la-about-team__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+}
 
-  .la-about-hero__cta {
-    align-self: center;
+.la-about-team__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1.2;
+  color: #000;
+  margin: 0 0 60px 0;
+  text-transform: uppercase;
+}
+
+.la-about-team__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+.la-about-team__card {
+  background: #fff;
+  border-radius: 85px;
+  padding: 40px;
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  position: relative;
+}
+
+.la-about-team__card-header {
+  position: absolute;
+  top: 25px;
+  right: 50px;
+}
+
+.la-about-team__card-icon {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.la-about-team__card-name {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.3;
+  color: #000;
+  margin: 0 0 10px 0;
+}
+
+.la-about-team__card-role {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.4;
+  color: #666;
+  margin: 0 0 20px 0;
+  width: 70%;
+}
+
+.la-about-team__card-image {
+  width: auto;
+  height: 240px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.la-about-team__card-photo {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.la-about-team__card-description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1.6;
+  color: #000;
+  margin: 0;
+}
+
+.la-about-team__conclusion {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 48px;
+  line-height: 1.6;
+  color: #000;
+  margin: 0;
+  text-align: center;
+}
+
+/* History Section */
+.la-about-history {
+  background: #e9e9e9;
+  padding: 0 0 80px 0;
+  height: auto;
+}
+.la-about-history__block {
+  background: #000;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 138px;
+}
+.la-about-history__inner {
+  padding: 100px 100px 70px 100px;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.la-about-history__logo {
+  margin: 0;
+}
+
+.la-about-history__logo-img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+}
+
+.la-about-history__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 1.2;
+  color: #fff;
+  margin: 0;
+}
+
+.la-about-history__arrow {
+  width: 3px;
+  height: 130px;
+  background: linear-gradient(to bottom, #000, #fff);
+  margin: 0 auto;
+  position: relative;
+}
+
+.la-about-history__arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.la-about-history__text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1.6;
+  color: #fff;
+  margin: 0;
+}
+
+.la-about-history__quote-container {
+  display: grid;
+  grid-template-columns: 2fr 0.5fr;
+  gap: 10px;
+  height: 230px;
+}
+
+.la-about-history__quote-bubble {
+  background: #e0e0e0;
+  color: #000;
+  border-radius: 108px 108px 0 108px;
+  padding: 30px 40px;
+  max-width: 500px;
+  text-align: center;
+  margin: 0 0 0 auto;
+  height: 90px;
+}
+
+.la-about-history__quote-photo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: start;
+}
+
+.la-about-history__quote-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.la-about-history__quote-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #000;
+  margin: 0;
+}
+.la-about-history__line {
+  width: 100%;
+  height: 2px;
+  background: #fff;
+}
+
+.la-about-history__student-quote-container {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr;
+  gap: 10px;
+  height: 200px;
+}
+
+.la-about-history__student-quote-bubble {
+  background: #e0e0e0;
+  color: #000;
+  border-radius: 108px 108px 108px 0;
+  padding: 30px 40px;
+  max-width: 500px;
+  text-align: center;
+  margin: 0 auto 0 0;
+  height: 60px;
+}
+
+.la-about-history__student-quote-photo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+}
+
+.la-about-history__student-quote-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.la-about-history__student-quote-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #000;
+  margin: 0;
+}
+
+/* What's Next Section */
+.la-about-whats-next {
+  background: #e9e9e9;
+  padding: 80px 0;
+}
+
+.la-about-whats-next__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.la-about-whats-next__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 68px;
+  line-height: 1.2;
+  color: #000;
+  text-transform: uppercase;
+  margin: 0 0 40px 0;
+}
+
+.la-about-whats-next__block-1 {
+  background: #000;
+  border-radius: 162px;
+  padding: 40px 60px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  width: 520px;
+  height: 200px;
+  margin-bottom: 5px;
+  margin-left: auto;
+}
+.la-about-whats-next__block-2 {
+  background: #000;
+  border-radius: 162px;
+  padding: 40px 60px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  width: 520px;
+  height: 200px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.la-about-whats-next__block-text {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1.6;
+  color: #fff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.la-about-whats-next__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1.6;
+  color: #000;
+  margin: 0 0 40px 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.la-about-whats-next__cta {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #000;
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+
+@media (max-width: 1024px) {
+  .la-about-hero-inner{
+    padding: 0 100px;
+  }
+  .la-about-hero__content{
+    padding: 40px 100px;
+  }
+  .la-about-team__card-header{
+    right: 25px;
+  }
+  
+  .la-about-team__card-icon{
+    width: 60px;
+    height: 60px;
+  }
+  .la-about-team__card-name{
+    font-size: 34px;
+  }
+}
+@media (max-width: 900px) {
+  .la-about-team__card-header{
+    right: 35px;
+  }
+  
+  .la-about-team__card-icon{
+    width: 40px;
+    height: 40px;
+  }
+  .la-about-team__card-name{
+    font-size: 24px;
+  }
+  .la-about-team__card-role{
+    font-size: 12px;
+  }
+  .la-about-team__card-description{
+    font-size: 12px;
+  }
+  .la-about-team__conclusion{
+    font-size: 30px;
   }
 }
 
 @media (max-width: 768px) {
-  .la-about-hero {
-    padding: 80px 0;
+  .la-about-hero{
+    background: #e9e9e9;
+    padding: 0px 0 30px 0;
   }
-
-  .la-about-hero__content {
-    padding: 0 20px;
-    gap: 40px;
+  .la-about-hero-inner{
+    padding: 40px 0 20px 0;
+    background: #000;
+    width: 100%;
   }
-
-  .la-about-hero__title-small {
-    font-size: 36px;
+  .la-about-hero__content{
+    padding: 0;
   }
-
-  .la-about-hero__title-large {
-    font-size: 48px;
+  .la-about-hero__title{
+    font-size: 20px;
+    padding: 0 30px;
   }
-
-  .la-about-hero__text {
-    font-size: 16px;
+  .la-about-hero__left{
+    background: #000;
+    padding: 0 30px 20px 30px;
   }
-
-  .la-about-mission {
-    padding: 60px 0;
+  .la-about-hero__text{
+    font-size: 11px;
   }
-
-  .la-about-mission__inner {
-    padding: 0 20px;
+  .la-about-hero__cta{
+    font-size: 11px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    height: 40px; 
+    padding: 10px 20px;
   }
-
-  .la-about-mission__title {
+  .la-about-hero__content{
+    grid-template-columns: 1fr;
+  }
+  .la-about-mission{
+    padding: 0;
+  }
+  .la-about-mission__inner{
+    padding: 0 30px;
+  }
+  .la-about-mission__header{
+    padding: 0;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .la-about-mission__title{
+    font-size: 11px;
+  }
+  .la-about-mission__logo{
+    width: 20px;
+    height: 20px;
+  }
+  .la-about-mission__list{
+    padding: 0;
+  }
+  .la-about-mission__item{
+    gap: 10px;
+  }
+  .la-about-mission__bullet{
+    width: 5px;
+    height: 5px;
+  }
+  .la-about-mission__item p{
+    font-size: 11px;
+  }
+  .la-about-description{
+    padding: 30px 0;
+  }
+  .la-about-description__inner{
+    padding: 0;
+  }
+  .la-about-description__content{
+    padding: 30px;
+    border-radius: 72px;
+  }
+  .la-about-description__text{
+    font-size: 12px;
+  }
+  .la-about-team{
+    padding: 0;
+  }
+  .la-about-team__inner{
+    padding: 0 40px;
+  }
+  .la-about-team__title{
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  .la-about-team__cards{
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+  .la-about-team__card{
+    padding: 15px;
+    border-radius: 30px;
+  }
+  .la-about-team__card-header{
+    top: 20px;
+    right: 25px;
+  }
+  .la-about-team__card-icon{
+    width: 40px;
+    height: 40px;
+  }
+  .la-about-team__card-name{
     font-size: 24px;
   }
-
-  .la-about-mission__item p {
+  .la-about-team__card-role{
+    font-size: 12px;
+  }
+  .la-about-team__card-description{
+    font-size: 12px;
+  }
+  .la-about-team__conclusion{
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .la-about-history{
+    padding: 30px 0;
+  }
+  .la-about-history__block{
+    border-radius: 90px;
+  }
+  .la-about-history__inner{
+    padding: 50px 20px 40px 20px;
+    gap: 20px;
+  }
+  .la-about-history__logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+  .la-about-history__title{
+    font-size: 32px;
+  }
+  .la-about-history__text{
     font-size: 16px;
   }
-
-  .la-about-description {
-    padding: 60px 0;
+  .la-about-history__arrow{
+    height: 70px;
   }
-
-  .la-about-description__inner {
-    padding: 0 20px;
+  .la-about-history__quote-container{
+    height: 100px;
+    gap: 5px;
   }
-
-  .la-about-description__content {
-    padding: 60px 40px;
-    border-radius: 40px;
+  .la-about-history__quote-bubble{
+    padding: 10px 20px;
+    height: 40px;
   }
-
-  .la-about-description__text {
-    font-size: 16px;
+  .la-about-history__quote-text{
+    font-size: 9px;
   }
-}
-
-@media (max-width: 480px) {
-  .la-about-hero__title-small {
-    font-size: 28px;
+  .la-about-history__quote-img{
+    width: 40px;
+    height: 40px;
   }
-
-  .la-about-hero__title-large {
+  .la-about-history__student-quote-container{
+    height: 100px;
+    gap: 5px;
+  }
+  .la-about-history__student-quote-bubble{
+    padding: 10px 20px;
+    height: 40px;
+  }
+  .la-about-history__student-quote-text{
+    font-size: 9px;
+  }
+  .la-about-history__student-quote-img{
+    width: 40px;
+    height: 40px;
+  }
+  .la-about-whats-next{
+    padding: 30px 0;
+  }
+  .la-about-whats-next__title{
     font-size: 36px;
+    margin-bottom: 20px;
   }
-
-  .la-about-hero__text {
+  .la-about-whats-next__block-1{
+    width: auto;
+    height: 140px;
+    padding: 20px 30px;
+    border-radius: 76px;
+    margin-left: 0;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .la-about-whats-next__block-2{
+    width: auto;
+    height: 140px;
+    padding: 20px 30px;
+    border-radius: 76px;
+    text-align: center;
+  }
+  .la-about-whats-next__block-text{
     font-size: 14px;
   }
-
-  .la-about-mission__title {
+  .la-about-whats-next__description{
+    font-size: 14px;
+  }
+  .la-about-whats-next__cta{
     font-size: 20px;
   }
-
-  .la-about-mission__item p {
-    font-size: 14px;
-  }
-
-  .la-about-description__content {
-    padding: 40px 20px;
-    border-radius: 20px;
-  }
-
-  .la-about-description__text {
-    font-size: 14px;
-  }
+  
 }
+
+
