@@ -1291,7 +1291,7 @@
 
   .la-flagship-course-info__stat {
     padding: 30px 15px;
-    min-height: 120px;
+    min-height: auto;
   }
 
   .la-flagship-course-info__number {
