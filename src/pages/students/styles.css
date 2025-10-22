@@ -1,165 +1,401 @@
 /* Students Page Specific Styles */
-.la-students-main {
-  background: #fff;
-  padding: 80px 0;
-  min-height: 60vh;
+
+/* Students Hero Section */
+.la-students-hero {
+  background: #000;
+  padding: 70px 0;
+  min-height: auto;
+  display: flex;
+  align-items: center;
 }
 
-.la-students-main__inner {
-  max-width: 1400px;
+.la-students-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+
+.la-students-hero__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.;
+  margin: 0 0 30px 0;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: left;
+  letter-spacing: 2px;
+}
+
+.la-students-hero__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.12;
+  color: #fff;
+  margin: 0;
+  max-width: 900px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+/* Graduates Carousel Section */
+.la-graduates-carousel {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.la-graduates-carousel__inner {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
 }
 
-.la-students-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.la-students-content__title {
+.la-graduates-carousel__title {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 48px;
   line-height: 1.2;
+  margin: 0 0 60px 0;
+  color: #000;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.la-graduates-carousel__card {
+  background: #fff;
+  border-radius: 62px;
+  min-height: 550px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  box-shadow: 0 8px 42px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  margin-bottom: 70px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.la-graduates-carousel__content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 0;
+}
+
+.la-graduates-carousel__image-container {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.la-graduates-carousel__image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+}
+
+.la-graduates-carousel__image-container:hover .la-graduates-carousel__image {
+  transform: scale(1.05);
+}
+
+.la-graduates-carousel__info {
+  padding: 60px 60px 60px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+.la-graduates-carousel__name {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.1;
+  margin: 0 0 10px 0;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+.la-graduates-carousel__handle,
+.la-graduates-carousel__location,
+.la-graduates-carousel__services {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0 0 3px 0;
+  color: #333;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.la-graduates-carousel__description{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.la-graduates-carousel__description p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.1;
+  color: #000;
+  padding: 0;
+  margin: 0;
+}
+
+
+.la-graduates-carousel__navigation {
+  display: flex;
+  justify-content: center;
+  gap: 500px;
+}
+
+.la-graduates-carousel__arrow {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1.12;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+  color: #000000;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.la-graduates-carousel__arrow:hover {
+  color: #666666;
+}
+
+.la-graduates-carousel__arrow-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.la-graduates-carousel__arrow-inner span {
+  width: 130px;
+  height: 4px;
+  background: #000000;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.la-graduates-carousel__arrow:hover .la-graduates-carousel__arrow-inner span {
+  background: #666666;
+}
+
+.la-graduates-carousel__arrow-inner span::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-right: 4px solid #000000;
+  border-top: 4px solid #000000;
+  transform: translateY(-50%) rotate(45deg);
+  transition: border-color 0.3s ease;
+}
+
+.la-graduates-carousel__arrow:hover .la-graduates-carousel__arrow-inner span::before {
+  border-right-color: #666666;
+  border-top-color: #666666;
+}
+
+.la-graduates-carousel__arrow--left .la-graduates-carousel__arrow-inner span::before {
+  border-right: none;
+  border-left: 4px solid #000000;
+  border-bottom: 4px solid #000000;
+  border-top: none;
+  left: 0;
+  right: auto;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.la-graduates-carousel__arrow:hover.la-graduates-carousel__arrow--left .la-graduates-carousel__arrow-inner span::before {
+  border-left-color: #666666;
+  border-bottom-color: #666666;
+}
+
+
+.la-students-conclusion {
+  background: #e9e9e9;
+  padding: 70px 0;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.la-students-conclusion__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+
+.la-students-conclusion__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1.;
   margin: 0 0 30px 0;
-  color: #303030;
+  color: #000000;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.la-students-conclusion__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 30px;
+  line-height: 1.12;
+  color: #000000;
+  margin: 0;
+  max-width: 900px;
+  text-align: center;
   text-transform: uppercase;
 }
 
-.la-students-content__description {
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 20px;
-  line-height: 1.6;
-  color: #666;
-  margin: 0 0 60px 0;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.la-students-content__students {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 40px;
-  margin-top: 60px;
-}
-
-.la-students-content__student {
-  background: #f8f9fa;
-  padding: 40px;
-  border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.la-students-content__student::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0,123,255,0.1) 0%, transparent 70%);
-  transform: scale(0);
-  transition: transform 0.6s ease;
-}
-
-.la-students-content__student:hover::before {
-  transform: scale(1);
-}
-
-.la-students-content__student:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-}
-
-.la-students-content__student-placeholder {
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  margin: 0 auto 20px auto;
-  position: relative;
-  overflow: hidden;
-}
-
-.la-students-content__student-placeholder::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-}
-
-.la-students-content__student h3 {
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  margin: 0 0 15px 0;
-  color: #303030;
-  position: relative;
-  z-index: 1;
-}
-
-.la-students-content__student p {
-  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #666;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .la-students-main {
-    padding: 60px 0;
-  }
-
-  .la-students-main__inner {
-    padding: 0 20px;
-  }
-
-  .la-students-content__title {
-    font-size: 36px;
-  }
-
-  .la-students-content__description {
-    font-size: 18px;
-  }
-
-  .la-students-content__students {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    margin-top: 40px;
-  }
-
-  .la-students-content__student {
-    padding: 30px;
-  }
-
-  .la-students-content__student h3 {
-    font-size: 18px;
+@media (max-width: 1024px) {
+  .la-graduates-carousel__image {
+    width: 300px;
+    height: 300px;
   }
 }
-
-@media (max-width: 480px) {
-  .la-students-content__title {
-    font-size: 28px;
+@media (max-width: 992px) {
+  .la-students-hero{
+    padding: 40px 0;
   }
-
-  .la-students-content__description {
+  .la-students-hero__inner {
+    padding: 0 20px;
+  }
+  .la-students-hero__title {
+    font-size: 52px;
+    margin-bottom: 20px;
+  }
+  .la-students-hero__description {
+    font-size: 22px;
+  }
+  .la-students-conclusion{
+    padding: 40px 0;
+  }
+  .la-students-conclusion__inner {
+    padding: 0 50px;
+  }
+  .la-students-conclusion__title {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  .la-students-conclusion__description {
+    font-size: 20px;
+  }
+  .la-graduates-carousel__navigation{
+    gap: 50px;
+  }
+}
+@media (max-width: 768px) {
+  .la-students-hero{
+    padding: 40px 0;
+  }
+  .la-students-hero__inner {
+    padding: 0 20px;
+  }
+  .la-students-hero__title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  .la-students-hero__description {
+    font-size: 12px;
+  }
+  .la-graduates-carousel{
+    padding: 40px 0;
+  }
+  .la-graduates-carousel__inner {
+    padding: 0 100px;
+  }
+  .la-graduates-carousel__title {
+    font-size: 16px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .la-graduates-carousel__card {
+    min-height: 350px;
+    border-radius: 36px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+  }
+  .la-graduates-carousel__content {
+    grid-template-columns: 1fr;
+  }
+  .la-graduates-carousel__image-container {
+    padding: 30px 10px 10px 10px;
+  }
+  .la-graduates-carousel__image {
+    width: 200px;
+    height: 200px;
+  }
+  .la-graduates-carousel__info {
+    padding: 20px;
+  }
+  .la-graduates-carousel__name {
+    font-size: 28px;
+    text-align: center;
+  }
+  .la-graduates-carousel__handle,
+  .la-graduates-carousel__location,
+  .la-graduates-carousel__services {
+    font-size: 12px;
+    text-align: center;
+  }
+  .la-graduates-carousel__description p {
+    font-size: 14px;
+  }
+  .la-graduates-carousel__navigation {
+    gap: 20px;
+  }
+  .la-graduates-carousel__arrow {
     font-size: 16px;
   }
-
-  .la-students-content__student {
-    padding: 20px;
+  .la-graduates-carousel__arrow-inner {
+    width: 100px;
+  }
+  .la-graduates-carousel__arrow-inner span {
+    width: 100px;
+  }
+  .la-graduates-carousel__arrow-inner span::before {
+    width: 8px;
+    height: 8px;
+  }
+  .la-students-conclusion{
+    padding: 40px 0;
+  }
+  .la-students-conclusion__inner {
+    padding: 0 20px;
+  }
+  .la-students-conclusion__title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .la-students-conclusion__description {
+    font-size: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .la-graduates-carousel__inner {
+    padding: 0 20px;
   }
 }
