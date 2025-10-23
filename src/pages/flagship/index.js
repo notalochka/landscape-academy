@@ -4,6 +4,7 @@ import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import CoursePurchaseModal from "../../components/CoursePurchaseModal/CoursePurchaseModal";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO, courseSchema } from "../../config/seo";
 
@@ -12,6 +13,7 @@ const FlagshipPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   
   // Touch events for swipe functionality
   const [touchStart, setTouchStart] = useState(null);
@@ -34,6 +36,13 @@ const FlagshipPage = () => {
     description: "Комплексна програма навчання ландшафтному дизайну з професійними знаннями, практичними навичками та сертифікацією",
     price: "45000"
   });
+
+  const courseData = {
+    id: 'flagship-course',
+    title: 'LANDSCAPER 5.0 - ПЕРЕТВОРИ ХОБІ У БІЗНЕС',
+    price: '13 900 ГРН',
+    oldPrice: '15 000 ГРН'
+  };
 
   const studentImages = [
     "/students/inst_photo1.png",
@@ -123,12 +132,15 @@ const FlagshipPage = () => {
               </p>
             </div>
 
-            <a href="#la-flagship-order" className="la-flagship-content__button">
+            <button 
+              className="la-flagship-content__button"
+              onClick={() => setIsPurchaseModalOpen(true)}
+            >
               <span>ЗАПИСАТИСЯ НА КУРС</span>
               <div className="la-flagship-content__button-arrow">
                 <span></span>
               </div>
-            </a>
+            </button>
           </section>
         </div>
       </main>
@@ -271,7 +283,10 @@ const FlagshipPage = () => {
               <span className="la-flagship-order__new-price">13 900 ГРН</span>
             </div>
             
-            <button className="la-flagship-order__button">
+            <button 
+              className="la-flagship-order__button"
+              onClick={() => setIsPurchaseModalOpen(true)}
+            >
               ЗАМОВИТИ
             </button>
           </div>
@@ -432,8 +447,8 @@ const FlagshipPage = () => {
           <div className="la-flagship-contact-questions__content">
             <h2 className="la-flagship-contact-questions__text">ВІДПОВІМО ВАМ НА ВСІ ПИТАННЯ</h2>
             <div className="la-flagship-contact-questions__buttons">
-              <button className="la-flagship-contact-questions__button">ЗАТЕЛЕФОНУЙТЕ НАМ</button>
-              <button className="la-flagship-contact-questions__button">НАПИСАТИ В TELEGRAM</button>
+              <a href="tel:+380956301304" className="la-flagship-contact-questions__button">ЗАТЕЛЕФОНУЙТЕ НАМ</a>
+              <a href="https://t.me/komarkaterinamarketing" target="_blank" rel="noopener noreferrer" className="la-flagship-contact-questions__button">НАПИСАТИ В TELEGRAM</a>
             </div>
           </div>
         </div>
@@ -777,6 +792,13 @@ const FlagshipPage = () => {
 
       <Contact />
       <Footer />
+
+      {/* Purchase Modal */}
+      <CoursePurchaseModal
+        isOpen={isPurchaseModalOpen}
+        onClose={() => setIsPurchaseModalOpen(false)}
+        courseData={courseData}
+      />
     </>
   );
 };

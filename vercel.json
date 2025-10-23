@@ -1,5 +1,26 @@
 {
-  "buildCommand": "next build",
-  "framework": "nextjs"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "src/pages/api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }
-

@@ -636,6 +636,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .la-course-1-author__button:hover {

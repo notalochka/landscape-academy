@@ -5,7 +5,8 @@ const EventRegistrationModal = ({ event, isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: ''
+    email: '',
+    telegramUsername: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -50,6 +51,7 @@ const EventRegistrationModal = ({ event, isOpen, onClose }) => {
             userName: formData.name,
             userPhone: formData.phone,
             userEmail: formData.email,
+            telegramUsername: formData.telegramUsername,
             telegramLink: event.telegramLink
           })
         });
@@ -90,7 +92,8 @@ const EventRegistrationModal = ({ event, isOpen, onClose }) => {
             price: event.price,
             userName: formData.name,
             userPhone: formData.phone,
-            userEmail: formData.email
+            userEmail: formData.email,
+            telegramUsername: formData.telegramUsername
           })
         });
 
@@ -190,6 +193,18 @@ const EventRegistrationModal = ({ event, isOpen, onClose }) => {
               onChange={handleChange}
               className={styles.input}
               placeholder="your@email.com"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Telegram username (опціонально)</label>
+            <input
+              type="text"
+              name="telegramUsername"
+              value={formData.telegramUsername}
+              onChange={handleChange}
+              className={styles.input}
+              placeholder="@username"
             />
           </div>
 

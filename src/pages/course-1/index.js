@@ -5,11 +5,13 @@ import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import CoursePurchaseModal from "../../components/CoursePurchaseModal/CoursePurchaseModal";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO } from "../../config/seo";
 
 const Course1Page = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   
   const [targetRef, targetVisible] = useScrollAnimation({ threshold: 0.1 });
   const [authorRef, authorVisible] = useScrollAnimation({ threshold: 0.1 });
@@ -23,6 +25,13 @@ const Course1Page = () => {
     keywords: "ШІ рендер, телефон, ландшафтний дизайн, курс, LANDSCAPER Academy",
     ogImage: "/images/og-course-1.jpg",
     canonical: "/course-1"
+  };
+
+  const courseData = {
+    id: 'course-1',
+    title: 'ШІ РЕНДЕР НА ТЕЛЕФОНІ',
+    price: '1000 ГРН',
+    oldPrice: '2500 ГРН'
   };
 
   return (
@@ -69,7 +78,10 @@ const Course1Page = () => {
                   <p className="la-course-1__info-item">ТРИВАЛІСТЬ</p>
                   <p className="la-course-1__info-item-date">20.09.2025</p>
                 </div>
-                <button className="la-course-1__button">
+                <button 
+                  className="la-course-1__button"
+                  onClick={() => setIsPurchaseModalOpen(true)}
+                >
                   ЗАПИСАТИСЯ НА КУРС
                 </button>
               </div>
@@ -227,8 +239,8 @@ const Course1Page = () => {
               </div>
               
               <div className="la-course-1-author__buttons">
-                <button className="la-course-1-author__button">ЗВ&apos;ЯЗАТИСЯ</button>
-                <button className="la-course-1-author__button">ПРО КУРС</button>
+                <a href="#contact" className="la-course-1-author__button">ЗВ&apos;ЯЗАТИСЯ</a>
+                <a href="#la-course-1-course-program" className="la-course-1-author__button">ПРО КУРС</a>
               </div>
             </div>
           </div>
@@ -285,8 +297,8 @@ const Course1Page = () => {
           <div className="la-course-1-contact-questions__content">
             <h2 className="la-course-1-contact-questions__text">ВІДПОВІМО ВАМ НА ВСІ ПИТАННЯ</h2>
             <div className="la-course-1-contact-questions__buttons">
-              <button className="la-course-1-contact-questions__button">ЗАТЕЛЕФОНУЙТЕ НАМ</button>
-              <button className="la-course-1-contact-questions__button">НАПИСАТИ В TELEGRAM</button>
+              <a href="tel:+380956301304" className="la-course-1-contact-questions__button">ЗАТЕЛЕФОНУЙТЕ НАМ</a>
+              <a href="https://t.me/komarkaterinamarketing" target="_blank" rel="noopener noreferrer" className="la-course-1-contact-questions__button">НАПИСАТИ В TELEGRAM</a>
             </div>
           </div>
         </div>
@@ -450,7 +462,10 @@ const Course1Page = () => {
                <span className="la-course-1-order__new-price">1000 ГРН</span>
              </div>
              
-             <button className="la-course-1-order__button">
+             <button 
+               className="la-course-1-order__button"
+               onClick={() => setIsPurchaseModalOpen(true)}
+             >
                ЗАМОВИТИ
              </button>
            </div>
@@ -464,6 +479,13 @@ const Course1Page = () => {
       
       {/* Footer */}
       <Footer />
+
+      {/* Purchase Modal */}
+      <CoursePurchaseModal
+        isOpen={isPurchaseModalOpen}
+        onClose={() => setIsPurchaseModalOpen(false)}
+        courseData={courseData}
+      />
     </>
   );
 };

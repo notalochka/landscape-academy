@@ -5,16 +5,20 @@ import Link from 'next/link';
 
 const PaymentSuccess = () => {
   const router = useRouter();
-  const { orderRef, eventId } = router.query;
+  const { orderRef, eventId, courseId } = router.query;
   const [event, setEvent] = useState(null);
+  const [course, setCourse] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (eventId && orderRef) {
       fetchEvent();
       sendNotification();
+    } else if (courseId && orderRef) {
+      fetchCourse();
+      sendNotification();
     }
-  }, [eventId, orderRef]);
+  }, [eventId, courseId, orderRef]);
 
   const fetchEvent = async () => {
     try {
@@ -26,6 +30,23 @@ const PaymentSuccess = () => {
       }
     } catch (error) {
       console.error('Помилка завантаження події:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCourse = async () => {
+    try {
+      // Отримуємо дані курсу з глобального об'єкта
+      const courseData = global.coursePurchases?.[orderRef];
+      if (courseData) {
+        setCourse({
+          title: courseData.courseTitle,
+          id: courseData.courseId
+        });
+      }
+    } catch (error) {
+      console.error('Помилка завантаження курсу:', error);
     } finally {
       setIsLoading(false);
     }
@@ -110,7 +131,7 @@ const PaymentSuccess = () => {
                 margin: '0 0 16px 0',
                 lineHeight: '1.4'
               }}>
-                Дякуємо за реєстрацію на подію
+                {event ? 'Дякуємо за реєстрацію на подію' : 'Дякуємо за покупку курсу'}
               </p>
               
               <p style={{
@@ -120,10 +141,10 @@ const PaymentSuccess = () => {
                 color: '#000',
                 margin: '0 0 48px 0'
               }}>
-                {event?.title}
+                {event?.title || course?.title}
               </p>
 
-              {hasTelegramLink ? (
+              {event && hasTelegramLink ? (
                 <>
                   <p style={{
                     fontFamily: '"Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
@@ -171,7 +192,10 @@ const PaymentSuccess = () => {
                   borderRadius: '20px',
                   lineHeight: '1.4'
                 }}>
-                  Наші менеджери зв&apos;яжуться з вами найближчим часом для уточнення деталей
+                  {course ? 
+                    'Наші менеджери зв\'яжуться з вами найближчим часом для надання доступу до курсу та додавання до Telegram групи' :
+                    'Наші менеджери зв\'яжуться з вами найближчим часом для уточнення деталей'
+                  }
                 </p>
               )}
 

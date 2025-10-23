@@ -520,10 +520,862 @@
   background: #5a6fd8;
 }
 
+/* Analytics Styles */
+.admin-dashboard__analytics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.admin-analytics__section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-analytics__section h3 {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303030;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 8px;
+}
+
+.admin-analytics__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-analytics__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  transition: background 0.3s ease;
+}
+
+.admin-analytics__item:hover {
+  background: #e9ecef;
+}
+
+.admin-analytics__name {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #303030;
+  flex: 1;
+}
+
+.admin-analytics__count {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* User Tables Styles */
+.admin-dashboard__tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.admin-table {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.admin-table__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.admin-table__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303030;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-table__count {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #667eea;
+  background: #e3f2fd;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.admin-table__content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.admin-table__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.3s ease;
+}
+
+.admin-table__row:hover {
+  background: #f8f9fa;
+}
+
+.admin-table__row:last-child {
+  border-bottom: none;
+}
+
+.admin-table__cell {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #303030;
+}
+
+.admin-table__cell--name {
+  font-weight: 600;
+}
+
+.admin-table__cell--contact {
+  color: #666;
+  font-size: 13px;
+}
+
+.admin-table__cell--status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-table__status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.admin-table__status--paid {
+  background: #d4edda;
+  color: #155724;
+}
+
+.admin-table__status--pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.admin-table__status--registered {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.admin-table__date {
+  font-size: 12px;
+  color: #999;
+}
+
+.admin-table__empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Chart Styles */
+.admin-chart {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.admin-chart__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303030;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.admin-chart__content {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Analytics Dashboard Styles */
+.admin-analytics-dashboard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.admin-analytics__message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-analytics__message--warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+}
+
+.admin-analytics__message--info {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}
+
+.admin-analytics__message-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.admin-analytics__message-text {
+  flex: 1;
+}
+
+.admin-analytics__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.admin-analytics__metric {
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.admin-analytics__metric-value {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #303030;
+  margin-bottom: 8px;
+}
+
+.admin-analytics__metric-label {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.admin-analytics__section {
+  margin-bottom: 32px;
+}
+
+.admin-analytics__section h3 {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303030;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 8px;
+}
+
+.admin-analytics__pages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-analytics__page-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  transition: background 0.3s ease;
+}
+
+.admin-analytics__page-item:hover {
+  background: #e9ecef;
+}
+
+.admin-analytics__page-info {
+  flex: 1;
+}
+
+.admin-analytics__page-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303030;
+  margin-bottom: 4px;
+}
+
+.admin-analytics__page-url {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #666;
+}
+
+.admin-analytics__page-views {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  background: #e3f2fd;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.admin-analytics__funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-analytics__funnel-step {
+  position: relative;
+}
+
+.admin-analytics__funnel-step-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-analytics__funnel-step-name {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303030;
+}
+
+.admin-analytics__funnel-step-users {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #666;
+}
+
+.admin-analytics__funnel-step-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.admin-analytics__funnel-step-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.admin-analytics__funnel-arrow {
+  text-align: center;
+  font-size: 20px;
+  color: #667eea;
+  margin: 8px 0;
+}
+
+.admin-analytics__links {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.admin-analytics__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #667eea;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+
+.admin-analytics__link:hover {
+  background: #5a6fd8;
+}
+
+.admin-analytics-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-analytics-loading__spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.admin-analytics-loading p {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+/* Enhanced Dashboard Styles */
+.admin-dashboard__header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.admin-dashboard__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-dashboard__logo-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.admin-dashboard__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.admin-dashboard__breadcrumb-item {
+  color: #667eea;
+}
+
+.admin-dashboard__breadcrumb-separator {
+  color: #ccc;
+}
+
+.admin-dashboard__breadcrumb-current {
+  color: #333;
+  font-weight: 600;
+}
+
+.admin-dashboard__header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-dashboard__user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 25px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.admin-dashboard__user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #667eea;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+}
+
+.admin-dashboard__user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard__user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+}
+
+.admin-dashboard__user-role {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.2;
+}
+
+.admin-dashboard__logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ff4757;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-dashboard__logout:hover {
+  background: #ff3742;
+}
+
+.admin-dashboard__logout-icon {
+  font-size: 16px;
+}
+
+/* Enhanced Stat Cards */
+.admin-stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.admin-stat-card--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.admin-stat-card--success {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+  color: #fff;
+}
+
+.admin-stat-card--info {
+  background: linear-gradient(135deg, #3498db 0%, #74b9ff 100%);
+  color: #fff;
+}
+
+.admin-stat-card--warning {
+  background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+  color: #fff;
+}
+
+.admin-stat-card__icon {
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.admin-stat-card__content {
+  flex: 1;
+}
+
+.admin-stat-card__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+.admin-stat-card__value {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.admin-stat-card__subtitle {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 12px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Enhanced Section Headers */
+.admin-dashboard__section-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.admin-dashboard__section-title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-dashboard__section-subtitle {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Enhanced Management Grid */
+.admin-dashboard__management-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.admin-section-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-section-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.admin-section-card--events {
+  border-left: 4px solid #667eea;
+}
+
+.admin-section-card--blog {
+  border-left: 4px solid #56ab2f;
+}
+
+.admin-section-card--analytics {
+  border-left: 4px solid #f39c12;
+}
+
+.admin-section-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.admin-section-card__icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.admin-section-card__badge {
+  background: #667eea;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-section-card__content {
+  padding: 0 24px 20px;
+  flex: 1;
+}
+
+.admin-section-card__title {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-section-card__description {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.admin-section-card__stats {
+  display: flex;
+  gap: 16px;
+}
+
+.admin-section-card__stat {
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.admin-section-card__arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: #667eea;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.admin-section-card:hover .admin-section-card__arrow {
+  opacity: 1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .admin-login__container {
     padding: 30px 20px;
+  }
+
+  .admin-dashboard__header-inner {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .admin-dashboard__header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-dashboard__header-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-dashboard__user-info {
+    padding: 6px 12px;
+  }
+
+  .admin-dashboard__management-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-section-card {
+    padding: 0;
+  }
+
+  .admin-section-card__header {
+    padding: 16px 20px 12px;
+  }
+
+  .admin-section-card__content {
+    padding: 0 20px 16px;
+  }
+
+  .admin-stat-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .admin-stat-card__icon {
+    font-size: 36px;
+  }
+
+  .admin-stat-card__value {
+    font-size: 28px;
+  }
+
+  .admin-dashboard__section-title {
+    font-size: 24px;
+  }
+
+  .admin-dashboard__section-subtitle {
+    font-size: 14px;
   }
 
   .admin-dashboard__header-inner,
@@ -537,6 +1389,16 @@
   .admin-dashboard__sections,
   .admin-form__grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard__analytics,
+  .admin-dashboard__tables {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table__row {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .admin-management__content,

@@ -3,7 +3,7 @@
 export const siteMetadata = {
   title: "Landscape Academy - Школа ландшафтного дизайну в Україні",
   description: "Навчайтесь ландшафтному дизайну українською мовою. Професійні курси, практичні заняття, сертифікація. Формуємо нове покоління ландшафтних дизайнерів.",
-  siteUrl: "https://landscape-academy.com.ua",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app",
   siteName: "Landscape Academy",
   locale: "uk_UA",
   type: "website",
@@ -88,8 +88,8 @@ export const organizationSchema = {
   "@type": "EducationalOrganization",
   "name": "Landscape Academy",
   "alternateName": "LANDSCAPER Academy",
-  "url": "https://landscape-academy.com.ua",
-  "logo": "https://landscape-academy.com.ua/logo_academy.png",
+  "url": process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app",
+  "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app"}/logo_academy.png`,
   "description": "Освітня платформа для навчання ландшафтному дизайну в Україні",
   "address": {
     "@type": "PostalAddress",
@@ -113,10 +113,10 @@ export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Landscape Academy",
-  "url": "https://landscape-academy.com.ua",
+  "url": process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://landscape-academy.com.ua/blog?search={search_term_string}",
+    "target": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app"}/blog?search={search_term_string}`,
     "query-input": "required name=search_term_string"
   }
 };
@@ -129,7 +129,7 @@ export const courseSchema = (courseData) => ({
   "provider": {
     "@type": "Organization",
     "name": "Landscape Academy",
-    "sameAs": "https://landscape-academy.com.ua"
+    "sameAs": process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app"
   },
   "offers": courseData.price ? {
     "@type": "Offer",
@@ -154,7 +154,7 @@ export const blogPostSchema = (postData) => ({
     "name": "Landscape Academy",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://landscape-academy.com.ua/logo_academy.png"
+      "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscape-academy.vercel.app"}/logo_academy.png`
     }
   },
   "mainEntityOfPage": {

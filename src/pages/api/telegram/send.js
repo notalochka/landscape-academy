@@ -22,7 +22,22 @@ export default async function handler(req, res) {
   let message = '';
 
   // Форматування повідомлення залежно від типу
-  if (type === 'event_registration_paid') {
+  if (type === 'course_purchase_paid') {
+    message = `
+🎓 *ПОКУПКА КУРСУ - ОПЛАЧЕНО*
+
+📚 *Курс:* ${data.courseTitle}
+👤 *Ім'я:* ${data.userName}
+📱 *Телефон:* ${data.userPhone}
+${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
+📱 *Telegram:* @${data.telegramUsername}
+💵 *Сума:* ${data.price}
+✅ *Статус:* ОПЛАЧЕНО
+🔑 *ID транзакції:* ${data.transactionId || 'N/A'}
+
+📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
+`;
+  } else if (type === 'event_registration_paid') {
     message = `
 💰 *ПЛАТНА РЕЄСТРАЦІЯ НА ПОДІЮ*
 
@@ -30,6 +45,7 @@ export default async function handler(req, res) {
 👤 *Ім'я:* ${data.userName}
 📱 *Телефон:* ${data.userPhone}
 ${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
+${data.telegramUsername ? `📱 *Telegram:* ${data.telegramUsername}` : ''}
 💵 *Сума:* ${data.price}
 ✅ *Статус:* ОПЛАЧЕНО
 🔑 *ID транзакції:* ${data.transactionId || 'N/A'}
@@ -44,6 +60,7 @@ ${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
 👤 *Ім'я:* ${data.userName}
 📱 *Телефон:* ${data.userPhone}
 ${data.userEmail ? `📧 *Email:* ${data.userEmail}` : ''}
+${data.telegramUsername ? `📱 *Telegram:* ${data.telegramUsername}` : ''}
 ✅ *Статус:* ЗАРЕЄСТРОВАНО
 
 📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}

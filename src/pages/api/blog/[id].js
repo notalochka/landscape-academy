@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import db from '../../../lib/database';
+import { defaultBlogs } from '../../../data/defaultData';
 
 // Збільшуємо ліміт для великих зображень
 export const config = {
@@ -8,30 +8,6 @@ export const config = {
       sizeLimit: '10mb',
     },
   },
-};
-
-// Шлях до JSON файлу
-const blogsFilePath = path.join(process.cwd(), 'data', 'blogs.json');
-
-// Функції для роботи з файлом
-const readBlogs = () => {
-  try {
-    const fileContents = fs.readFileSync(blogsFilePath, 'utf8');
-    return JSON.parse(fileContents);
-  } catch (error) {
-    console.error('Помилка читання файлу блогів:', error);
-    return [];
-  }
-};
-
-const writeBlogs = (blogs) => {
-  try {
-    fs.writeFileSync(blogsFilePath, JSON.stringify(blogs, null, 2), 'utf8');
-    return true;
-  } catch (error) {
-    console.error('Помилка запису файлу блогів:', error);
-    return false;
-  }
 };
 
 // Функція для підрахунку часу читання
@@ -47,61 +23,111 @@ export default function handler(req, res) {
   const { id } = req.query;
   const blogId = parseInt(id);
 
-  const blogs = readBlogs();
-
   switch (method) {
     case 'GET':
-      const blog = blogs.find(b => b.id === blogId);
-      
-      if (!blog) {
-        return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+      try {
+        // Check if we're in production (Vercel) and use default data
+        if (process.env.NODE_ENV === 'production' && !db) {
+          const blog = defaultBlogs.find(b => b.id === blogId);
+          
+          if (!blog) {
+            return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+          }
+          
+          return res.status(200).json({ success: true, data: blog });
+        }
+        
+        const blog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
+        
+        if (!blog) {
+          return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+        }
+        
+        // Додаємо час читання
+        const blogWithReadTime = {
+          ...blog,
+          readTime: calculateReadTime(blog.content || ''),
+          isPublished: blog.published === 1,
+          createdAt: blog.created_at
+        };
+        
+        res.status(200).json({ success: true, data: blogWithReadTime });
+      } catch (error) {
+        console.error('Database error:', error);
+        // Fallback to default data
+        const blog = defaultBlogs.find(b => b.id === blogId);
+        
+        if (!blog) {
+          return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+        }
+        
+        res.status(200).json({ success: true, data: blog });
       }
-      
-      res.status(200).json({ success: true, data: blog });
       break;
 
     case 'PUT':
-      const blogIndex = blogs.findIndex(b => b.id === blogId);
-      
-      if (blogIndex === -1) {
-        return res.status(404).json({ success: false, message: 'Блог не знайдено' });
-      }
+      try {
+        // Перевіряємо чи існує блог
+        const existingBlog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
+        
+        if (!existingBlog) {
+          return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+        }
 
-      // Перерахувати час читання якщо контент змінився
-      const readTime = req.body.content 
-        ? calculateReadTime(req.body.content)
-        : blogs[blogIndex].readTime;
-      
-      const updatedBlog = {
-        ...blogs[blogIndex],
-        ...req.body,
-        readTime,
-        id: blogId,
-        updatedAt: new Date().toISOString()
-      };
-      
-      blogs[blogIndex] = updatedBlog;
-      
-      if (writeBlogs(blogs)) {
-        res.status(200).json({ success: true, data: updatedBlog });
-      } else {
+        // Перерахувати час читання якщо контент змінився
+        const readTime = req.body.content 
+          ? calculateReadTime(req.body.content)
+          : calculateReadTime(existingBlog.content || '');
+        
+        const updateBlog = db.prepare(`
+          UPDATE blogs 
+          SET title = ?, content = ?, excerpt = ?, author = ?, 
+              featured_image = ?, slug = ?, published = ?, updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
+        `);
+        
+        updateBlog.run(
+          req.body.title || existingBlog.title,
+          req.body.content || existingBlog.content,
+          req.body.excerpt || existingBlog.excerpt,
+          req.body.author || existingBlog.author,
+          req.body.featured_image || existingBlog.featured_image,
+          req.body.slug || existingBlog.slug,
+          req.body.isPublished !== undefined ? (req.body.isPublished ? 1 : 0) : existingBlog.published,
+          blogId
+        );
+        
+        // Отримуємо оновлений блог
+        const updatedBlog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
+        const blogWithReadTime = {
+          ...updatedBlog,
+          readTime,
+          isPublished: updatedBlog.published === 1,
+          createdAt: updatedBlog.created_at
+        };
+        
+        res.status(200).json({ success: true, data: blogWithReadTime });
+      } catch (error) {
+        console.error('Database error:', error);
         res.status(500).json({ success: false, message: 'Помилка оновлення блогу' });
       }
       break;
 
     case 'DELETE':
-      const deleteIndex = blogs.findIndex(b => b.id === blogId);
-      
-      if (deleteIndex === -1) {
-        return res.status(404).json({ success: false, message: 'Блог не знайдено' });
-      }
-      
-      const deletedBlog = blogs[deleteIndex];
-      blogs.splice(deleteIndex, 1);
-      
-      if (writeBlogs(blogs)) {
-        res.status(200).json({ success: true, data: deletedBlog });
-      } else {
+      try {
+        // Перевіряємо чи існує блог
+        const existingBlog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
+        
+        if (!existingBlog) {
+          return res.status(404).json({ success: false, message: 'Блог не знайдено' });
+        }
+        
+        const deleteBlog = db.prepare('DELETE FROM blogs WHERE id = ?');
+        deleteBlog.run(blogId);
+        
+        res.status(200).json({ success: true, data: existingBlog });
+      } catch (error) {
+        console.error('Database error:', error);
         res.status(500).json({ success: false, message: 'Помилка видалення блогу' });
       }
       break;

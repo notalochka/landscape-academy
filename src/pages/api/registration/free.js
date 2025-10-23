@@ -1,11 +1,12 @@
 // API для безкоштовної реєстрації на події
+import db from '../../../lib/database';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { eventId, eventTitle, userName, userPhone, userEmail, telegramLink } = req.body;
+  const { eventId, eventTitle, userName, userPhone, userEmail, telegramUsername, telegramLink } = req.body;
 
   // Створюємо запис реєстрації
   const registrationId = `FREE_${eventId}_${Date.now()}`;
@@ -17,12 +18,33 @@ export default async function handler(req, res) {
     userName,
     userPhone,
     userEmail,
+    telegramUsername,
     type: 'free',
     status: 'registered',
     createdAt: new Date().toISOString()
   };
 
-  // Зберігаємо реєстрацію
+  // Зберігаємо реєстрацію в базу даних
+  try {
+    const insertRegistration = db.prepare(`
+      INSERT INTO event_registrations (
+        event_id, user_name, user_phone, user_email, telegram_username, status
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    
+    insertRegistration.run(
+      eventId,
+      userName,
+      userPhone,
+      userEmail || null,
+      telegramUsername || null,
+      'registered'
+    );
+  } catch (error) {
+    console.error('Database error:', error);
+  }
+
+  // Зберігаємо реєстрацію (для зворотної сумісності)
   if (!global.registrations) {
     global.registrations = {};
   }

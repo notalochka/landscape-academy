@@ -45,6 +45,7 @@ export default function EventsCalendar() {
         const result = await response.json();
         
         if (result.success) {
+          console.log('Завантажені події:', result.data);
           setEvents(result.data);
         }
       } catch (error) {
@@ -65,6 +66,8 @@ export default function EventsCalendar() {
       .map((e) => ({ ...e, start: toDateOnly(e.startDate) }))
       .filter((e) => e.start >= today)
       .sort((a, b) => a.start - b.start)[0];
+    
+    console.log('Найближча подія:', upcoming);
     return upcoming || events[0];
   }, [today, events]);
 
@@ -107,6 +110,12 @@ export default function EventsCalendar() {
   }, [viewMonth, viewYear, events]);
 
   const selectedEvent = events.find((e) => e.id === selectedEventId) || defaultEvent;
+  
+  // Логування для діагностики
+  useEffect(() => {
+    console.log('Вибрана подія ID:', selectedEventId);
+    console.log('Вибрана подія:', selectedEvent);
+  }, [selectedEventId, selectedEvent]);
 
   const goPrev = () => {
     if (viewMonth === 0) {
@@ -163,7 +172,7 @@ export default function EventsCalendar() {
           {selectedEvent ? (
             <>
               <div className={styles.card}>
-                {selectedEvent.image && (
+                {selectedEvent.image && selectedEvent.image !== null && (
                   <div className={styles.image}>
                     <Image
                       src={selectedEvent.image}
@@ -243,7 +252,10 @@ export default function EventsCalendar() {
                     isToday ? styles.today : "",
                   ].join(" ")}
                   onClick={() => {
-                    if (hasEvents) setSelectedEventId(cell.events[0].id);
+                    if (hasEvents) {
+                      console.log('Клік по дню з подіями:', cell.events);
+                      setSelectedEventId(cell.events[0].id);
+                    }
                   }}
                 >
                   <span>{cell.day}</span>

@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import db from '../../../lib/database';
 
 // Збільшуємо ліміт для великих зображень
 export const config = {
@@ -10,84 +9,101 @@ export const config = {
   },
 };
 
-// Шлях до JSON файлу
-const eventsFilePath = path.join(process.cwd(), 'data', 'events.json');
-
-// Функції для роботи з файлом
-const readEvents = () => {
-  try {
-    const fileContents = fs.readFileSync(eventsFilePath, 'utf8');
-    return JSON.parse(fileContents);
-  } catch (error) {
-    console.error('Помилка читання файлу подій:', error);
-    return [];
-  }
-};
-
-const writeEvents = (events) => {
-  try {
-    fs.writeFileSync(eventsFilePath, JSON.stringify(events, null, 2), 'utf8');
-    return true;
-  } catch (error) {
-    console.error('Помилка запису файлу подій:', error);
-    return false;
-  }
-};
-
 export default function handler(req, res) {
   const { method } = req;
   const { id } = req.query;
   const eventId = parseInt(id);
 
-  const events = readEvents();
-
   switch (method) {
     case 'GET':
-      const event = events.find(e => e.id === eventId);
-      
-      if (!event) {
-        return res.status(404).json({ success: false, message: 'Подію не знайдено' });
+      try {
+        const event = db.prepare('SELECT * FROM events WHERE id = ?').get(eventId);
+        
+        if (!event) {
+          return res.status(404).json({ success: false, message: 'Подію не знайдено' });
+        }
+        
+        // Форматуємо подію для зворотної сумісності
+        const formattedEvent = {
+          ...event,
+          isActive: event.is_active === 1,
+          startDate: event.start_date || event.date,
+          endDate: event.end_date || event.date,
+          createdAt: event.created_at,
+          eventType: event.location && event.location !== 'Онлайн' ? 'offline' : 'online'
+        };
+        
+        res.status(200).json({ success: true, data: formattedEvent });
+      } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ success: false, message: 'Помилка отримання події' });
       }
-      
-      res.status(200).json({ success: true, data: event });
       break;
 
     case 'PUT':
-      const eventIndex = events.findIndex(e => e.id === eventId);
-      
-      if (eventIndex === -1) {
-        return res.status(404).json({ success: false, message: 'Подію не знайдено' });
-      }
-      
-      const updatedEvent = {
-        ...events[eventIndex],
-        ...req.body,
-        id: eventId,
-        updatedAt: new Date().toISOString()
-      };
-      
-      events[eventIndex] = updatedEvent;
-      
-      if (writeEvents(events)) {
-        res.status(200).json({ success: true, data: updatedEvent });
-      } else {
+      try {
+        // Перевіряємо чи існує подія
+        const existingEvent = db.prepare('SELECT * FROM events WHERE id = ?').get(eventId);
+        
+        if (!existingEvent) {
+          return res.status(404).json({ success: false, message: 'Подію не знайдено' });
+        }
+        
+        const updateEvent = db.prepare(`
+          UPDATE events 
+          SET title = ?, description = ?, start_date = ?, end_date = ?, 
+              time = ?, location = ?, price = ?, is_active = ?, 
+              telegram_link = ?, image = ?, updated_at = CURRENT_TIMESTAMP
+          WHERE id = ?
+        `);
+        
+        updateEvent.run(
+          req.body.title || existingEvent.title,
+          req.body.description || existingEvent.description,
+          req.body.startDate || existingEvent.start_date,
+          req.body.endDate || existingEvent.end_date,
+          req.body.time || existingEvent.time,
+          req.body.location || existingEvent.location,
+          req.body.price || existingEvent.price,
+          req.body.isActive !== undefined ? (req.body.isActive ? 1 : 0) : existingEvent.is_active,
+          req.body.telegramLink || existingEvent.telegram_link,
+          req.body.image || existingEvent.image,
+          eventId
+        );
+        
+        // Отримуємо оновлену подію
+        const updatedEvent = db.prepare('SELECT * FROM events WHERE id = ?').get(eventId);
+        const formattedEvent = {
+          ...updatedEvent,
+          isActive: updatedEvent.is_active === 1,
+          startDate: updatedEvent.start_date || updatedEvent.date,
+          endDate: updatedEvent.end_date || updatedEvent.date,
+          createdAt: updatedEvent.created_at,
+          eventType: updatedEvent.location && updatedEvent.location !== 'Онлайн' ? 'offline' : 'online'
+        };
+        
+        res.status(200).json({ success: true, data: formattedEvent });
+      } catch (error) {
+        console.error('Database error:', error);
         res.status(500).json({ success: false, message: 'Помилка оновлення події' });
       }
       break;
 
     case 'DELETE':
-      const deleteIndex = events.findIndex(e => e.id === eventId);
-      
-      if (deleteIndex === -1) {
-        return res.status(404).json({ success: false, message: 'Подію не знайдено' });
-      }
-      
-      const deletedEvent = events[deleteIndex];
-      events.splice(deleteIndex, 1);
-      
-      if (writeEvents(events)) {
-        res.status(200).json({ success: true, data: deletedEvent });
-      } else {
+      try {
+        // Перевіряємо чи існує подія
+        const existingEvent = db.prepare('SELECT * FROM events WHERE id = ?').get(eventId);
+        
+        if (!existingEvent) {
+          return res.status(404).json({ success: false, message: 'Подію не знайдено' });
+        }
+        
+        const deleteEvent = db.prepare('DELETE FROM events WHERE id = ?');
+        deleteEvent.run(eventId);
+        
+        res.status(200).json({ success: true, data: existingEvent });
+      } catch (error) {
+        console.error('Database error:', error);
         res.status(500).json({ success: false, message: 'Помилка видалення події' });
       }
       break;

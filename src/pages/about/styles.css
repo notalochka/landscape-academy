@@ -383,7 +383,7 @@
 .la-about-history__quote-photo {
   display: flex;
   align-items: flex-end;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .la-about-history__quote-img {
@@ -427,7 +427,7 @@
 .la-about-history__student-quote-photo {
   display: flex;
   align-items: flex-end;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .la-about-history__student-quote-img {

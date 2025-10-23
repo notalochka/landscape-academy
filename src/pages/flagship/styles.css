@@ -561,6 +561,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .la-flagship-author__button:hover {

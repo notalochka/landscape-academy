@@ -17,7 +17,13 @@ import './students/styles.css';
 import './contact/styles.css';
 import './blog/styles.css';
 import './admin/admin.css';
+import ClarityAnalytics from '../components/Analytics/ClarityAnalytics';
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <ClarityAnalytics />
+      <Component {...pageProps} />
+    </>
+  );
 }
