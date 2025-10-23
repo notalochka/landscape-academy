@@ -14,8 +14,13 @@ export default function Document() {
         <meta name="theme-color" content="#303030" />
         <meta name="msapplication-TileColor" content="#303030" />
         
+        {/* Favicon and Icons */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo_academy.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo_academy.png" />
+        <link rel="shortcut icon" href="/logo_academy.png" />
+        
         {/* Apple Touch Icon */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo_academy.png" />
         
         {/* Manifest for PWA */}
         <link rel="manifest" href="/manifest.json" />
