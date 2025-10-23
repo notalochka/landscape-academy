@@ -44,6 +44,7 @@ const Course1Page = () => {
         canonical={course1SEO.canonical}
       />
 
+
       {/* Header Section */}
       <Header showBanner={false} />
 
