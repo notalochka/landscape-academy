@@ -42,9 +42,9 @@ const AboutPage = () => {
             </p>
           </div>
           <div className="la-about-hero__right">
-            <button className="la-about-hero__cta">
+            <a href="/#programs-grid" className="la-about-hero__cta">
               Хочу вчитися в LANDSCAPER <br />ACADEMY
-            </button>
+            </a>
           </div>
         </div>
       </section>

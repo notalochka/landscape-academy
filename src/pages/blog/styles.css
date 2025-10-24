@@ -1,6 +1,6 @@
 /* Blog Page Specific Styles */
 .la-blog-main {
-  background: #fff;
+  background: #E9E9E9;
   padding: 60px 0;
 }
 
@@ -19,10 +19,11 @@
   position: relative;
   max-width: 600px;
   margin: 0 auto;
+  display: flex;
 }
 
 .la-blog-search__input {
-  width: 100%;
+  flex: 1;
   padding: 16px 20px;
   border: 2px solid #e0e0e0;
   border-radius: 12px;

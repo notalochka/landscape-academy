@@ -22,17 +22,17 @@ const Footer = () => {
         <div className="la-footer__section">
           <h3 className="la-footer__title">Зв&apos;язатися з нами</h3>
           <p className="la-footer__text">LANDSCAPER ACADEMY</p>
-          <p className="la-footer__text">+380956301304</p>
+          <a href="tel:+380956301304" className="la-footer__text">+380956301304</a>
         </div>
 
         <div className="la-footer__section">
           <h3 className="la-footer__title">Наші соц-мережі</h3>
-          <a href="#" className="la-footer__link">INSTAGRAM</a>
+            <a href="https://www.instagram.com/landscaper_academy?igsh=MWM4aXYyaWdsMHY0dw==" target="_blank" rel="noopener noreferrer" className="la-footer__link">INSTAGRAM</a>
         </div>
 
         <div className="la-footer__section">
           <h3 className="la-footer__title">Email</h3>
-          <a href="mailto:landscaperua@ukr.net" className="la-footer__link">landscaperua@ukr.net</a>
+          <a href="mailto:landscaperua@ukr.net" target="_blank" rel="noopener noreferrer" className="la-footer__link">landscaperua@ukr.net</a>
         </div>
       </div>
       

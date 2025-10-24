@@ -358,7 +358,7 @@ export default function Home() {
         </section>
 
         {/* Programs Section */}
-        <section ref={programsRef} className={`la-programs animate-fade-in-up ${programsVisible ? 'is-visible' : ''}`} aria-label="Навчальні програми">
+        <section ref={programsRef} id="programs" className={`la-programs animate-fade-in-up ${programsVisible ? 'is-visible' : ''}`} aria-label="Навчальні програми">
           <div className="la-programs__inner">
             <div className="la-programs__header">
               <Image
@@ -372,7 +372,7 @@ export default function Home() {
               <span className="la-programs__eyebrow">Навчальні програми</span>
             </div>
 
-            <div className="la-programs__grid">
+            <div id="programs-grid" className="la-programs__grid">
               <ProgramCard title="Landscaper 5.0" subtitle="Перетвори хобі у бізнес" delay="animate-delay-100" href="/flagship" />
               <ProgramCard title="ШІ рендер на телефоні" subtitle="Від ескізу до WOW за 5 хвилин" delay="animate-delay-200" href="/course-1" />
               <ProgramCard

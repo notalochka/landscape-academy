@@ -66,6 +66,16 @@
   text-decoration: underline;
 }
 
+.la-footer__text[href] {
+  text-decoration: underline;
+  color: #303030;
+  transition: all 0.3s ease;
+}
+
+.la-footer__text[href]:hover {
+  color: #797979;
+}
+
 .la-footer__link {
   font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 400;
@@ -76,6 +86,9 @@
   color: #303030;
   text-decoration: underline;
   text-transform: uppercase;
+}
+.la-footer__link:hover {
+  color: #797979;
 }
 
 .la-footer__bottom {
