@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
@@ -42,9 +43,9 @@ const AboutPage = () => {
             </p>
           </div>
           <div className="la-about-hero__right">
-            <a href="/#programs-grid" className="la-about-hero__cta">
+            <Link href="/#programs-grid" className="la-about-hero__cta">
               Хочу вчитися в LANDSCAPER <br />ACADEMY
-            </a>
+            </Link>
           </div>
         </div>
       </section>

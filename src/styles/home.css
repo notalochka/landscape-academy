@@ -347,9 +347,6 @@
   text-decoration: none;
 }
 
-.la-program__link:hover .la-program__card {
-  transform: translateY(-8px);
-}
 
 .la-program__card {
   background: #000000;
@@ -363,6 +360,10 @@
   text-align: left;
   transition: transform 0.3s ease;
 }
+.la-program__card:hover {
+  background: #333333;
+}
+
 
 .la-program__title {
   margin: 0 0 30px 0;
@@ -489,6 +490,9 @@
   justify-content: space-between;
 }
 
+.la-blog__card:hover {
+  background: #333333;
+}
 
 .la-blog__content {
   display: flex;
