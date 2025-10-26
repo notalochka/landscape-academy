@@ -268,11 +268,6 @@ const Course2Page = () => {
             </div>
             <div className="la-course-program__right">
               <h2 className="la-course-program__title">курс: Метод роботи практикуючого ландшафтного дизайнера</h2>
-              <div className="la-course-program__schedule">
-                <p className="la-course-program__schedule-text">ВЕБІНАРИ</p>
-                <p className="la-course-program__schedule-text">ПН-ПТ</p>
-                <p className="la-course-program__schedule-text">15:00-19:00</p>
-              </div>
             </div>
           </div>
         </div>

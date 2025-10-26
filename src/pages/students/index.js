@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
@@ -10,6 +11,24 @@ const StudentsPage = () => {
   const studentsSEO = pagesSEO.students;
   const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
   const [currentStudent, setCurrentStudent] = useState(0);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  // Превентивне завантаження зображень
+  useEffect(() => {
+    const preloadImages = () => {
+      const nextIndex = (currentStudent + 1) % students.length;
+      const prevIndex = (currentStudent - 1 + students.length) % students.length;
+      
+      // Використовуємо window.Image для доступу до глобального конструктора
+      const nextImg = new window.Image();
+      const prevImg = new window.Image();
+      
+      nextImg.src = `/students-avatars/${students[nextIndex].avatar}`;
+      prevImg.src = `/students-avatars/${students[prevIndex].avatar}`;
+    };
+    
+    preloadImages();
+  }, [currentStudent]);
 
   // Student data based on the available avatars
   const students = [
@@ -180,10 +199,12 @@ const StudentsPage = () => {
   ];
 
   const nextStudent = () => {
+    setImageLoading(true);
     setCurrentStudent((prev) => (prev + 1) % students.length);
   };
 
   const prevStudent = () => {
+    setImageLoading(true);
     setCurrentStudent((prev) => (prev - 1 + students.length) % students.length);
   };
 
@@ -220,10 +241,24 @@ const StudentsPage = () => {
             <div className="la-graduates-carousel__card">
               <div className="la-graduates-carousel__content">
                 <div className="la-graduates-carousel__image-container">
-                  <img 
+                  {imageLoading && (
+                    <div className="la-graduates-carousel__image-placeholder">
+                      <div className="la-graduates-carousel__image-skeleton">
+                        Загрузка...
+                      </div>
+                    </div>
+                  )}
+                  <Image 
                     src={`/students-avatars/${students[currentStudent].avatar}`}
                     alt={students[currentStudent].name}
-                    className="la-graduates-carousel__image"
+                    width={400}
+                    height={400}
+                    className={`la-graduates-carousel__image ${imageLoading ? 'loading' : 'loaded'}`}
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                    priority={currentStudent < 3}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                 </div>
                 

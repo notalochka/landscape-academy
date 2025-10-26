@@ -112,7 +112,7 @@ const AboutPage = () => {
           <div className="la-about-team__cards">
             <div className="la-about-team__card">
               <div className="la-about-team__card-header">
-                <img src="/author-photo.png" alt="Микола Комар" className="la-about-team__card-icon" />
+                <img src="/tree_black.png" alt="Landscaper Academy Logo" className="la-about-team__card-icon" />
               </div>
               <h3 className="la-about-team__card-name">Микола Комар</h3>
               <p className="la-about-team__card-role">
@@ -129,7 +129,7 @@ const AboutPage = () => {
 
             <div className="la-about-team__card">
               <div className="la-about-team__card-header">
-                <img src="/ai-author-photo.png" alt="Катерина Комар" className="la-about-team__card-icon" />
+                <img src="/tree_black.png" alt="Landscaper Academy Logo" className="la-about-team__card-icon" />
               </div>
               <h3 className="la-about-team__card-name">Катерина Комар</h3>
               <p className="la-about-team__card-role">
@@ -214,7 +214,7 @@ const AboutPage = () => {
             </p>
             <div className="la-about-history__student-quote-container">
               <div className="la-about-history__student-quote-photo">
-                <img src="/avatar.png" alt="Учень LANDSCAPER Academy" className="la-about-history__student-quote-img" />
+                <img src="/student_photo.png" alt="Учень LANDSCAPER Academy" className="la-about-history__student-quote-img" />
               </div>
               <div className="la-about-history__student-quote-bubble">
                 <p className="la-about-history__student-quote-text">

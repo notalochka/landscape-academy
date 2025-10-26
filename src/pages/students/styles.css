@@ -102,6 +102,46 @@
   transform: scale(1.05);
 }
 
+/* Плейсхолдер для завантаження зображень */
+.la-graduates-carousel__image-placeholder {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.la-graduates-carousel__image-skeleton {
+  width: 200px;
+  height: 200px;
+  background: #c0c0c0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.la-graduates-carousel__image.loading {
+  opacity: 0;
+}
+
+.la-graduates-carousel__image.loaded {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
 .la-graduates-carousel__info {
   padding: 60px 60px 60px 5px;
   display: flex;
@@ -347,6 +387,17 @@
   .la-graduates-carousel__image {
     width: 200px;
     height: 200px;
+  }
+  .la-graduates-carousel__image-placeholder {
+    top: 30px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+  .la-graduates-carousel__image-skeleton {
+    width: 150px;
+    height: 150px;
+    font-size: 12px;
   }
   .la-graduates-carousel__info {
     padding: 20px;

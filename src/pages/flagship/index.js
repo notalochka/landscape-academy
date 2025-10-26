@@ -372,7 +372,7 @@ const FlagshipPage = () => {
                 
                 <div className="la-flagship-author__description">
                   <p className="la-flagship-author__text">
-                    МАГІСТРИ САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИМІР» ТА KAVAFM.
+                    МАГІСТР САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИМІР» ТА KAVAFM.
                   </p>
                   <p className="la-flagship-author__text">
                     17 РОКІВ НА РИНКУ, СТОВРИВ 100+ САДІВ ВІД 30 М.КВ ДО 11 ГА.
@@ -466,11 +466,6 @@ const FlagshipPage = () => {
             </div>
             <div className="la-course-program__right">
               <h2 className="la-course-program__title">LANDSCAPER 5.0 : ПЕРЕТВОРИ ХОБІ У БІЗНЕС</h2>
-              <div className="la-course-program__schedule">
-                <p className="la-course-program__schedule-text">ВЕБІНАРИ</p>
-                <p className="la-course-program__schedule-text">ПН-ПТ</p>
-                <p className="la-course-program__schedule-text">15:00-19:00</p>
-              </div>
             </div>
           </div>
         </div>

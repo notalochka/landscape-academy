@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const Hero = () => {
@@ -19,18 +20,30 @@ const Hero = () => {
       <div className="la-hero__inner">
         <div className="la-hero__title-block">
           <div className="la-hero__content">
-            <h1 
-              ref={titleRef}
-              className={`la-hero__title animate-fade-in-up ${titleVisible ? 'is-visible' : ''}`}
-            >
-              LANDSCAPER<br />ACADEMY
-            </h1>
-            <p 
-              ref={subtitleRef}
-              className={`la-hero__subtitle animate-fade-in-up animate-delay-200 ${subtitleVisible ? 'is-visible' : ''}`}
-            >
-              місце для тих, хто змінює ландшафт.
-            </p>
+            <div className="la-hero__text-column">
+              <h1 
+                ref={titleRef}
+                className={`la-hero__title animate-fade-in-up ${titleVisible ? 'is-visible' : ''}`}
+              >
+                LANDSCAPER ACADEMY
+              </h1>
+              <p 
+                ref={subtitleRef}
+                className={`la-hero__subtitle animate-fade-in-up animate-delay-200 ${subtitleVisible ? 'is-visible' : ''}`}
+              >
+                місце для тих, хто змінює ландшафт.
+              </p>
+            </div>
+            <div className="la-hero__image-column">
+              <Image 
+                src="/tree_white.png"
+                alt="Ялинка"
+                width={300}
+                height={360}
+                className="la-hero__image"
+                priority
+              />
+            </div>
           </div>
         </div>
 
