@@ -599,8 +599,15 @@
 .la-course-2-target__block {
   width: 684px;
   height: 453px;
-  background: #000000;
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.la-course-2-target__block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Author Section */
@@ -849,10 +856,17 @@
 }
 
 .la-course-2-contact-questions__block {
-  width: 180px;
+  width: 133px;
   height: 133px;
-  background: #000000;
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.la-course-2-contact-questions__block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .la-course-2-contact-questions__content {

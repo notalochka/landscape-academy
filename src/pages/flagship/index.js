@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
@@ -14,6 +14,29 @@ const FlagshipPage = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+  const [courseData, setCourseData] = useState({
+    mainTitle: "LANDSCAPER 5.0",
+    subtitle: "ПЕРЕТВОРИ ХОБІ У БІЗНЕС",
+    description1: "ЗА 6 ТИЖНІВ РАЗОМ ПРОЙДЕМО ШЛЯХ ВІД ЧІТКОГО ПЛАНУВАННЯ ДО ЗАЛУЧЕННЯ КЛІЄНТІВ ТА МАСШТАБУВАННЯ ДОХОДІВ",
+    description2: "ОСВІТНІЙ КУРС ДЛЯ ЛАНДШАФТНИКІВ, ДИЗАЙНЕРІВ, САДІВНИКІВ, ТОПІАРНИКІВ ТА ВЛАСНИКІВ САДОВИХ ЦЕНТРІВ",
+    price: "13900",
+    oldPrice: "15000",
+    startDate: "20.01.2025",
+    experience: "",
+    group_info: "",
+    duration: "6 тижнів",
+    modules: "9 модулів",
+    themes: "25 тем",
+    curators: "2 куратори",
+    authorName: "КОМАР МИКОЛА",
+    authorBio1: "МАГІСТР САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИMIP» TA KAVAFM.",
+    authorBio2: "17 РОКІВ НА РИНКУ, СТОВРИВ 100+ САДІВ ВІД 30 М.КВ ДО 11 ГА.",
+    authorPhoto: "",
+    skills: ""
+  });
+  const [targetAudience, setTargetAudience] = useState([]);
+  const [courseProgram, setCourseProgram] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Touch events for swipe functionality
   const [touchStart, setTouchStart] = useState(null);
@@ -30,18 +53,100 @@ const FlagshipPage = () => {
   const [programRef, programVisible] = useScrollAnimation({ threshold: 0.1 });
   const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
   
+  // Завантаження даних курсу з API
+  useEffect(() => {
+    console.log('useEffect запущений');
+    const fetchData = async () => {
+      try {
+        console.log('Завантаження даних курсу...');
+        
+        // Завантажуємо дані флагманського курсу (ID = 1)
+        const courseResponse = await fetch('/api/courses/1');
+        console.log('Course response status:', courseResponse.status);
+        const courseResult = await courseResponse.json();
+        
+        console.log('Course API Response:', courseResult);
+        
+        if (courseResult.success) {
+          const newCourseData = {
+            mainTitle: courseResult.data.title || "LANDSCAPER 5.0",
+            subtitle: courseResult.data.subtitle || "ПЕРЕТВОРИ ХОБІ У БІЗНЕС",
+            description1: courseResult.data.description_1 || "ЗА 6 ТИЖНІВ РАЗОМ ПРОЙДЕМО ШЛЯХ ВІД ЧІТКОГО ПЛАНУВАННЯ ДО ЗАЛУЧЕННЯ КЛІЄНТІВ ТА МАСШТАБУВАННЯ ДОХОДІВ",
+            description2: courseResult.data.description_2 || "ОСВІТНІЙ КУРС ДЛЯ ЛАНДШАФТНИКІВ, ДИЗАЙНЕРІВ, САДІВНИКІВ, ТОПІАРНИКІВ ТА ВЛАСНИКІВ САДОВИХ ЦЕНТРІВ",
+            price: courseResult.data.price || "13900",
+            oldPrice: courseResult.data.old_price || "15000",
+            startDate: courseResult.data.start_date || "20.01.2025",
+            experience: courseResult.data.experience || "",
+            group_info: courseResult.data.group_info || "",
+            duration: courseResult.data.duration || "6 тижнів",
+            modules: courseResult.data.modules || "9 модулів",
+            themes: courseResult.data.themes || "25 тем",
+            curators: courseResult.data.curators || "2 куратори",
+            authorName: courseResult.data.author_name || "КОМАР МИКОЛА",
+            authorBio1: courseResult.data.author_bio_1 || "МАГІСТР САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИMIP» TA KAVAFM.",
+            authorBio2: courseResult.data.author_bio_2 || "17 РОКІВ НА РИНКУ, СТОВРИВ 100+ САДІВ ВІД 30 М.КВ ДО 11 ГА.",
+            authorPhoto: courseResult.data.author_photo || "",
+            skills: courseResult.data.skills || ""
+          };
+          
+          console.log('Оновлені дані курсу:', newCourseData);
+          setCourseData(newCourseData);
+          console.log('Дані курсу встановлені');
+        } else {
+          console.error('Course API повернув помилку:', courseResult.message);
+        }
+
+        // Завантажуємо цільову аудиторію
+        console.log('Завантаження цільової аудиторії...');
+        const audienceResponse = await fetch('/api/courses/1/target-audience');
+        const audienceResult = await audienceResponse.json();
+        
+        console.log('Audience API Response:', audienceResult);
+        
+        if (audienceResult.success) {
+          setTargetAudience(audienceResult.data);
+          console.log('Цільова аудиторія встановлена:', audienceResult.data);
+        } else {
+          console.error('Audience API повернув помилку:', audienceResult.message);
+        }
+
+        // Завантажуємо програму курсу
+        console.log('Завантаження програми курсу...');
+        const programResponse = await fetch('/api/courses/1/program');
+        const programResult = await programResponse.json();
+        
+        console.log('Program API Response:', programResult);
+        
+        if (programResult.success) {
+          setCourseProgram(programResult.data);
+          console.log('Програма курсу встановлена:', programResult.data);
+        } else {
+          console.error('Program API повернув помилку:', programResult.message);
+        }
+        
+      } catch (error) {
+        console.error('Помилка завантаження даних:', error);
+      } finally {
+        console.log('Завершення завантаження, встановлюємо isLoading = false');
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   // Course structured data
   const flagshipCourseData = courseSchema({
-    name: "Флагманський курс ландшафтного дизайну",
-    description: "Комплексна програма навчання ландшафтному дизайну з професійними знаннями, практичними навичками та сертифікацією",
-    price: "45000"
+    name: courseData.mainTitle,
+    description: courseData.description1,
+    price: courseData.price
   });
 
-  const courseData = {
+  const purchaseCourseData = {
     id: 'flagship-course',
-    title: 'LANDSCAPER 5.0 - ПЕРЕТВОРИ ХОБІ У БІЗНЕС',
-    price: '13 900 ГРН',
-    oldPrice: '15 000 ГРН'
+    title: `${courseData.mainTitle} - ${courseData.subtitle}`,
+    price: `${courseData.price} ГРН`,
+    oldPrice: `${courseData.oldPrice} ГРН`
   };
 
   const studentImages = [
@@ -99,6 +204,46 @@ const FlagshipPage = () => {
     }
   };
 
+  // Функція для групування програми за модулями
+  const groupProgramByModules = () => {
+    const modules = {};
+    courseProgram.forEach(item => {
+      if (!modules[item.module_number]) {
+        modules[item.module_number] = {
+          module_title: item.module_title,
+          module_description: item.module_description,
+          lessons: []
+        };
+      }
+      
+      if (item.lesson_number !== null) {
+        modules[item.module_number].lessons.push({
+          lesson_number: item.lesson_number,
+          lesson_title: item.lesson_title,
+          lesson_description: item.lesson_description,
+          is_practical: item.is_practical
+        });
+      }
+    });
+    
+    return modules;
+  };
+
+  if (isLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        fontFamily: 'Bender, system-ui, sans-serif'
+      }}>
+        Завантаження...
+      </div>
+    );
+  }
+
   return (
     <>
       <SEO
@@ -113,22 +258,23 @@ const FlagshipPage = () => {
       {/* Header Section */}
       <Header showBanner={false} />
 
+
       {/* Main Content */}
-      <main ref={mainRef} className={`la-flagship-main animate-fade-in-up ${mainVisible ? 'is-visible' : ''}`}>
+      <main ref={mainRef} className="la-flagship-main">
         <div className="la-flagship-main__inner">
           <section className="la-flagship-content">
             <div className="la-flagship-content__header">
               <span className="la-flagship-content__label">ПРОГРАМА</span>
-              <h1 className="la-flagship-content__title">LANDSCAPER 5.0</h1>
-              <h2 className="la-flagship-content__subtitle">ПЕРЕТВОРИ ХОБІ У БІЗНЕС</h2>
+              <h1 className="la-flagship-content__title">{courseData.mainTitle}</h1>
+              <h2 className="la-flagship-content__subtitle">{courseData.subtitle}</h2>
             </div>
             
             <div className="la-flagship-content__description">
               <p className="la-flagship-content__text">
-                ЗА 6 ТИЖНІВ РАЗОМ ПРОЙДЕМО ШЛЯХ ВІД ЧІТКОГО ПЛАНУВАННЯ ДО ЗАЛУЧЕННЯ КЛІЄНТІВ ТА МАСШТАБУВАННЯ ДОХОДІВ
+                {courseData.description1}
               </p>
               <p className="la-flagship-content__text">
-                ОСВІТНІЙ КУРС ДЛЯ ЛАНДШАФТНИКІВ, ДИЗАЙНЕРІВ, САДІВНИКІВ, ТОПІАРНИКІВ ТА ВЛАСНИКІВ САДОВИХ ЦЕНТРІВ.
+                {courseData.description2}
               </p>
             </div>
 
@@ -145,9 +291,8 @@ const FlagshipPage = () => {
         </div>
       </main>
 
-
       {/* Students Carousel Section */}
-      <section ref={studentsRef} className={`la-flagship-students animate-fade-in-up ${studentsVisible ? 'is-visible' : ''}`}>
+      <section ref={studentsRef} className="la-flagship-students">
         <div className="la-flagship-students__inner">
           <div className="la-flagship-students__header">
             <Image
@@ -224,63 +369,64 @@ const FlagshipPage = () => {
           </div>
         </div>
       </section>
+
       {/* Course Info Section */}
-      <section ref={infoRef} className={`la-flagship-course-info animate-fade-in-up ${infoVisible ? 'is-visible' : ''}`}>
+      <section ref={infoRef} className="la-flagship-course-info">
         <div className="la-flagship-course-info__inner">
           <div className="la-flagship-course-info__details">
-            <div className="la-flagship-course-info__item">
-              <h3 className="la-flagship-course-info__label">ДОСВІД</h3>
-              <p className="la-flagship-course-info__text">З 20 СІЧНЯ ПО 3 БЕРЕЗНЯ</p>
-            </div>
+              <div className="la-flagship-course-info__item">
+                <h3 className="la-flagship-course-info__label">ДОСВІД</h3>
+                <p className="la-flagship-course-info__text">{courseData.experience || '—'}</p>
+              </div>
             <div className="la-flagship-course-info__item">
               <h3 className="la-flagship-course-info__label">СТАРТ</h3>
-              <p className="la-flagship-course-info__text">З 20 СІЧНЯ ПО 3 БЕРЕЗНЯ</p>
+              <p className="la-flagship-course-info__text">{courseData.startDate}</p>
             </div>
-            <div className="la-flagship-course-info__item">
-              <h3 className="la-flagship-course-info__label">ГРУПА</h3>
-              <p className="la-flagship-course-info__text">З 20 СІЧНЯ ПО 3 БЕРЕЗНЯ</p>
+              <div className="la-flagship-course-info__item">
+                <h3 className="la-flagship-course-info__label">ГРУПА</h3>
+                <p className="la-flagship-course-info__text">{courseData.group_info || '—'}</p>
             </div>
             <div className="la-flagship-course-info__item">
               <h3 className="la-flagship-course-info__label">ТРИВАЛІСТЬ</h3>
-              <p className="la-flagship-course-info__text">З 20 СІЧНЯ ПО 3 БЕРЕЗНЯ</p>
+              <p className="la-flagship-course-info__text">{courseData.duration}</p>
             </div>
           </div>
           
           <div className="la-flagship-course-info__stats">
             <div className="la-flagship-course-info__stat">
-              <span className="la-flagship-course-info__number">25</span>
-              <span className="la-flagship-course-info__stat-label">ТЕМ</span>
+              <span className="la-flagship-course-info__number">{courseData.themes.split(' ')[0]}</span>
+              <span className="la-flagship-course-info__stat-label">{courseData.themes.split(' ')[1]}</span>
             </div>
             <div className="la-flagship-course-info__stat">
-              <span className="la-flagship-course-info__number">9</span>
-              <span className="la-flagship-course-info__stat-label">МОДУЛІВ</span>
+              <span className="la-flagship-course-info__number">{courseData.modules.split(' ')[0]}</span>
+              <span className="la-flagship-course-info__stat-label">{courseData.modules.split(' ')[1]}</span>
             </div>
             <div className="la-flagship-course-info__stat">
-              <span className="la-flagship-course-info__number">6</span>
-              <span className="la-flagship-course-info__stat-label">ТИЖНІВ</span>
+              <span className="la-flagship-course-info__number">{courseData.duration.split(' ')[0]}</span>
+              <span className="la-flagship-course-info__stat-label">{courseData.duration.split(' ')[1]}</span>
             </div>
             <div className="la-flagship-course-info__stat">
-              <span className="la-flagship-course-info__number">2</span>
-              <span className="la-flagship-course-info__stat-label">КУРАТОРИ</span>
+              <span className="la-flagship-course-info__number">{courseData.curators.split(' ')[0]}</span>
+              <span className="la-flagship-course-info__stat-label">{courseData.curators.split(' ')[1]}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Order Section */}
-      <section id="la-flagship-order" ref={orderRef} className={`la-flagship-order animate-fade-in-up ${orderVisible ? 'is-visible' : ''}`}>
+      <section id="la-flagship-order" ref={orderRef} className="la-flagship-order">
         <div className="la-flagship-order__inner">
           <p className="la-flagship-order__text">
             ЗАПИШІТЬСЯ ЗАРАЗ І ПОЧНІТЬ РЕАЛІЗОВУВАТИ СВОЇ ПРОФЕСІЙНІ АМБІЦІЇ З НАМИ. ЧАС РОБИТИ КРОК ВПЕРЕД — JUST DO IT.
           </p>
           
           <div className="la-flagship-order__card">
-            <h2 className="la-flagship-order__title">LANDSCAPER 5.0</h2>
-            <p className="la-flagship-order__start-date">СТАРТ 20.01.2025</p>
+            <h2 className="la-flagship-order__title">{courseData.mainTitle}</h2>
+            <p className="la-flagship-order__start-date">СТАРТ {courseData.startDate}</p>
             
             <div className="la-flagship-order__pricing">
-              <span className="la-flagship-order__old-price">15 000 ГРН</span>
-              <span className="la-flagship-order__new-price">13 900 ГРН</span>
+              <span className="la-flagship-order__old-price">{courseData.oldPrice} ГРН</span>
+              <span className="la-flagship-order__new-price">{courseData.price} ГРН</span>
             </div>
             
             <button 
@@ -294,7 +440,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Target Audience Section */}
-      <section ref={targetRef} className={`la-flagship-target animate-fade-in-up ${targetVisible ? 'is-visible' : ''}`}>
+      <section ref={targetRef} className="la-flagship-target">
         <div className="la-flagship-target__inner">
             <h2 className="la-flagship-target__title">ДЛЯ КОГО ЦЕЙ КУРС?</h2>
         </div>
@@ -303,46 +449,34 @@ const FlagshipPage = () => {
         <div className="la-flagship-target__inner">  
           <div className="la-flagship-target__content">
             <div className="la-flagship-target__list">
-              <div className="la-flagship-target__item">
-                <span className="la-flagship-target__number">01</span>
-                <p className="la-flagship-target__text">
-                  ЛАНДШАФТНИЙ ДИЗАЙНЕР ПОЧАТКІВЕЦЬ БЕЗ ДОСВІДУ РОБОТИ З БАЖАННЯМ ВЗЯТИ СВІЙ ПЕРШИЙ ПРОЕКТ
-                </p>
-              </div>
-              <div className="la-flagship-target__item">
-                <span className="la-flagship-target__number">02</span>
-                <p className="la-flagship-target__text">
-                  ПРАКТИК В СТВОРЕННІ САДІВ, ЩО БАЖАЄ ПОКРАЩИТИ СВОЇ НАВИЧКИ З ДИЗАЙНУ
-                </p>
-              </div>
-              <div className="la-flagship-target__item">
-                <span className="la-flagship-target__number">03</span>
-                <p className="la-flagship-target__text">
-                  АРХІТЕКТОР З ЗАПИТАМИ НА ОЗЕЛЕНЕННЯ ПРИБУДИНКОВИХ ТОРИТОРІЙ
-                </p>
-              </div>
-              <div className="la-flagship-target__item">
-                <span className="la-flagship-target__number">04</span>
-                <p className="la-flagship-target__text">
-                  ВЖЕ МАЄТЕ ДОСВІД СТВОРЕННЯ САДУ, АЛЕ ВИТРАЧАЄТЕ НА ЦЕ БАГАТО ЧАСУ ЧЕРЕЗ ВІДСУТНІСТЬ АЛГОРИТМУ
-                </p>
-              </div>
-              <div className="la-flagship-target__item">
-                <span className="la-flagship-target__number">05</span>
-                <p className="la-flagship-target__text">
-                  ВЛАСНИК КОМПАНІЇ З СТВОРЕННЯ САДІВ І БАЖАЄТЕ РОЗШИРИТИ КОМАНДУ ЧИ ДЕЛЕГУВАТИ ПІДЛЕГЛОМУ НАПРЯМОК ДИЗАЙНУ
-                </p>
-              </div>
+              {targetAudience.map((item, index) => (
+                <div key={item.id} className="la-flagship-target__item">
+                  <span className="la-flagship-target__number">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <p className="la-flagship-target__text">
+                    {item.text}
+                  </p>
+                </div>
+              ))}
             </div>
             
-            <div className="la-flagship-target__block"></div>
+            <div className="la-flagship-target__block">
+              <Image
+                src="/target-1.png"
+                alt="Target audience visual"
+                width={684}
+                height={453}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
           </div>
         </div>
         
       </section>
 
       {/* Author Section */}
-      <section ref={authorRef} className={`la-flagship-author animate-fade-in-up ${authorVisible ? 'is-visible' : ''}`}>
+      <section ref={authorRef} className="la-flagship-author">
         <div className="la-flagship-author__inner">
           <div className="la-flagship-author__left">
             <div className="la-flagship-author__header">
@@ -357,26 +491,36 @@ const FlagshipPage = () => {
               <span className="la-flagship-author__label">АВТОР КУРСУ</span>
             </div>
             <div className="la-flagship-author__photo-mobile">
-              <Image
-                src="/author-photo.png"
-                alt="Комар Микола"
-                width={611}
-                height={833}
-                className="la-flagship-author__image"
-              />
+              {courseData.authorPhoto ? (
+                <img
+                  src={courseData.authorPhoto}
+                  alt={courseData.authorName}
+                  className="la-flagship-author__image"
+                />
+              ) : (
+                <Image
+                  src="/author-photo.png"
+                  alt={courseData.authorName}
+                  width={611}
+                  height={833}
+                  className="la-flagship-author__image"
+                />
+              )}
             </div>
             
             <div className="la-flagship-author__content">
               <div className="la-flagship-author__info">
-                <h2 className="la-flagship-author__name">КОМАР МИКОЛА</h2>
+                <h2 className="la-flagship-author__name">{courseData.authorName}</h2>
                 
                 <div className="la-flagship-author__description">
                   <p className="la-flagship-author__text">
-                    МАГІСТР САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИМІР» ТА KAVAFM.
+                    {courseData.authorBio1}
                   </p>
-                  <p className="la-flagship-author__text">
-                    17 РОКІВ НА РИНКУ, СТОВРИВ 100+ САДІВ ВІД 30 М.КВ ДО 11 ГА.
-                  </p>
+                  {courseData.authorBio2 && (
+                    <p className="la-flagship-author__text">
+                      {courseData.authorBio2}
+                    </p>
+                  )}
                 </div>
                 
                 <div className="la-flagship-author__buttons">
@@ -388,18 +532,26 @@ const FlagshipPage = () => {
           </div>
           
           <div className="la-flagship-author__photo">
-            <Image
-              src="/author-photo.png"
-              alt="Комар Микола"
-              width={611}
-              height={833}
-              className="la-flagship-author__image"
-            />
+            {courseData.authorPhoto ? (
+              <img
+                src={courseData.authorPhoto}
+                alt={courseData.authorName}
+                className="la-flagship-author__image"
+              />
+            ) : (
+              <Image
+                src="/author-photo.png"
+                alt={courseData.authorName}
+                width={611}
+                height={833}
+                className="la-flagship-author__image"
+              />
+            )}
           </div>
         </div>
       </section>
 
-      <section ref={skillsRef} className={`la-flagship-skills animate-fade-in-up ${skillsVisible ? 'is-visible' : ''}`}>
+      <section ref={skillsRef} className="la-flagship-skills">
         <div className="la-flagship-skills__inner">
             <h2 className="la-flagship-skills__title">навички які ви зможете опанувати:</h2>
         </div>
@@ -408,30 +560,38 @@ const FlagshipPage = () => {
 
         <div className="la-flagship-skills__inner">
           <ul className="la-flagship-skills__list">
-            <li className="la-flagship-skills__item">
-              ОТРИМАЄТЕ ЧІТКІ ВКАЗІВКИ З ПОЕТАПНОГО СТВОРЕННЯ САДУ, ОПАНУЄТЕ ЗАГАЛЬНИЙ АЛГОРИТМ
-            </li>
-            <li className="la-flagship-skills__item">
-              НАВЧИТЕСЯ ПРАВИЛЬНО І ЧІТКО ЗБИРАТИ ІНФОРМАЦІЮ ДЛЯ ПРОЕКТУВАННЯ
-            </li>
-            <li className="la-flagship-skills__item">
-              ПОЧНЕТЕ ГРАМОТНО ПРАЦЮВАТИ З ОБМЕЖЕННЯМИ
-            </li>
-            <li className="la-flagship-skills__item">
-              ВІД ЕТАПУ КОНЦЕПЦІЇ ДО СТВОРЕННЯ ДИЗАЙНУ
-            </li>
-            <li className="la-flagship-skills__item">
-              ОТРИМАЄТЕ ГОТОВІ ЧЕК-ЛИСТИ ДЛЯ РОЗМОВИ З КЛІЄНТОМ І СТВОРЕННЯ ТЕХНІЧНОГО ЗАВДАННЯ НА ПРОЕКТУВАННЯ
-            </li>
-            <li className="la-flagship-skills__item">
-              ДІЗНАЄТЕСЬ ЯК ВЗАЄМОДІЯТИ З СУМІЖНИКАМИ ТА СТАВИТИ ЇМ ТЕХНІЧНІ ЗАВДАННЯ
-            </li>
-            <li className="la-flagship-skills__item">
-              ОПАНУЄТЕ ЯК ТИПОВІ, ТАК І УНІКАЛЬНІ ТЕХНІКИ ДИЗАЙНУ
-            </li>
-            <li className="la-flagship-skills__item">
-              НАПРИКІНЦІ КУРСУ ВАС ЧЕКАТИМЕ СТВОРЕННЯ САДУ З ПЕРЕВІРКОЮ ТА ФІДБЕКОМ
-            </li>
+            {courseData.skills ? courseData.skills.split('\n').filter(skill => skill.trim()).map((skill, index) => (
+              <li key={index} className="la-flagship-skills__item">
+                {skill.trim()}
+              </li>
+            )) : (
+              <>
+                <li className="la-flagship-skills__item">
+                  ОТРИМАЄТЕ ЧІТКІ ВКАЗІВКИ З ПОЕТАПНОГО СТВОРЕННЯ САДУ, ОПАНУЄТЕ ЗАГАЛЬНИЙ АЛГОРИТМ
+                </li>
+                <li className="la-flagship-skills__item">
+                  НАВЧИТЕСЯ ПРАВИЛЬНО І ЧІТКО ЗБИРАТИ ІНФОРМАЦІЮ ДЛЯ ПРОЕКТУВАННЯ
+                </li>
+                <li className="la-flagship-skills__item">
+                  ПОЧНЕТЕ ГРАМОТНО ПРАЦЮВАТИ З ОБМЕЖЕННЯМИ
+                </li>
+                <li className="la-flagship-skills__item">
+                  ВІД ЕТАПУ КОНЦЕПЦІЇ ДО СТВОРЕННЯ ДИЗАЙНУ
+                </li>
+                <li className="la-flagship-skills__item">
+                  ОТРИМАЄТЕ ГОТОВІ ЧЕК-ЛИСТИ ДЛЯ РОЗМОВИ З КЛІЄНТОМ І СТВОРЕННЯ ТЕХНІЧНОГО ЗАВДАННЯ НА ПРОЕКТУВАННЯ
+                </li>
+                <li className="la-flagship-skills__item">
+                  ДІЗНАЄТЕСЬ ЯК ВЗАЄМОДІЯТИ З СУМІЖНИКАМИ ТА СТАВИТИ ЇМ ТЕХНІЧНІ ЗАВДАННЯ
+                </li>
+                <li className="la-flagship-skills__item">
+                  ОПАНУЄТЕ ЯК ТИПОВІ, ТАК І УНІКАЛЬНІ ТЕХНІКИ ДИЗАЙНУ
+                </li>
+                <li className="la-flagship-skills__item">
+                  НАПРИКІНЦІ КУРСУ ВАС ЧЕКАТИМЕ СТВОРЕННЯ САДУ З ПЕРЕВІРКОЮ ТА ФІДБЕКОМ
+                </li>
+              </>
+            )}
           </ul>
         </div>
 
@@ -441,9 +601,17 @@ const FlagshipPage = () => {
       </section>
 
       {/* Contact Questions Section */}
-      <section ref={questionsRef} className={`la-flagship-contact-questions animate-fade-in-up ${questionsVisible ? 'is-visible' : ''}`}>
+      <section ref={questionsRef} className="la-flagship-contact-questions">
         <div className="la-flagship-contact-questions__inner">
-          <div className="la-flagship-contact-questions__block"></div>
+          <div className="la-flagship-contact-questions__block">
+            <Image
+              src="/question_photo.png"
+              alt="Питання"
+              width={133}
+              height={133}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
           <div className="la-flagship-contact-questions__content">
             <h2 className="la-flagship-contact-questions__text">ВІДПОВІМО ВАМ НА ВСІ ПИТАННЯ</h2>
             <div className="la-flagship-contact-questions__buttons">
@@ -455,7 +623,7 @@ const FlagshipPage = () => {
       </section>
 
       {/* Course Program Section */}
-      <section id="la-flagship-course-program" ref={programRef} className={`la-course-program animate-fade-in-up ${programVisible ? 'is-visible' : ''}`}>
+      <section id="la-flagship-course-program" ref={programRef} className="la-course-program">
         <div className="la-course-program__inner">
           <div className="la-course-program__header">
             <div className="la-course-program__left">
@@ -465,7 +633,7 @@ const FlagshipPage = () => {
               </p>
             </div>
             <div className="la-course-program__right">
-              <h2 className="la-course-program__title">LANDSCAPER 5.0 : ПЕРЕТВОРИ ХОБІ У БІЗНЕС</h2>
+              <h2 className="la-course-program__title">{courseData.mainTitle} : {courseData.subtitle}</h2>
             </div>
           </div>
         </div>
@@ -494,291 +662,42 @@ const FlagshipPage = () => {
           
           {isDropdownOpen && (
             <>
+              {Object.keys(groupProgramByModules()).sort((a, b) => parseInt(a) - parseInt(b)).map(moduleNumber => {
+                const moduleData = groupProgramByModules()[moduleNumber];
+                return (
+                  <React.Fragment key={moduleNumber}>
               <div className="la-course-program__line"></div>
               
               <div className="la-course-program__inner">
                 <div className="la-course-program__content">
                   <div className="la-course-program__module">
                     <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 1</h4>
-                    <h5 className="la-course-program__module-title">АНАЛІЗ СИТУАЦІЇ</h5>
+                            <h4 className="la-course-program__module-number">{moduleData.module_title}</h4>
+                            <h5 className="la-course-program__module-title">{moduleData.module_description}</h5>
                     </div>
                   
                     <div className="la-course-program__lessons">
                       <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
+                              {moduleData.lessons.map((lesson, index) => (
+                                <li key={index} className="la-course-program__lesson">
                         <p className="la-course-program__lesson-title">
-                          УРОК 1 - СИТУАЦІЯ НА РИНКУ
+                                    {lesson.lesson_title}
                         </p>
+                                  {lesson.lesson_description && (
                         <p className="la-course-program__lesson-description">
-                          ( НАША РЕАЛЬНІСТЬ, ТРЕНДИ, ПРОБЛЕМИ ТА МОЖЛИВОСТІ)
+                                      {lesson.lesson_description}
                         </p>
+                                  )}
                       </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 2 - НАПРЯМКИ РОЗВИТКУ
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( ПЕРСПЕКТИВИ І НАПРЯМКИ В НІШІ ЛД)
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 3 - МАСШТАБ ОСОБИСТОСТІ
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( ШЛЯХИ ПРОФЕСІЙНОГО РОЗВИТКУ)
-                        </p>
-                      </li>
+                              ))}
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 2</h4>
-                    <h5 className="la-course-program__module-title">ЕКСПЕРТНІСТЬ</h5>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 1 - Розпаковка експертності
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( пошук своїх сильних сторін)
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 2 - Фундамент експертності
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( аналіз наявних результатів)
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 3 - Кейси в ЛД
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( важливість збору кейсів)
-                        </p>
-                      </li>
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          УРОК 4 - Школа бренду
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( як створите власний бренд)
-                        </p>
-                      </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 3</h4>
-                    <h5 className="la-course-program__module-title">самопрезентація</h5>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Практична робота 1 - Робота в групі з експертністю.
-                        </p>
-                        
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Практична робота 2 - Продай себе за хвилину. 
-                        </p>
-                        
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                         Практична робота 3 - Пізнай свого клієнта.
-                        </p>
-                        
-                      </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 4</h4>
-                    <h5 className="la-course-program__module-title">собівартість</h5>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Практична робота 1- Рахуємо собівартість робочого дня
-                        </p>
-                      
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          Практична робота 2 - Скидаєм баласт 
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                          ( Аналіз клієнтів)
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          Урок 1 - Оптимізація та ефективність
-                        </p>
-                        
-                      </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 5</h4>
-                    <h5 className="la-course-program__module-title">підвищення ціни</h5>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          Урок 1 - Коли піднімати ціни.
-                        </p>
-                      
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          Урок 2 - Сервіс.
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Скрипт
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Бріф
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Договір
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Збір даних
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Портфоліо
-                        </p>
-                        <p className="la-course-program__lesson-description">
-                        - Перше враження
-                        </p>
-                      </li>
-                                   
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ 6</h4>
-                    <h5 className="la-course-program__module-title">план ефективності
-                    </h5>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                          Урок 1 - Обмежуючі переконання
-                        </p>
-                      
-                      </li>
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                         Практична робота 1 - Ставимо мету
-                        </p>
-                      
-                      </li>
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                         Практична робота 2 - Плануємо дохід та чек
-                        </p>
-                      
-                      </li>
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                         Урок 2 - Отримання навичок
-                        </p>
-                      
-                      </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 7</h4>
-                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
-                    </h5>
-                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 8</h4>
-                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
-                    </h5>
-                    <h4 className="la-course-program__module-number">МОДУЛЬ Бонус 9</h4>
-                    <h5 className="la-course-program__module-title">Бухгалтерія в ЛД
-                    </h5>
-                  </div>
-                  </div>
-                </div>
-              </div>
+                  </React.Fragment>
+                );
+              })}
             </>
           )}
         
@@ -792,7 +711,7 @@ const FlagshipPage = () => {
       <CoursePurchaseModal
         isOpen={isPurchaseModalOpen}
         onClose={() => setIsPurchaseModalOpen(false)}
-        courseData={courseData}
+        courseData={purchaseCourseData}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SEO from "../../components/SEO/SEO";
@@ -27,12 +27,97 @@ const Course1Page = () => {
     canonical: "/course-1"
   };
 
-  const courseData = {
-    id: 'course-1',
+  const FALLBACK_COURSE_ID = 2;
+  const [courseData, setCourseData] = useState({
     title: 'ШІ РЕНДЕР НА ТЕЛЕФОНІ',
+    subtitle: 'ВІД ЕСКІЗУ ДО WOW ЗА 5 ХВИЛИН',
     price: '1000 ГРН',
-    oldPrice: '2500 ГРН'
-  };
+    old_price: '2500 ГРН',
+    start_date: '20.09.2025',
+    experience: '',
+    group_info: '',
+    duration: '',
+    author_name: 'Катерина Комар',
+    author_photo: '/ai-author-photo.png',
+    author_bio_1: '',
+    skills: ''
+  });
+  const [targetAudience, setTargetAudience] = useState([]);
+  const [courseProgram, setCourseProgram] = useState([]);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        // 1) Спробувати знайти курс напряму за типом через API
+        let selectedCourse = null;
+        const byTypeRes = await fetch('/api/courses?course_type=course-1');
+        const byTypeJson = await byTypeRes.json();
+        if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
+          selectedCourse = byTypeJson.data[0];
+        } else {
+          // 2) Фолбек: взяти зі списку курсів перший з course_type === 'course-1'
+          const listRes = await fetch('/api/courses');
+          const listJson = await listRes.json();
+          if (listJson.success && Array.isArray(listJson.data)) {
+            selectedCourse = listJson.data.find(c => c.course_type === 'course-1') || null;
+          }
+        }
+
+        // 3) Якщо знайшли id — завантажуємо деталі
+        const courseId = selectedCourse?.id || FALLBACK_COURSE_ID;
+        const res = await fetch(`/api/courses/${courseId}`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          setCourseData({
+            title: json.data.title || 'ШІ РЕНДЕР НА ТЕЛЕФОНІ',
+            subtitle: json.data.subtitle || 'ВІД ЕСКІЗУ ДО WOW ЗА 5 ХВИЛИН',
+            price: json.data.price || '1000 ГРН',
+            old_price: json.data.old_price || '2500 ГРН',
+            start_date: json.data.start_date || '20.09.2025',
+            experience: json.data.experience || '',
+            group_info: json.data.group_info || '',
+            duration: json.data.duration || '',
+            problem_title: json.data.problem_title || '',
+            problem_intro1: json.data.problem_intro1 || '',
+            problem_intro2: json.data.problem_intro2 || '',
+            result_title: json.data.result_title || '',
+            result_list: json.data.result_list || '',
+            result_conclusion: json.data.result_conclusion || '',
+            solution_title: json.data.solution_title || '',
+            solution_intro: json.data.solution_intro || '',
+            solution_how_title: json.data.solution_how_title || '',
+            solution_list: json.data.solution_list || '',
+            solution_conclusion: json.data.solution_conclusion || '',
+            author_name: json.data.author_name || 'Катерина Комар',
+            author_photo: json.data.author_photo || '/ai-author-photo.png',
+            author_bio_1: json.data.author_bio_1 || '',
+            skills: json.data.skills || ''
+          });
+
+          // Завантажити цільову аудиторію
+          try {
+            const taRes = await fetch(`/api/courses/${courseId}/target-audience`);
+            const taJson = await taRes.json();
+            if (taJson.success && Array.isArray(taJson.data)) {
+              setTargetAudience(taJson.data);
+            }
+          } catch (_) {}
+
+          // Завантажити програму курсу
+          try {
+            const progRes = await fetch(`/api/courses/${courseId}/program`);
+            const progJson = await progRes.json();
+            if (progJson.success && Array.isArray(progJson.data)) {
+              setCourseProgram(progJson.data);
+            }
+          } catch (_) {}
+        }
+      } catch (e) {
+        // no-op
+      }
+    };
+    fetchCourse();
+  }, []);
 
   return (
     <>
@@ -63,21 +148,21 @@ const Course1Page = () => {
           <div className="la-course-1__content">
             <div className="la-course-1__left">
               <p className="la-course-1__program-label">ПРОГРАМА</p>
-              <h1 className="la-course-1__title">ШІ РЕНДЕР НА ТЕЛЕФОНІ</h1>
-              <p className="la-course-1__subtitle">ВІД ЕСКІЗУ ДО WOW ЗА 5 ХВИЛИН</p>
+              <h1 className="la-course-1__title">{courseData.title}</h1>
+              <p className="la-course-1__subtitle">{courseData.subtitle}</p>
             </div>
             
             <div className="la-course-1__right">
               <div className="la-course-1__info-box">
                 <div className="la-course-1__info-content">
                   <p className="la-course-1__info-item">ДОСВІД</p>
-                  <p className="la-course-1__info-item-date">20.09.2025</p>
+                  <p className="la-course-1__info-item-date">{courseData.experience || '—'}</p>
                   <p className="la-course-1__info-item">СТАРТ</p>
-                  <p className="la-course-1__info-item-date">20.09.2025</p>
+                  <p className="la-course-1__info-item-date">{courseData.start_date}</p>
                   <p className="la-course-1__info-item">ГРУПА</p>
-                  <p className="la-course-1__info-item-date">20.09.2025</p>
+                  <p className="la-course-1__info-item-date">{courseData.group_info || '—'}</p>
                   <p className="la-course-1__info-item">ТРИВАЛІСТЬ</p>
-                  <p className="la-course-1__info-item-date">20.09.2025</p>
+                  <p className="la-course-1__info-item-date">{courseData.duration || '—'}</p>
                 </div>
                 <button 
                   className="la-course-1__button"
@@ -95,21 +180,29 @@ const Course1Page = () => {
       <section className="la-course-1__problem">
         <div className="la-course-1__problem-container">
           <h2 className="la-course-1__problem-title">
-            КОЛИ КЛІЄНТ КАЖЕ &quot;НЕ РОЗУМІЮ, ЯК ЦЕ ВИГЛЯДАТИМЕ&quot;
+            {courseData.problem_title}
           </h2>
           <div className="la-course-1__problem-content">
             <div className="la-course-1__problem-left">
               <div className="la-course-1__problem-text">
-                <p>
-    Знайома ситуація? Ви показуєте креслення свого проєкту, пояснюєте кожну деталь, а клієнт дивиться на папір з виразом &quot;я нічого не бачу&quot;. Тому що люди не читають креслення — вони дивляться на картинки.
-
-             </p>
-                <p>Клієнти приймають рішення серцем, а не розумом. Їм потрібно ПОБАЧИТИ, як їхній простір оживе. І якщо цієї картинки немає — немає і продажу.
-                </p>
+                { courseData.problem_intro1 && (
+                  <p>{courseData.problem_intro1}</p>
+                )}
+                { courseData.problem_intro2 && (
+                  <p>{courseData.problem_intro2}</p>
+                )}
               </div>
             </div>
             <div className="la-course-1__problem-right">
-              <div className="la-course-1__problem-square"></div>
+              <div className="la-course-1__problem-square">
+                <Image
+                  src="/course-1_photo-1.png"
+                  alt="Problem visual"
+                  width={500}
+                  height={500}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -118,44 +211,59 @@ const Course1Page = () => {
       {/* Result Section */}
       <section className="la-course-1__result">
         <div className="la-course-1__result-container">
-          <h2 className="la-course-1__result-title">Раніше якісна візуалізація означала:
+          <h2 className="la-course-1__result-title">{courseData.result_title}
           </h2>
           </div>
           <div className="la-course-1__result-line"></div>
           <div className="la-course-1__result-container">
           <ul className="la-course-1__result-list">
-            <li>Години роботи в 3ds Max або SketchUp</li>
-            <li>Потужний комп&apos;ютер, який гуде як літак</li>
-            <li>Купу плагінів та налаштувань</li>
-            <li>І все одно результат не завжди вражає</li>
+            {(courseData.result_list || '')
+              .split(/\r?\n/)
+              .filter(Boolean)
+              .map((item, idx) => (
+                <li key={idx}>{item}</li>
+            ))}
           </ul>
           </div>
+          {courseData.result_conclusion && (
           <div className="la-course-1__result-block">
-            <p>Результат? Більшість дизайнерів показують клієнтам &quot;сирі&quot; ескізи або купують дорогі рендери на стороні.</p>
+              <p>{courseData.result_conclusion}</p>
           </div>
+          )}
         
        </section>
 
        {/* Solution Section */}
        <section className="la-course-1__solution">
          <div className="la-course-1__solution-container">
+           {courseData.solution_title && (
            <h2 className="la-course-1__solution-title">
-             РІШЕННЯ ЗА НЕЙРОМЕРЕЖАМИ ТА ШТУЧНИМ ІНТЕЛЕКТОМ.
+               {courseData.solution_title}
            </h2>
+           )}
+           {courseData.solution_intro && (
            <p className="la-course-1__solution-description">
-             МИ СТВОРИЛИ LANDSCAPER RENDER ASSISTANT НА БАЗІ CHATGPT, ЯКИЙ РОЗУМІЄ СПЕЦИФІКУ ЛАНДШАФТНОГО ДИЗАЙНУ. ВІН НЕ ПРОСТО ПОКРАЩУЄ КАРТИНКУ — ВІН МИСЛИТЬ ЯК ПРОФЕСІОНАЛ.
+               {courseData.solution_intro}
            </p>
-           <p className="la-course-1__solution-description">ЯК ЦЕ ПРАЦЮЄ</p>
+           )}
+           {courseData.solution_how_title && (
+             <p className="la-course-1__solution-description">{courseData.solution_how_title}</p>
+           )}
            <div className="la-course-1__solution-block">
              <ul className="la-course-1__solution-list">
-               <li>РОБИТЕ ФОТО ЕСКІЗУ НА ТЕЛЕФОН (АБО ЗАВАНТАЖУЄТЕ ФАЙЛ)</li>
-               <li>ВІДПРАВЛЯЄТЕ В НАШ ШІ-АСИСТЕНТ</li>
-               <li>ЧЕРЕЗ 3-5 ХВИЛИН ОТРИМУЄТЕ РЕНДЕР, ЯКИЙ ХОЧЕТЬСЯ ПОКАЗАТИ ВСІМ</li>
+               {(courseData.solution_list || '')
+                 .split(/\r?\n/)
+                 .filter(Boolean)
+                 .map((item, idx) => (
+                   <li key={idx}>{item}</li>
+               ))}
              </ul>
            </div>
+           {courseData.solution_conclusion && (
            <p className="la-course-1__solution-conclusion">
-             БЕЗ СКЛАДНИХ ПРОГРАМ. БЕЗ ПОТУЖНОГО КОМП&apos;ЮТЕРА. ПРЯМО НА ТЕЛЕФОНІ.
+               {courseData.solution_conclusion}
            </p>
+           )}
          </div>
        </section>
 
@@ -169,34 +277,30 @@ const Course1Page = () => {
         <div className="la-course-1-target__inner">  
           <div className="la-course-1-target__content">
             <div className="la-course-1-target__list">
-              <div className="la-course-1-target__item">
-                <span className="la-course-1-target__number">01</span>
-                <p className="la-course-1-target__text">
-                Ландшафтним дизайнерам, які втомилися від &quot;а покажіть, як це виглядатиме&quot;
-                </p>
+              {(targetAudience.length > 0
+                ? targetAudience.map((item, index) => ({ number: String(index + 1).padStart(2, '0'), text: item.text }))
+                : [
+                    { number: '01', text: 'Ландшафтним дизайнерам, які втомилися від "а покажіть, як це виглядатиме"' },
+                    { number: '02', text: 'Архітекторам, які хочуть презентувати зовнішній вигляд будівель' },
+                    { number: '03', text: 'Інтер\'єрним дизайнерам для зонування приватних територій' },
+                    { number: '04', text: 'Всім, хто працює з простором і хоче продавати ідеї, а не пояснювати їх' }
+                  ]).map((it, idx) => (
+                    <div key={idx} className="la-course-1-target__item">
+                      <span className="la-course-1-target__number">{it.number}</span>
+                      <p className="la-course-1-target__text">{it.text}</p>
               </div>
-              <div className="la-course-1-target__item">
-                <span className="la-course-1-target__number">02</span>
-                <p className="la-course-1-target__text">
-                Архітекторам, які хочуть презентувати зовнішній вигляд будівельЄ ПОКРАЩИТИ СВОЇ НАВИЧКИ З ДИЗАЙНУ
-                </p>
-              </div>
-              <div className="la-course-1-target__item">
-                <span className="la-course-1-target__number">03</span>
-                <p className="la-course-1-target__text">
-                Інтер&apos;єрним дизайнерам для зонування приватних територій
-                </p>
-              </div>
-              <div className="la-course-1-target__item">
-                <span className="la-course-1-target__number">04</span>
-                <p className="la-course-1-target__text">
-                Всім, хто працює з простором і хоче продавати ідеї, а не пояснювати їх
-                </p>
-              </div>
-              
+                  ))}
             </div>
             
-            <div className="la-course-1-target__block"></div>
+            <div className="la-course-1-target__block">
+              <Image
+                src="/course-1_photo-2.png"
+                alt="Target visual"
+                width={684}
+                height={453}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
           </div>
         </div>
         
@@ -220,22 +324,23 @@ const Course1Page = () => {
               </div>
                 <div className="la-course-1-author__photo-mobile">
                   <Image
-                    src="/ai-author-photo.png"
-                    alt="Комар Катерина"
+                    src={courseData.author_photo || '/ai-author-photo.png'}
+                    alt={courseData.author_name || 'Автор курсу'}
                     width={611}
                     height={833}
                     className="la-course-1-author__image"
                   />
               </div>
-              <h2 className="la-course-1-author__name">Катерина Комар</h2>
+              <h2 className="la-course-1-author__name">{courseData.author_name}</h2>
               
               <div className="la-course-1__author__description">
               <ul className="la-course-1__author__description">
-                <li>Магістр садово-паркового дизайну </li>
-                <li>Співзасновниця LANDSCAPER Academy</li>
-                <li>8+ років досвіду в маркетингу для особистих брендів</li>
-                <li>2+ роки впроваджує ШІ-технології в роботу команди</li>
-                <li>маю сертифікат від Google по Основам ШІ</li>
+                {(courseData.author_bio_1 || `Магістр садово-паркового дизайну\nСпівзасновниця LANDSCAPER Academy\n8+ років досвіду в маркетингу для особистих брендів\n2+ роки впроваджує ШІ-технології в роботу команди\nмаю сертифікат від Google по Основам ШІ`)
+                  .split(/\r?\n/)
+                  .filter(Boolean)
+                  .map((line, idx) => (
+                    <li key={idx}>{line}</li>
+                ))}
               </ul>
               </div>
               
@@ -248,8 +353,8 @@ const Course1Page = () => {
           
           <div className="la-course-1-author__photo">
             <Image
-              src="/ai-author-photo.png"
-              alt="Комар Катерина"
+              src={courseData.author_photo || '/ai-author-photo.png'}
+              alt={courseData.author_name || 'Автор курсу'}
               width={611}
               height={833}
               className="la-course-1-author__image"
@@ -271,18 +376,12 @@ const Course1Page = () => {
 
         <div className="la-course-1-skills__inner">
           <ul className="la-course-1-skills__list">
-            <li className="la-course-1-skills__item">
-            Не маєте часу вчити складні програми для рендерингу
-            </li>
-            <li className="la-course-1-skills__item">
-            Хочете вражати клієнтів вже на першій зустрічі
-            </li>
-            <li className="la-course-1-skills__item">
-            Втомилися програвати конкурентам через &quot;некрасиві&quot; презентації
-            </li>
-            <li className="la-course-1-skills__item">
-            Розумієте, що візуалізація — це 50% успіху продажу
-            </li>
+            {(courseData.skills || '')
+              .split(/\r?\n/)
+              .filter(Boolean)
+              .map((skill, idx) => (
+                <li key={idx} className="la-course-1-skills__item">{skill}</li>
+              ))}
           </ul>
         </div>
 
@@ -294,7 +393,15 @@ const Course1Page = () => {
       {/* Contact Questions Section */}
       <section ref={questionsRef} className={`la-course-1-contact-questions animate-fade-in-up ${questionsVisible ? 'is-visible' : ''}`}>
         <div className="la-course-1-contact-questions__inner">
-          <div className="la-course-1-contact-questions__block"></div>
+          <div className="la-course-1-contact-questions__block">
+            <Image
+              src="/question_photo.png"
+              alt="Питання"
+              width={180}
+              height={133}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
           <div className="la-course-1-contact-questions__content">
             <h2 className="la-course-1-contact-questions__text">ВІДПОВІМО ВАМ НА ВСІ ПИТАННЯ</h2>
             <div className="la-course-1-contact-questions__buttons">
@@ -310,12 +417,10 @@ const Course1Page = () => {
         <div className="la-course-program__inner">
           <div className="la-course-program__header">
             <div className="la-course-program__left">
-              <p className="la-course-program__motto">
-              Від ескізу до WOW <br />за 5 хвилин
-              </p>
+              <p className="la-course-program__motto">{courseData.subtitle}</p>
             </div>
             <div className="la-course-program__right">
-              <h2 className="la-course-program__title">курс: ШІ рендер на телефоні</h2>
+              <h2 className="la-course-program__title">курс: {courseData.title}</h2>
             </div>
           </div>
         </div>
@@ -344,90 +449,55 @@ const Course1Page = () => {
           
           {isDropdownOpen && (
             <>
+              {(() => {
+                const modules = {};
+                courseProgram.forEach(item => {
+                  if (!modules[item.module_number]) {
+                    modules[item.module_number] = { module: null, lessons: [] };
+                  }
+                  if (item.lesson_number === null) {
+                    modules[item.module_number].module = item;
+                  } else {
+                    modules[item.module_number].lessons.push(item);
+                  }
+                });
+                return Object.keys(modules)
+                  .sort((a,b)=>parseFloat(a)-parseFloat(b))
+                  .map((mKey, idx) => {
+                    const m = modules[mKey];
+                    return (
+                      <React.Fragment key={mKey}>
               <div className="la-course-program__line"></div>
-              
               <div className="la-course-program__inner">
                 <div className="la-course-program__content">
                   <div className="la-course-program__module">
                     <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number">3 практичні уроки</h4>
-                    <h5 className="la-course-program__module-title">в записі:</h5>
+                                <h4 className="la-course-program__module-number">{m.module?.module_title || `Модуль ${mKey}`}</h4>
+                                {m.module?.module_description && (
+                                  <h5 className="la-course-program__module-title">{m.module.module_description}</h5>
+                                )}
                     </div>
-                  
                     <div className="la-course-program__lessons">
                       <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
+                                  {m.lessons.map((lesson, li) => (
+                                    <li key={li} className="la-course-program__lesson">
                         <p className="la-course-program__lesson-title">
-                        Урок 1: Що таке ШІ і як він працює для дизайнерів
+                                        {lesson.lesson_title}
                         </p>
+                                      {lesson.lesson_description && (
+                                        <p className="la-course-program__lesson-description">{lesson.lesson_description}</p>
+                                      )}
                       </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Урок 2: Як створювати візуалізацію за допомогою GPT
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Урок 3: Як використовувати промпти на різних платформах
-                        </p>
-                      </li>
+                                  ))}
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <div className="la-course-program__module-info">
-                    <h4 className="la-course-program__module-number"></h4>
-                    </div>
-                  
-                    <div className="la-course-program__lessons">
-                      <ul className="la-course-program__lesson-list">
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Доступ до LANDSCAPER Render Assistant
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Закритий Telegram-чат з підтримкою та живими кейсами
-                        </p>
-                      </li>
-                      
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Галерея &quot;До і після&quot; — реальні роботи студентів
-                        </p>
-                      </li>
-                      <li className="la-course-program__lesson">
-                        <p className="la-course-program__lesson-title">
-                        Шаблони промптів для різних стилів 
-                        </p>
-                      </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="la-course-program__line"></div>
-              
-              <div className="la-course-program__inner">
-                <div className="la-course-program__content">
-                  <div className="la-course-program__module">
-                    <h4 className="la-course-program__module-number">ВАЖЛИВО: в безкоштовній версії ChatGPT ви зможете робити 2 рендера в день. Якщо необхідно більше - потрбно додатково платна версія ChatGPT 20$.
-                    </h4>
-                  </div>
-                </div>
-              </div>
+                      </React.Fragment>
+                    );
+                  });
+              })()}
             </>
           )}
         
@@ -450,12 +520,12 @@ const Course1Page = () => {
            </div>
            
            <div className="la-course-1-order__card">
-             <h2 className="la-course-1-order__title">КУРС: ШІ РЕНДЕР НА ТЕЛЕФОНІ</h2>
-             <p className="la-course-1-order__start-date">СТАРТ 20.01.2025</p>
+            <h2 className="la-course-1-order__title">КУРС: {courseData.title}</h2>
+            <p className="la-course-1-order__start-date">СТАРТ {courseData.start_date}</p>
              
              <div className="la-course-1-order__pricing">
-               <span className="la-course-1-order__old-price">2500 ГРН</span>
-               <span className="la-course-1-order__new-price">1000 ГРН</span>
+              <span className="la-course-1-order__old-price">{courseData.old_price} ГРН</span>
+              <span className="la-course-1-order__new-price">{courseData.price} ГРН</span>
              </div>
              
              <button 

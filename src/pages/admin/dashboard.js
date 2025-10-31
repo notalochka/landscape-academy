@@ -307,6 +307,30 @@ const AdminDashboard = () => {
                 <div className="admin-section-card__arrow">→</div>
               </div>
 
+
+              <div 
+                className="admin-section-card admin-section-card--courses-universal"
+                onClick={() => navigateToSection('courses')}
+              >
+                <div className="admin-section-card__header">
+                  <div className="admin-section-card__icon">📚</div>
+                  <div className="admin-section-card__badge">Універсальне</div>
+                </div>
+                <div className="admin-section-card__content">
+                  <h3 className="admin-section-card__title">Управління курсами</h3>
+                  <p className="admin-section-card__description">
+                    Редагування курсів та додавання нових
+                  </p>
+                  <div className="admin-section-card__stats">
+                    <span className="admin-section-card__stat">
+                      <strong>3</strong> курси
+                    </span>
+                  </div>
+                </div>
+                <div className="admin-section-card__arrow">→</div>
+              </div>
+
+
               <div 
                 className="admin-section-card admin-section-card--analytics"
                 onClick={() => window.open('https://clarity.microsoft.com', '_blank')}

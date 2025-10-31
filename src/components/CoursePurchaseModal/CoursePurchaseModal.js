@@ -49,6 +49,18 @@ const CoursePurchaseModal = ({ isOpen, onClose, courseData }) => {
     return true;
   };
 
+  const formatUah = (value) => {
+    const s = `${value ?? ''}`.trim();
+    if (!s) return '';
+    return /[а-яА-Яa-zA-Z]/.test(s) ? s : `${s} грн`;
+  };
+
+  const getNumericPrice = (value) => {
+    const s = `${value ?? ''}`;
+    const digits = s.replace(/[^\d.]/g, '');
+    return digits || '0';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -69,7 +81,7 @@ const CoursePurchaseModal = ({ isOpen, onClose, courseData }) => {
         body: JSON.stringify({
           courseId: courseData.id,
           courseTitle: courseData.title,
-          price: courseData.price,
+          price: getNumericPrice(courseData.price),
           userName: formData.userName,
           userPhone: formData.userPhone,
           userEmail: formData.userEmail,
@@ -131,8 +143,8 @@ const CoursePurchaseModal = ({ isOpen, onClose, courseData }) => {
           <h2 className={styles.title}>Придбати курс</h2>
           <p className={styles.courseTitle}>{courseData?.title}</p>
           <div className={styles.price}>
-            <span className={styles.oldPrice}>{courseData?.oldPrice}</span>
-            <span className={styles.newPrice}>{courseData?.price}</span>
+            <span className={styles.oldPrice}>{formatUah(courseData?.old_price)}</span>
+            <span className={styles.newPrice}>{formatUah(courseData?.price)}</span>
           </div>
         </div>
 

@@ -111,6 +111,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
+  const [programCourses, setProgramCourses] = useState([]);
 
   // Fetch events
   useEffect(() => {
@@ -148,6 +149,21 @@ export default function Home() {
     };
 
     fetchBlogs();
+  }, []);
+
+  // Fetch first 3 courses for Programs section
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch('/api/courses');
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          const byId = [...json.data].sort((a, b) => a.id - b.id);
+          setProgramCourses(byId.slice(0, 3));
+        }
+      } catch (_) {}
+    };
+    fetchCourses();
   }, []);
 
   const defaultEvent = useMemo(() => {
@@ -373,14 +389,26 @@ export default function Home() {
             </div>
 
             <div id="programs-grid" className="la-programs__grid">
-              <ProgramCard title="Landscaper 5.0" subtitle="Перетвори хобі у бізнес" delay="animate-delay-100" href="/flagship" />
-              <ProgramCard title="ШІ рендер на телефоні" subtitle="Від ескізу до WOW за 5 хвилин" delay="animate-delay-200" href="/course-1" />
-              <ProgramCard
-                title="Метод роботи практикуючого ландшафтного дизайнера"
-                subtitle="Або в чому секрет виходу на високий чек"
-                delay="animate-delay-300"
-                href="/course-2"
-              />
+              {programCourses.map((course, idx) => {
+                const href = course.course_type === 'flagship'
+                  ? '/flagship'
+                  : course.course_type === 'course-1'
+                  ? '/course-1'
+                  : course.course_type === 'course-2'
+                  ? '/course-2'
+                  : `/courses/${course.id}`;
+                const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300'];
+                const delay = delays[idx] || '';
+                return (
+                  <ProgramCard
+                    key={course.id}
+                    title={course.title}
+                    subtitle={course.subtitle || ''}
+                    delay={delay}
+                    href={href}
+                  />
+                );
+              })}
             </div>
           </div>
         </section>
