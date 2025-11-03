@@ -30,7 +30,8 @@ export default function handler(req, res) {
           startDate: event.start_date || event.date,
           endDate: event.end_date || event.date,
           createdAt: event.created_at,
-          eventType: event.location && event.location !== 'Онлайн' ? 'offline' : 'online'
+          eventType: event.location && event.location !== 'Онлайн' ? 'offline' : 'online',
+          telegramLink: event.telegram_link
         };
         
         res.status(200).json({ success: true, data: formattedEvent });

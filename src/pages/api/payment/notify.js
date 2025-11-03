@@ -1,5 +1,7 @@
 // API для відправки повідомлення про успішну оплату в Telegram
 
+import db from '../../../lib/database';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -19,8 +21,27 @@ export default async function handler(req, res) {
   }
 
   // Спроба знайти реєстрацію події або покупку курсу
-  const registration = global.registrations?.[orderReference] || null;
-  const coursePurchase = global.coursePurchases?.[orderReference] || null;
+  let registration = global.registrations?.[orderReference] || null;
+  let coursePurchase = global.coursePurchases?.[orderReference] || null;
+
+  // DB fallback for course purchases (serverless cold starts may lose globals)
+  if (!registration && !coursePurchase) {
+    try {
+      const row = db.prepare('SELECT * FROM course_purchases WHERE transaction_id = ? LIMIT 1').get(orderReference);
+      if (row) {
+        coursePurchase = {
+          courseTitle: row.course_title,
+          userName: row.user_name,
+          userPhone: row.user_phone,
+          userEmail: row.user_email,
+          telegramUsername: row.telegram_username,
+          price: row.price,
+        };
+      }
+    } catch (e) {
+      console.error('DB lookup failed for course_purchases:', e);
+    }
+  }
 
   if (!registration && !coursePurchase) {
     return res.status(404).json({ 

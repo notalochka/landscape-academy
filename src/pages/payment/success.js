@@ -16,8 +16,7 @@ const PaymentSuccess = () => {
       fetchEvent();
       sendNotification();
     } else if (courseId && orderRef) {
-      fetchCourse();
-      fetchCourseTelegram();
+      fetchCourseDetails();
       sendNotification();
     }
   }, [eventId, courseId, orderRef]);
@@ -37,32 +36,19 @@ const PaymentSuccess = () => {
     }
   };
 
-  const fetchCourse = async () => {
-    try {
-      // Отримуємо дані курсу з глобального об'єкта
-      const courseData = global.coursePurchases?.[orderRef];
-      if (courseData) {
-        setCourse({
-          title: courseData.courseTitle,
-          id: courseData.courseId
-        });
-      }
-    } catch (error) {
-      console.error('Помилка завантаження курсу:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchCourseTelegram = async () => {
+  const fetchCourseDetails = async () => {
     try {
       const response = await fetch(`/api/courses/${courseId}`);
       const result = await response.json();
-      if (result.success) {
-        setCourseTelegram(result.data.telegram_link || "");
+      if (result.success && result.data) {
+        setCourse({ title: result.data.title, id: courseId });
+        // Підтримуємо і snake_case і camelCase
+        setCourseTelegram(result.data.telegramLink || result.data.telegram_link || "");
       }
     } catch (error) {
-      console.error('Помилка завантаження курсу (telegram):', error);
+      console.error('Помилка завантаження курсу (details):', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

@@ -18,7 +18,8 @@ export default function handler(req, res) {
       try {
         const course = db.prepare('SELECT * FROM courses WHERE id = ?').get(courseId);
         if (!course) return res.status(404).json({ success: false, message: 'Курс не знайдено' });
-        res.status(200).json({ success: true, data: course });
+        // Додаємо camelCase alias для зручності на фронтенді
+        res.status(200).json({ success: true, data: { ...course, telegramLink: course.telegram_link } });
       } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({ success: false, message: 'Помилка отримання курсу' });

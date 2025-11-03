@@ -30,6 +30,7 @@ const Course1Page = () => {
 
   const FALLBACK_COURSE_ID = 2;
   const [courseData, setCourseData] = useState({
+    id: null,
     title: 'ШІ РЕНДЕР НА ТЕЛЕФОНІ',
     subtitle: 'ВІД ЕСКІЗУ ДО WOW ЗА 5 ХВИЛИН',
     price: '1000 ГРН',
@@ -77,6 +78,7 @@ const Course1Page = () => {
         const json = await res.json();
         if (json.success && json.data) {
           setCourseData({
+            id: json.data.id || courseId,
             title: json.data.title || 'ШІ РЕНДЕР НА ТЕЛЕФОНІ',
             subtitle: json.data.subtitle || 'ВІД ЕСКІЗУ ДО WOW ЗА 5 ХВИЛИН',
             price: json.data.price || '1000 ГРН',
