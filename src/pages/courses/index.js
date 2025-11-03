@@ -7,24 +7,10 @@ import Footer from "../../components/Footer/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO } from "../../config/seo";
 
-const CoursesPage = () => {
+const CoursesPage = ({ courses: initialCourses = [] }) => {
   const coursesSEO = pagesSEO.courses;
   const [contentRef, contentVisible] = useScrollAnimation({ threshold: 0.1 });
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const res = await fetch('/api/courses');
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          const filtered = json.data.filter(c => c.course_type !== 'flagship');
-          setCourses(filtered);
-        }
-      } catch (_) {}
-    };
-    fetchCourses();
-  }, []);
+  const [courses, setCourses] = useState(initialCourses);
   const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
 
   return (
@@ -103,5 +89,32 @@ const CoursesPage = () => {
     </>
   );
 };
+
+// Статична генерація сторінки з ISR (Incremental Static Regeneration)
+export async function getStaticProps() {
+  try {
+    // Імпортуємо базу даних напряму
+    const db = require('../../lib/database');
+    
+    // Отримуємо курси з бази даних
+    const courses = db.prepare('SELECT * FROM courses WHERE is_active = 1 AND course_type != ? ORDER BY created_at DESC').all('flagship');
+    
+    return {
+      props: {
+        courses: courses || []
+      },
+      // Перегенеруємо сторінку кожні 5 хвилин
+      revalidate: 300
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps for courses:', error);
+    return {
+      props: {
+        courses: []
+      },
+      revalidate: 300
+    };
+  }
+}
 
 export default CoursesPage;

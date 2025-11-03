@@ -2,11 +2,17 @@ import crypto from 'crypto';
 import db from '../../../lib/database';
 
 export default async function handler(req, res) {
+  try {
+    console.log('🚀 COURSE PURCHASE API CALLED 🚀');
+    console.log('Method:', req.method);
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+    
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { courseId, courseTitle, price, userName, userPhone, userEmail, telegramUsername } = req.body;
+    console.log('📋 Extracted data:', { courseId, courseTitle, price, userName, userPhone, userEmail, telegramUsername });
 
   // WayForPay credentials
   const merchantAccount = process.env.MERCHANT_LOGIN;
@@ -107,5 +113,11 @@ export default async function handler(req, res) {
     createdAt: new Date().toISOString()
   };
 
+    console.log('✅ Sending response with wayforpayData');
   res.status(200).json({ success: true, data: wayforpayData });
+  } catch (error) {
+    console.error('💥 COURSE PURCHASE ERROR:', error);
+    console.error('💥 Stack trace:', error.stack);
+    res.status(500).json({ error: 'Internal server error', message: error.message });
+  }
 }

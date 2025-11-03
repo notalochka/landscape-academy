@@ -79,6 +79,11 @@ const initDatabase = () => {
   } catch (e) {
     // ignore if column exists
   }
+  try {
+    db.exec(`ALTER TABLE event_registrations ADD COLUMN notification_sent BOOLEAN DEFAULT 0`);
+  } catch (e) {
+    // ignore if column exists
+  }
 
   // Таблиця для покупок курсів
   db.exec(`
@@ -95,9 +100,17 @@ const initDatabase = () => {
       transaction_id TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       paid_at DATETIME,
+      notification_sent BOOLEAN DEFAULT 0,
       FOREIGN KEY (course_id) REFERENCES courses (id)
     )
   `);
+
+  // Safe migration: add notification_sent column if it doesn't exist
+  try {
+    db.exec(`ALTER TABLE course_purchases ADD COLUMN notification_sent BOOLEAN DEFAULT 0`);
+  } catch (e) {
+    // ignore if column exists
+  }
 
   // Таблиця для контактних форм
   db.exec(`
@@ -111,6 +124,32 @@ const initDatabase = () => {
     )
   `);
 };
+
+  // Створюємо індекси для оптимізації запитів
+  try {
+    // Індекси для курсів
+    db.exec('CREATE INDEX IF NOT EXISTS idx_courses_active ON courses(is_active)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_courses_type ON courses(course_type)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_courses_created ON courses(created_at)');
+    
+    // Індекси для подій
+    db.exec('CREATE INDEX IF NOT EXISTS idx_events_active ON events(is_active)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_events_start_date ON events(start_date)');
+    
+    // Індекси для блогів
+    db.exec('CREATE INDEX IF NOT EXISTS idx_blogs_published ON blogs(published)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_blogs_created ON blogs(created_at)');
+    
+    // Індекси для реєстрацій
+    db.exec('CREATE INDEX IF NOT EXISTS idx_event_registrations_transaction ON event_registrations(transaction_id)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_course_purchases_transaction ON course_purchases(transaction_id)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_event_registrations_status ON event_registrations(status)');
+    db.exec('CREATE INDEX IF NOT EXISTS idx_course_purchases_status ON course_purchases(status)');
+    
+    console.log('✅ Database indexes created successfully');
+  } catch (e) {
+    console.log('⚠️ Some indexes may already exist:', e.message);
+  }
 
 // Ініціалізуємо базу даних
 initDatabase();

@@ -10,6 +10,30 @@ export const config = {
   },
 };
 
+// Простий кеш в пам'яті для подій
+const eventsCache = new Map();
+const EVENTS_CACHE_TTL = 5 * 60 * 1000; // 5 хвилин
+
+function getCachedEvents(key) {
+  const cached = eventsCache.get(key);
+  if (cached && Date.now() - cached.timestamp < EVENTS_CACHE_TTL) {
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedEvents(key, data) {
+  eventsCache.set(key, {
+    data,
+    timestamp: Date.now()
+  });
+}
+
+function clearEventsCache() {
+  eventsCache.clear();
+  console.log('🗑️ Events cache cleared');
+}
+
 export default function handler(req, res) {
   const { method } = req;
 
@@ -17,6 +41,17 @@ export default function handler(req, res) {
     case 'GET':
       try {
         const { active } = req.query;
+        
+        // Створюємо ключ кешу
+        const cacheKey = `events_${active === 'true' ? 'active' : 'all'}`;
+        
+        // Перевіряємо кеш
+        const cachedData = getCachedEvents(cacheKey);
+        if (cachedData) {
+          console.log('📦 Returning cached events data');
+          res.setHeader('Cache-Control', 'public, max-age=300'); // 5 хвилин
+          return res.status(200).json({ success: true, data: cachedData });
+        }
         
         // Check if we're in production (Vercel) and use default data
         if (process.env.NODE_ENV === 'production' && !db) {
@@ -26,6 +61,9 @@ export default function handler(req, res) {
             events = events.filter(event => event.is_active === 1);
           }
           
+          // Зберігаємо в кеш
+          setCachedEvents(cacheKey, events);
+          res.setHeader('Cache-Control', 'public, max-age=300');
           return res.status(200).json({ success: true, data: events });
         }
         
@@ -38,6 +76,7 @@ export default function handler(req, res) {
         
         query += ' ORDER BY start_date ASC';
         
+        console.log('🔍 Fetching events from database');
         const events = db.prepare(query).all(params);
         
         // Додаємо поля для зворотної сумісності та форматуємо дати
@@ -72,6 +111,10 @@ export default function handler(req, res) {
           };
         }).filter(event => event.startDate); // Фільтруємо події без дат
         
+        // Зберігаємо в кеш
+        setCachedEvents(cacheKey, formattedEvents);
+        
+        res.setHeader('Cache-Control', 'public, max-age=300'); // 5 хвилин
         res.status(200).json({ success: true, data: formattedEvents });
       } catch (error) {
         console.error('Database error:', error);

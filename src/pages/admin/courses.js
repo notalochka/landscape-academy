@@ -51,6 +51,42 @@ const AdminCourses = () => {
   const [programCourseId, setProgramCourseId] = useState(null);
   const router = useRouter();
 
+  // Функція для часткового оновлення поля курсу
+  const updateCourseField = async (courseId, field, value) => {
+    try {
+      const response = await fetch(`/api/courses/${courseId}/update-field`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field, value }),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        // Оновлюємо курс в локальному стані
+        setCourses(prev => prev.map(course => 
+          course.id === courseId ? { ...course, [field]: value } : course
+        ));
+        
+        setMessage({ 
+          type: 'success', 
+          text: `Поле "${field}" успішно оновлено` 
+        });
+        
+        return true;
+      } else {
+        throw new Error(result.error || 'Помилка оновлення');
+      }
+    } catch (error) {
+      console.error('Error updating field:', error);
+      setMessage({ 
+        type: 'error', 
+        text: `Помилка оновлення поля "${field}": ${error.message}` 
+      });
+      return false;
+    }
+  };
+
   useEffect(() => {
     // Check if logged in
     const isLoggedIn = localStorage.getItem("adminLoggedIn");
@@ -216,6 +252,9 @@ const AdminCourses = () => {
         result = await response.json();
       } else {
         const text = await response.text();
+        if (response.status === 413) {
+          throw new Error(`Запит занадто великий (413). Можливо, зображення або контент курсу занадто великі. Спробуйте зменшити розмір зображень або розбити контент на частини.`);
+        }
         throw new Error(`Сервер повернув не JSON (${response.status}). Деталі: ${text.substring(0, 300)}...`);
       }
 
@@ -1105,7 +1144,24 @@ const AdminCourses = () => {
                     </h3>
                     <p className="admin-list__item-description">
                       {getCourseTypeLabel(course.course_type)} • 
-                      💰 {course.price} ₴ {course.old_price && `(${course.old_price} ₴)`} • 
+                      💰 
+                      <span 
+                        onClick={() => {
+                          const newPrice = prompt('Введіть нову ціну:', course.price);
+                          if (newPrice && newPrice !== course.price) {
+                            updateCourseField(course.id, 'price', newPrice);
+                          }
+                        }}
+                        style={{ 
+                          cursor: 'pointer', 
+                          textDecoration: 'underline',
+                          color: '#007bff'
+                        }}
+                        title="Клікніть для зміни ціни"
+                      >
+                        {course.price} ₴
+                      </span> 
+                      {course.old_price && `(${course.old_price} ₴)`} • 
                       📅 {course.start_date} • 
                       ⏱️ {course.duration}
                     </p>

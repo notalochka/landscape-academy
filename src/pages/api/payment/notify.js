@@ -90,8 +90,30 @@ export default async function handler(req, res) {
     });
   }
 
-  // Уникаємо дублювання повідомлень
+  // Уникаємо дублювання повідомлень - перевіряємо БД
+  try {
+    if (registration) {
+      const eventNotification = db.prepare('SELECT notification_sent FROM event_registrations WHERE transaction_id = ? AND notification_sent = 1').get(orderReference);
+      if (eventNotification) {
+        console.log('⚠️ Event notification already sent from DB check:', orderReference);
+        return res.status(200).json({ success: true, message: 'Повідомлення вже надіслано' });
+      }
+    }
+    
+    if (coursePurchase) {
+      const courseNotification = db.prepare('SELECT notification_sent FROM course_purchases WHERE transaction_id = ? AND notification_sent = 1').get(orderReference);
+      if (courseNotification) {
+        console.log('⚠️ Course notification already sent from DB check:', orderReference);
+        return res.status(200).json({ success: true, message: 'Повідомлення вже надіслано' });
+      }
+    }
+  } catch (e) {
+    console.error('Error checking notification status in DB:', e);
+  }
+
+  // Fallback: перевіряємо global objects
   if ((registration && registration.notificationSent) || (coursePurchase && coursePurchase.notificationSent)) {
+    console.log('⚠️ Notification already sent from global check:', orderReference);
     return res.status(200).json({ success: true, message: 'Повідомлення вже надіслано' });
   }
 

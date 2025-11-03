@@ -180,11 +180,26 @@ ${registration.telegramUsername ? `📱 Telegram: ${registration.telegramUsernam
 
 📅 Дата: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
 `;
-      const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
-      if (!tg.ok) {
-        console.error('Telegram send failed (event):', tg);
-      } else if (global.registrations?.[orderReference]) {
-        global.registrations[orderReference].notificationSent = true;
+      // Перевіряємо чи вже відправлено повідомлення
+      try {
+        const existingNotification = db.prepare('SELECT notification_sent FROM event_registrations WHERE transaction_id = ? AND notification_sent = 1').get(orderReference);
+        if (existingNotification) {
+          console.log('⚠️ Notification already sent for event registration:', orderReference);
+        } else {
+          const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
+          if (!tg.ok) {
+            console.error('Telegram send failed (event):', tg);
+          } else {
+            console.log('✅ Telegram notification sent for event registration');
+            // Позначаємо як відправлено в БД
+            db.prepare('UPDATE event_registrations SET notification_sent = 1 WHERE transaction_id = ?').run(orderReference);
+            if (global.registrations?.[orderReference]) {
+              global.registrations[orderReference].notificationSent = true;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error checking/updating notification status:', e);
       }
          } else if (coursePurchase) {
            coursePurchase.status = 'paid';
@@ -221,11 +236,26 @@ ${coursePurchase.telegramUsername ? `📱 Telegram: @${coursePurchase.telegramUs
 
 📅 Дата: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
 `;
-      const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
-      if (!tg.ok) {
-        console.error('Telegram send failed (course):', tg);
-      } else if (global.coursePurchases?.[orderReference]) {
-        global.coursePurchases[orderReference].notificationSent = true;
+      // Перевіряємо чи вже відправлено повідомлення
+      try {
+        const existingNotification = db.prepare('SELECT notification_sent FROM course_purchases WHERE transaction_id = ? AND notification_sent = 1').get(orderReference);
+        if (existingNotification) {
+          console.log('⚠️ Notification already sent for course purchase:', orderReference);
+        } else {
+          const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
+          if (!tg.ok) {
+            console.error('Telegram send failed (course):', tg);
+          } else {
+            console.log('✅ Telegram notification sent for course purchase');
+            // Позначаємо як відправлено в БД
+            db.prepare('UPDATE course_purchases SET notification_sent = 1 WHERE transaction_id = ?').run(orderReference);
+            if (global.coursePurchases?.[orderReference]) {
+              global.coursePurchases[orderReference].notificationSent = true;
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error checking/updating notification status:', e);
       }
     } else {
       console.log('Registration or course purchase not found for orderReference:', orderReference);

@@ -87,7 +87,7 @@ const BlogCard = ({ blog, delay = "" }) => {
   );
 };
 
-export default function Home() {
+export default function Home({ events: initialEvents = [], blogs: initialBlogs = [], courses: initialCourses = [] }) {
   const homeSEO = pagesSEO.home;
   const [eventsRef, eventsVisible] = useScrollAnimation({ threshold: 0.1 });
   const [programsRef, programsVisible] = useScrollAnimation({ threshold: 0.1 });
@@ -106,65 +106,14 @@ export default function Home() {
 
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [events, setEvents] = useState(initialEvents);
+  const [isLoading, setIsLoading] = useState(false); // Дані вже завантажені через ISR
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+  const [featuredBlogs, setFeaturedBlogs] = useState(initialBlogs);
   const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
-  const [programCourses, setProgramCourses] = useState([]);
+  const [programCourses, setProgramCourses] = useState(initialCourses);
 
-  // Fetch events
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch('/api/events?active=true');
-        const result = await response.json();
-        
-        if (result.success) {
-          setEvents(result.data);
-        }
-      } catch (error) {
-        console.error('Помилка завантаження подій:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  // Fetch blogs
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch('/api/blog?published=true');
-        const result = await response.json();
-        
-        if (result.success) {
-          setFeaturedBlogs(result.data.slice(0, 3));
-        }
-      } catch (error) {
-        console.error('Помилка завантаження блогів:', error);
-      }
-    };
-
-    fetchBlogs();
-  }, []);
-
-  // Fetch first 3 courses for Programs section
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const res = await fetch('/api/courses');
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          const byId = [...json.data].sort((a, b) => a.id - b.id);
-          setProgramCourses(byId.slice(0, 3));
-        }
-      } catch (_) {}
-    };
-    fetchCourses();
-  }, []);
+  // Дані завантажуються через getStaticProps (ISR) для швидшого завантаження
 
   const defaultEvent = useMemo(() => {
     if (events.length === 0) return null;
@@ -476,4 +425,41 @@ export default function Home() {
       />
     </>
   );
+}
+
+// Статична генерація головної сторінки з ISR
+export async function getStaticProps() {
+  try {
+    // Імпортуємо базу даних напряму
+    const db = require('../lib/database');
+    
+    // Отримуємо активні події
+    const events = db.prepare('SELECT * FROM events WHERE is_active = 1 ORDER BY start_date ASC').all();
+    
+    // Отримуємо опубліковані блоги (перші 3)
+    const blogs = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC LIMIT 3').all();
+    
+    // Отримуємо перші 3 курси для секції програм
+    const courses = db.prepare('SELECT * FROM courses WHERE is_active = 1 ORDER BY id ASC LIMIT 3').all();
+    
+    return {
+      props: {
+        events: events || [],
+        blogs: blogs || [],
+        courses: courses || []
+      },
+      // Перегенеруємо сторінку кожні 5 хвилин
+      revalidate: 300
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps for home:', error);
+    return {
+      props: {
+        events: [],
+        blogs: [],
+        courses: []
+      },
+      revalidate: 300
+    };
+  }
 }
