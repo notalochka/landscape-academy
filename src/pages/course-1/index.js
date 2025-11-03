@@ -68,6 +68,7 @@ const Course1Page = () => {
           if (listJson.success && Array.isArray(listJson.data)) {
             selectedCourse = listJson.data.find(c => c.course_type === 'course-1') || null;
           }
+          }
         }
 
         // 3) Якщо знайшли id — завантажуємо деталі
@@ -119,9 +120,7 @@ const Course1Page = () => {
             }
           } catch (_) {}
         }
-      } catch (e) {
-        // no-op
-      }
+      } catch (e) { /* no-op */ }
     };
     fetchCourse();
   }, [routeId]);
