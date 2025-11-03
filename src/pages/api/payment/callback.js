@@ -6,7 +6,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  console.log('Payment callback received:', req.body);
+  // WayForPay може надсилати тіло як application/x-www-form-urlencoded,
+  // де весь JSON приходить ключем об'єкту. Обробляємо цей випадок.
+  let body = req.body;
+  if (body && typeof body === 'object' && Object.keys(body).length === 1 && !('orderReference' in body)) {
+    const loneKey = Object.keys(body)[0];
+    try {
+      const parsed = JSON.parse(loneKey);
+      body = parsed;
+    } catch (_) {
+      // якщо не JSON — залишаємо як є, але це зламає перевірку підпису нижче
+    }
+  }
+
+  console.log('Payment callback normalized body:', body);
 
   const merchantSecretKey = process.env.MERCHANT_SECRET_KEY;
   const {
@@ -19,7 +32,7 @@ export default async function handler(req, res) {
     transactionStatus,
     reasonCode,
     merchantSignature
-  } = req.body;
+  } = body || {};
 
   // Перевірка підпису
   const signatureString = [
@@ -49,7 +62,26 @@ export default async function handler(req, res) {
     // Перевіряємо чи це реєстрація на подію
     const registration = global.registrations?.[orderReference];
     // Перевіряємо чи це покупка курсу
-    const coursePurchase = global.coursePurchases?.[orderReference];
+    let coursePurchase = global.coursePurchases?.[orderReference];
+    // fallback з БД, якщо global втрачено через холодний старт
+    if (!registration && !coursePurchase) {
+      try {
+        const row = db.prepare('SELECT * FROM course_purchases WHERE transaction_id = ? LIMIT 1').get(orderReference);
+        if (row) {
+          coursePurchase = {
+            courseId: row.course_id,
+            courseTitle: row.course_title,
+            userName: row.user_name,
+            userPhone: row.user_phone,
+            userEmail: row.user_email,
+            telegramUsername: row.telegram_username,
+            price: row.price,
+          };
+        }
+      } catch (e) {
+        console.error('DB lookup failed in callback:', e);
+      }
+    }
     
     if (registration) {
       registration.status = 'paid';

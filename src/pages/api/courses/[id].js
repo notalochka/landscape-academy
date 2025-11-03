@@ -108,7 +108,7 @@ export default function handler(req, res) {
           try { db.prepare('DELETE FROM course_target_audience WHERE course_id = ?').run(courseId); } catch (e) {}
           try { db.prepare('DELETE FROM course_program WHERE course_id = ?').run(courseId); } catch (e) {}
           try { db.prepare('DELETE FROM course_purchases WHERE course_id = ?').run(courseId); } catch (e) {}
-          db.prepare('DELETE FROM courses WHERE id = ?').run(courseId);
+        db.prepare('DELETE FROM courses WHERE id = ?').run(courseId);
         });
         tx();
 

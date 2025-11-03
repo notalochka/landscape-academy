@@ -185,7 +185,15 @@ const AdminCourses = () => {
         });
       }
 
-      const result = await response.json();
+      // Надійний парсинг відповіді (на проді іноді повертається HTML-сторінка помилки)
+      const contentType = response.headers.get('content-type') || '';
+      let result;
+      if (contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        throw new Error(`Сервер повернув не JSON (${response.status}). Деталі: ${text.substring(0, 300)}...`);
+      }
 
       if (result.success) {
         // Зберігаємо цільову аудиторію
@@ -218,7 +226,7 @@ const AdminCourses = () => {
       }
     } catch (error) {
       console.error('Помилка збереження:', error);
-      setMessage({ type: 'error', text: 'Не вдалося зберегти курс' });
+      setMessage({ type: 'error', text: `Не вдалося зберегти курс: ${error.message || error}` });
     } finally {
       setIsSaving(false);
     }
