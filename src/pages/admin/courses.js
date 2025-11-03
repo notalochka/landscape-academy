@@ -43,6 +43,7 @@ const AdminCourses = () => {
     authorPhoto: "",
     skills: "",
     courseType: "regular",
+    telegramLink: "",
     isActive: true
   });
   const [targetAudience, setTargetAudience] = useState([]);
@@ -114,6 +115,7 @@ const AdminCourses = () => {
           authorPhoto: courseResult.data.author_photo || "",
           skills: courseResult.data.skills || "",
           courseType: courseResult.data.course_type || "regular",
+          telegramLink: courseResult.data.telegram_link || "",
           isActive: !!courseResult.data.is_active
         });
       }
@@ -291,7 +293,8 @@ const AdminCourses = () => {
       authorBio2: "",
       authorPhoto: "",
       skills: "",
-      courseType: "regular",
+    courseType: "regular",
+    telegramLink: "",
       isActive: true
     });
     setTargetAudience([{ id: 1, text: '' }]);
@@ -453,6 +456,17 @@ const AdminCourses = () => {
                   placeholder="20.01.2025"
                 />
               </div>
+      <div className="admin-form__field admin-form__field--full">
+        <label className="admin-form__label">Telegram посилання (для доступу після оплати)</label>
+        <input
+          type="text"
+          name="telegramLink"
+          value={formData.telegramLink}
+          onChange={handleInputChange}
+          className="admin-form__input"
+          placeholder="https://t.me/+xxxxxxx"
+        />
+      </div>
               <div className="admin-form__field">
                     <label className="admin-form__label">Досвід</label>
                     <input
@@ -781,6 +795,17 @@ const AdminCourses = () => {
               {/* Поля тільки для флагманського курсу */}
               {isFlagship && (
                 <>
+                  <div className="admin-form__field admin-form__field--full">
+                    <label className="admin-form__label">Telegram посилання (для доступу після оплати)</label>
+                    <input
+                      type="text"
+                      name="telegramLink"
+                      value={formData.telegramLink}
+                      onChange={handleInputChange}
+                      className="admin-form__input"
+                      placeholder="https://t.me/+xxxxxxx"
+                    />
+                  </div>
                   <div className="admin-form__field">
                     <label className="admin-form__label">Тривалість</label>
                     <input

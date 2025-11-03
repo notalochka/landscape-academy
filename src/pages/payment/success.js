@@ -9,6 +9,7 @@ const PaymentSuccess = () => {
   const [event, setEvent] = useState(null);
   const [course, setCourse] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [courseTelegram, setCourseTelegram] = useState("");
 
   useEffect(() => {
     if (eventId && orderRef) {
@@ -16,6 +17,7 @@ const PaymentSuccess = () => {
       sendNotification();
     } else if (courseId && orderRef) {
       fetchCourse();
+      fetchCourseTelegram();
       sendNotification();
     }
   }, [eventId, courseId, orderRef]);
@@ -52,6 +54,18 @@ const PaymentSuccess = () => {
     }
   };
 
+  const fetchCourseTelegram = async () => {
+    try {
+      const response = await fetch(`/api/courses/${courseId}`);
+      const result = await response.json();
+      if (result.success) {
+        setCourseTelegram(result.data.telegram_link || "");
+      }
+    } catch (error) {
+      console.error('Помилка завантаження курсу (telegram):', error);
+    }
+  };
+
   const sendNotification = async () => {
     try {
       await fetch('/api/payment/notify', {
@@ -66,7 +80,7 @@ const PaymentSuccess = () => {
     }
   };
 
-  const hasTelegramLink = event?.telegramLink && event.telegramLink.trim() !== '';
+  const hasTelegramLink = (event?.telegramLink && event.telegramLink.trim() !== '') || (courseTelegram && courseTelegram.trim() !== '');
 
   return (
     <>
@@ -144,7 +158,7 @@ const PaymentSuccess = () => {
                 {event?.title || course?.title}
               </p>
 
-              {event && hasTelegramLink ? (
+              {hasTelegramLink ? (
                 <>
                   <p style={{
                     fontFamily: '"Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
@@ -153,10 +167,10 @@ const PaymentSuccess = () => {
                     margin: '0 0 32px 0',
                     fontWeight: '400'
                   }}>
-                    Приєднуйтесь до Telegram групи події:
+                    Приєднуйтесь до Telegram групи:
                   </p>
                   <a
-                    href={event.telegramLink}
+                    href={event?.telegramLink || courseTelegram}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

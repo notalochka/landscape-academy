@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   // WayForPay credentials
   const merchantAccount = process.env.MERCHANT_LOGIN;
   const merchantSecretKey = process.env.MERCHANT_SECRET_KEY;
-  const merchantDomainName = process.env.NEXT_PUBLIC_SITE_URL || 'https://landscape-academy.vercel.app';
+  const merchantDomainName = process.env.NEXT_PUBLIC_SITE_URL || 'https://landscaper.co.ua';
 
   // Генеруємо унікальний ID замовлення
   const orderReference = `COURSE_${courseId}_${Date.now()}`;

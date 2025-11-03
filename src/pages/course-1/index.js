@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import Image from "next/image";
 import SEO from "../../components/SEO/SEO";
@@ -45,16 +46,22 @@ const Course1Page = () => {
   const [targetAudience, setTargetAudience] = useState([]);
   const [courseProgram, setCourseProgram] = useState([]);
 
+  const router = useRouter();
+  const routeId = router && router.query ? router.query.id : null;
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {
+        // If specific id provided via query, prefer it
+        const paramId = routeId ? parseInt(routeId) : null;
         // 1) Спробувати знайти курс напряму за типом через API
         let selectedCourse = null;
-        const byTypeRes = await fetch('/api/courses?course_type=course-1');
-        const byTypeJson = await byTypeRes.json();
-        if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
-          selectedCourse = byTypeJson.data[0];
-        } else {
+        if (!paramId) {
+          const byTypeRes = await fetch('/api/courses?course_type=course-1');
+          const byTypeJson = await byTypeRes.json();
+          if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
+            selectedCourse = byTypeJson.data[0];
+          } else {
           // 2) Фолбек: взяти зі списку курсів перший з course_type === 'course-1'
           const listRes = await fetch('/api/courses');
           const listJson = await listRes.json();
@@ -64,7 +71,7 @@ const Course1Page = () => {
         }
 
         // 3) Якщо знайшли id — завантажуємо деталі
-        const courseId = selectedCourse?.id || FALLBACK_COURSE_ID;
+        const courseId = paramId || selectedCourse?.id || FALLBACK_COURSE_ID;
         const res = await fetch(`/api/courses/${courseId}`);
         const json = await res.json();
         if (json.success && json.data) {
@@ -117,7 +124,7 @@ const Course1Page = () => {
       }
     };
     fetchCourse();
-  }, []);
+  }, [routeId]);
 
   return (
     <>

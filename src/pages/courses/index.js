@@ -65,7 +65,11 @@ const CoursesPage = () => {
             
             <div className="la-courses-content__courses">
               {courses.map(course => {
-                const href = course.course_type === 'course-1' ? '/course-1' : course.course_type === 'course-2' ? '/course-2' : `/courses/${course.id}`;
+                const href = course.course_type === 'course-1'
+                  ? `/course-1?id=${course.id}`
+                  : course.course_type === 'course-2'
+                    ? `/course-2?id=${course.id}`
+                    : `/courses/${course.id}`;
                 return (
                   <Link key={course.id} href={href} className="la-courses-content__course-link">
                     <div className="la-courses-content__course">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import Image from "next/image";
 import SEO from "../../components/SEO/SEO";
@@ -51,28 +52,33 @@ const Course2Page = () => {
   const [targetAudienceData, setTargetAudienceData] = useState([]);
   const [courseProgram, setCourseProgram] = useState([]);
 
+  const router = useRouter();
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {
+        const paramId = router.query?.id ? parseInt(router.query.id) : null;
         let selectedCourse = null;
-        let byType = await fetch('/api/courses?course_type=course-2');
-        const byTypeJson = await byType.json();
-        if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
-          selectedCourse = byTypeJson.data[0];
-        } else {
-          // спробувати без фільтру активності
-          byType = await fetch('/api/courses?course_type=course-2&all=1');
-          const byTypeAllJson = await byType.json();
-          if (byTypeAllJson.success && Array.isArray(byTypeAllJson.data) && byTypeAllJson.data.length > 0) {
-            selectedCourse = byTypeAllJson.data[0];
+        if (!paramId) {
+          let byType = await fetch('/api/courses?course_type=course-2');
+          const byTypeJson = await byType.json();
+          if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
+            selectedCourse = byTypeJson.data[0];
+          } else {
+            // спробувати без фільтру активності
+            byType = await fetch('/api/courses?course_type=course-2&all=1');
+            const byTypeAllJson = await byType.json();
+            if (byTypeAllJson.success && Array.isArray(byTypeAllJson.data) && byTypeAllJson.data.length > 0) {
+              selectedCourse = byTypeAllJson.data[0];
+            }
+            // резервний варіант
+            const list = await fetch('/api/courses');
+            const listJson = await list.json();
+            if (listJson.success) selectedCourse = listJson.data.find(c => c.course_type === 'course-2');
           }
-          // резервний варіант
-          const list = await fetch('/api/courses');
-          const listJson = await list.json();
-          if (listJson.success) selectedCourse = listJson.data.find(c => c.course_type === 'course-2');
         }
 
-        const courseId = selectedCourse?.id || FALLBACK_COURSE_ID;
+        const courseId = paramId || selectedCourse?.id || FALLBACK_COURSE_ID;
         const res = await fetch(`/api/courses/${courseId}`);
         const json = await res.json();
         if (json.success && json.data) {
