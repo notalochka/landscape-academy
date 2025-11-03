@@ -153,6 +153,10 @@ ${coursePurchase.userEmail ? `📧 *Email:* ${coursePurchase.userEmail}` : ''}
 
           const telegramData = await telegramResponse.json();
           console.log('Telegram notification sent for course purchase:', telegramData);
+          // Позначаємо, що сповіщення відправлено, щоб уникати дублювань
+          if (global.coursePurchases?.[orderReference]) {
+            global.coursePurchases[orderReference].notificationSent = true;
+          }
         } catch (error) {
           console.error('Помилка відправки в Telegram для курсу:', error);
         }
