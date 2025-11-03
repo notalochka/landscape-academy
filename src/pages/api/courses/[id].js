@@ -102,10 +102,23 @@ export default function handler(req, res) {
       try {
         const existing = db.prepare('SELECT * FROM courses WHERE id = ?').get(courseId);
         if (!existing) return res.status(404).json({ success: false, message: 'Курс не знайдено' });
-        db.prepare('DELETE FROM courses WHERE id = ?').run(courseId);
+
+        const tx = db.transaction(() => {
+          // Видаляємо залежні записи, щоб не порушити FOREIGN KEY
+          try { db.prepare('DELETE FROM course_target_audience WHERE course_id = ?').run(courseId); } catch (e) {}
+          try { db.prepare('DELETE FROM course_program WHERE course_id = ?').run(courseId); } catch (e) {}
+          try { db.prepare('DELETE FROM course_purchases WHERE course_id = ?').run(courseId); } catch (e) {}
+          db.prepare('DELETE FROM courses WHERE id = ?').run(courseId);
+        });
+        tx();
+
         res.status(200).json({ success: true, data: existing });
       } catch (error) {
         console.error('Database error:', error);
+        // Більш зрозуміле повідомлення для FOREIGN KEY помилки
+        if (String(error && error.code).includes('SQLITE_CONSTRAINT')) {
+          return res.status(409).json({ success: false, message: 'Неможливо видалити курс: є повʼязані записи. Спершу видаліть програму/аудиторію/покупки.' });
+        }
         res.status(500).json({ success: false, message: 'Помилка видалення курсу' });
       }
       break; }
