@@ -143,7 +143,7 @@ const FlagshipPage = () => {
   });
 
   const purchaseCourseData = {
-    id: 'flagship-course',
+    id: 1,
     title: `${courseData.mainTitle} - ${courseData.subtitle}`,
     price: `${courseData.price} ГРН`,
     oldPrice: `${courseData.oldPrice} ГРН`

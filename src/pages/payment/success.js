@@ -14,10 +14,8 @@ const PaymentSuccess = () => {
   useEffect(() => {
     if (eventId && orderRef) {
       fetchEvent();
-      sendNotification();
     } else if (courseId && orderRef) {
       fetchCourseDetails();
-      sendNotification();
     }
   }, [eventId, courseId, orderRef]);
 
@@ -52,19 +50,7 @@ const PaymentSuccess = () => {
     }
   };
 
-  const sendNotification = async () => {
-    try {
-      await fetch('/api/payment/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderReference: orderRef
-        })
-      });
-    } catch (error) {
-      console.error('Помилка відправки повідомлення:', error);
-    }
-  };
+  // Notifications are sent from server-side callback after payment approval.
 
   const hasTelegramLink = (event?.telegramLink && event.telegramLink.trim() !== '') || (courseTelegram && courseTelegram.trim() !== '');
 

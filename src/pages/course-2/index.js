@@ -30,6 +30,7 @@ const Course2Page = () => {
 
   const FALLBACK_COURSE_ID = 3;
   const [courseData, setCourseData] = useState({
+    id: null,
     title: 'Метод роботи практикуючого ландшафтного дизайнера',
     subtitle: 'Або в чому секрет виходу на високий чек',
     price: '',
@@ -83,6 +84,7 @@ const Course2Page = () => {
         const json = await res.json();
         if (json.success && json.data) {
           setCourseData({
+            id: json.data.id || courseId,
             title: json.data.title || 'Метод роботи практикуючого ландшафтного дизайнера',
             subtitle: json.data.subtitle || 'Або в чому секрет виходу на високий чек',
             price: json.data.price || '',
