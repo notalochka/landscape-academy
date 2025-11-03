@@ -8,8 +8,6 @@ const ClarityAnalytics = () => {
     return null; // Не показуємо якщо ID не налаштований
   }
 
-  console.log('🔍 Clarity Analytics підключено з ID:', clarityId);
-
   return (
     <Script
       id="clarity-analytics"

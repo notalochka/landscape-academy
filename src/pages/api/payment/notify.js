@@ -4,12 +4,18 @@ import db from '../../../lib/database';
 import { sendTelegramMessage } from '../../../lib/telegram';
 
 export default async function handler(req, res) {
+  console.log('🔔 NOTIFY WEBHOOK CALLED 🔔');
+  console.log('📋 Method:', req.method);
+  console.log('📋 Headers:', JSON.stringify(req.headers, null, 2));
+  console.log('📋 Body:', JSON.stringify(req.body, null, 2));
+  
   if (req.method !== 'POST') {
+    console.log('❌ Method not allowed:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { orderReference } = req.body;
-  console.log('Notify webhook called with orderReference:', orderReference);
+  console.log('🎯 Notify webhook called with orderReference:', orderReference);
 
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;

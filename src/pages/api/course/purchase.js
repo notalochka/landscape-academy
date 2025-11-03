@@ -60,6 +60,11 @@ export default async function handler(req, res) {
   };
 
   // Зберігаємо дані покупки курсу в базу даних
+  console.log('💾 Saving course purchase to DB:', {
+    courseId, courseTitle, userName, userPhone, userEmail, 
+    telegramUsername, price, orderReference
+  });
+  
   try {
     const insertPurchase = db.prepare(`
       INSERT INTO course_purchases (
@@ -68,7 +73,7 @@ export default async function handler(req, res) {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     
-    insertPurchase.run(
+    const result = insertPurchase.run(
       courseId,
       courseTitle,
       userName,
@@ -79,8 +84,10 @@ export default async function handler(req, res) {
       'pending',
       orderReference
     );
+    
+    console.log('✅ Course purchase saved to DB:', result);
   } catch (error) {
-    console.error('Database error:', error);
+    console.error('❌ Database error:', error);
   }
 
   // Зберігаємо дані покупки курсу для подальшої обробки (для Wayforpay callback)

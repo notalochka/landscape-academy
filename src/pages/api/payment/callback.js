@@ -3,7 +3,14 @@ import db from '../../../lib/database';
 import { sendTelegramMessage } from '../../../lib/telegram';
 
 export default async function handler(req, res) {
+  console.log('🔥 PAYMENT CALLBACK CALLED 🔥');
+  console.log('📋 Method:', req.method);
+  console.log('📋 Headers:', JSON.stringify(req.headers, null, 2));
+  console.log('📋 Raw body type:', typeof req.body);
+  console.log('📋 Raw body:', JSON.stringify(req.body, null, 2));
+  
   if (req.method !== 'POST') {
+    console.log('❌ Method not allowed:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -180,16 +187,16 @@ ${registration.telegramUsername ? `📱 Telegram: ${registration.telegramUsernam
         global.registrations[orderReference].notificationSent = true;
       }
          } else if (coursePurchase) {
-          coursePurchase.status = 'paid';
-          coursePurchase.paidAt = new Date().toISOString();
+           coursePurchase.status = 'paid';
+           coursePurchase.paidAt = new Date().toISOString();
 
            // Оновлюємо статус в базі даних
            try {
-            const updatePurchase = db.prepare(`
-              UPDATE course_purchases 
+             const updatePurchase = db.prepare(`
+               UPDATE course_purchases 
               SET status = 'paid', paid_at = CURRENT_TIMESTAMP 
-              WHERE transaction_id = ?
-            `);
+               WHERE transaction_id = ?
+             `);
             updatePurchase.run(orderReference);
            } catch (error) {
              console.error('Database update error:', error);

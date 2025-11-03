@@ -78,6 +78,11 @@ export default async function handler(req, res) {
   };
 
   // Persist registration to DB to avoid losing data on serverless cold starts
+  console.log('💾 Saving event registration to DB:', {
+    eventId, eventTitle, userName, userPhone, userEmail, 
+    telegramUsername, price, orderReference
+  });
+  
   try {
     const insertRegistration = db.prepare(`
       INSERT INTO event_registrations (
@@ -85,7 +90,7 @@ export default async function handler(req, res) {
         telegram_username, status, transaction_id
       ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
-    insertRegistration.run(
+    const result = insertRegistration.run(
       eventId,
       userName,
       userPhone,
@@ -94,8 +99,9 @@ export default async function handler(req, res) {
       'pending',
       orderReference
     );
+    console.log('✅ Event registration saved to DB:', result);
   } catch (e) {
-    console.error('Database insert error (event_registrations):', e);
+    console.error('❌ Database insert error (event_registrations):', e);
   }
 
   res.status(200).json({ success: true, data: wayforpayData });

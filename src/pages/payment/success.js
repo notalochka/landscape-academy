@@ -24,22 +24,35 @@ const PaymentSuccess = () => {
     const sendNotify = async () => {
       try {
         if (!orderRef) {
-          console.log('No orderRef, skipping notify');
+          console.log('❌ No orderRef, skipping notify');
           return;
         }
-        console.log('Calling notify webhook with orderReference:', orderRef);
+        console.log('🚀 Calling notify webhook with orderReference:', orderRef);
+        console.log('📋 Full query params:', { orderRef, eventId, courseId });
+        
         const response = await fetch('/api/payment/notify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderReference: orderRef })
         });
+        
+        console.log('📡 Response status:', response.status);
+        console.log('📡 Response headers:', Object.fromEntries(response.headers.entries()));
+        
         const result = await response.json();
-        console.log('Notify webhook response:', result);
+        console.log('✅ Notify webhook response:', result);
+        
+        if (!result.success) {
+          console.error('❌ Notify failed:', result.message);
+        }
       } catch (e) {
-        console.error('Notify webhook error:', e);
+        console.error('💥 Notify webhook error:', e);
       }
     };
-    sendNotify();
+    
+    // Додаємо невелику затримку для впевненості що сторінка повністю завантажилась
+    const timer = setTimeout(sendNotify, 1000);
+    return () => clearTimeout(timer);
   }, [orderRef]);
 
   const fetchEvent = async () => {
