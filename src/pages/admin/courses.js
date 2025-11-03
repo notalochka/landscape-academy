@@ -64,6 +64,15 @@ const AdminCourses = () => {
   const fetchCourses = async () => {
     try {
       const response = await fetch('/api/courses?all=1');
+      if (response.status === 304) {
+        // Немає змін — залишаємо поточний список
+        return;
+      }
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Очікував JSON, отримав ${response.status}. Деталі: ${text.substring(0, 300)}...`);
+      }
       const result = await response.json();
       
       if (result.success) {
@@ -81,7 +90,14 @@ const AdminCourses = () => {
     try {
       // Завантажуємо дані курсу
       const courseResponse = await fetch(`/api/courses/${courseId}`);
-      const courseResult = await courseResponse.json();
+      if (courseResponse.status !== 304) {
+        const ct = courseResponse.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) {
+          const t = await courseResponse.text();
+          throw new Error(`Курс: очікував JSON, отримав ${courseResponse.status}. Деталі: ${t.substring(0, 300)}...`);
+        }
+      }
+      const courseResult = courseResponse.status === 304 ? { success: false } : await courseResponse.json();
       
       if (courseResult.success) {
         setFormData({
@@ -122,7 +138,15 @@ const AdminCourses = () => {
 
       // Завантажуємо цільову аудиторію
       const audienceResponse = await fetch(`/api/courses/${courseId}/target-audience`);
-      const audienceResult = await audienceResponse.json();
+      let audienceResult = { success: false };
+      if (audienceResponse.status !== 304) {
+        const act = audienceResponse.headers.get('content-type') || '';
+        if (!act.includes('application/json')) {
+          const t = await audienceResponse.text();
+          throw new Error(`Аудиторія: очікував JSON, отримав ${audienceResponse.status}. Деталі: ${t.substring(0, 300)}...`);
+        }
+        audienceResult = await audienceResponse.json();
+      }
       
       if (audienceResult.success) {
         if (audienceResult.data.length > 0) {
