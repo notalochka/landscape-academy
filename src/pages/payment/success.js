@@ -19,6 +19,23 @@ const PaymentSuccess = () => {
     }
   }, [eventId, courseId, orderRef]);
 
+  // Trigger Telegram notify webhook on success page load (idempotent on server)
+  useEffect(() => {
+    const sendNotify = async () => {
+      try {
+        if (!orderRef) return;
+        await fetch('/api/payment/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderReference: orderRef })
+        });
+      } catch (e) {
+        console.error('Notify webhook error:', e);
+      }
+    };
+    sendNotify();
+  }, [orderRef]);
+
   const fetchEvent = async () => {
     try {
       const response = await fetch(`/api/events/${eventId}`);

@@ -61,10 +61,24 @@ const initDatabase = () => {
       user_email TEXT,
       telegram_username TEXT,
       status TEXT DEFAULT 'pending',
+      transaction_id TEXT,
+      paid_at DATETIME,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (event_id) REFERENCES events (id)
     )
   `);
+
+  // Safe migration: add missing columns if the table already exists without them
+  try {
+    db.exec(`ALTER TABLE event_registrations ADD COLUMN transaction_id TEXT`);
+  } catch (e) {
+    // ignore if column exists
+  }
+  try {
+    db.exec(`ALTER TABLE event_registrations ADD COLUMN paid_at DATETIME`);
+  } catch (e) {
+    // ignore if column exists
+  }
 
   // Таблиця для покупок курсів
   db.exec(`

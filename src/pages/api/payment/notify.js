@@ -1,6 +1,7 @@
 // API для відправки повідомлення про успішну оплату в Telegram
 
 import db from '../../../lib/database';
+import { sendTelegramMessage } from '../../../lib/telegram';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -40,6 +41,30 @@ export default async function handler(req, res) {
       }
     } catch (e) {
       console.error('DB lookup failed for course_purchases:', e);
+    }
+  }
+
+  // DB fallback for event registrations by transaction_id
+  if (!registration && !coursePurchase) {
+    try {
+      const regRow = db.prepare('SELECT * FROM event_registrations WHERE transaction_id = ? LIMIT 1').get(orderReference);
+      if (regRow) {
+        let eventTitle = '';
+        try {
+          const ev = db.prepare('SELECT title FROM events WHERE id = ? LIMIT 1').get(regRow.event_id);
+          eventTitle = ev?.title || '';
+        } catch (_) {}
+        registration = {
+          eventTitle,
+          userName: regRow.user_name,
+          userPhone: regRow.user_phone,
+          userEmail: regRow.user_email,
+          telegramUsername: regRow.telegram_username,
+          price: '—',
+        };
+      }
+    } catch (e) {
+      console.error('DB lookup failed for event_registrations:', e);
     }
   }
 
@@ -88,19 +113,7 @@ ${coursePurchase.telegramUsername ? `📱 *Telegram:* @${coursePurchase.telegram
   }
 
   try {
-    const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    const response = await fetch(telegramUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'Markdown',
-      }),
-    });
-
-    const data = await response.json();
-
+    const data = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
     console.log('Telegram API response:', data);
 
     if (data.ok) {

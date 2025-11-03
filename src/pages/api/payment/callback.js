@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import db from '../../../lib/database';
+import { sendTelegramMessage } from '../../../lib/telegram';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
     console.log('Payment approved in callback for:', orderReference);
     
     // Перевіряємо чи це реєстрація на подію
-    const registration = global.registrations?.[orderReference];
+    let registration = global.registrations?.[orderReference];
     // Перевіряємо чи це покупка курсу
     let coursePurchase = global.coursePurchases?.[orderReference];
     // fallback з БД, якщо global втрачено через холодний старт
@@ -88,54 +89,71 @@ export default async function handler(req, res) {
         console.error('DB lookup failed in callback:', e);
       }
     }
+
+    // fallback для реєстрації події з БД за transaction_id
+    if (!registration) {
+      try {
+        const regRow = db.prepare('SELECT * FROM event_registrations WHERE transaction_id = ? LIMIT 1').get(orderReference);
+        if (regRow) {
+          let eventTitle = '';
+          try {
+            const ev = db.prepare('SELECT title FROM events WHERE id = ? LIMIT 1').get(regRow.event_id);
+            eventTitle = ev?.title || '';
+          } catch (_) {}
+          registration = {
+            eventId: regRow.event_id,
+            eventTitle,
+            userName: regRow.user_name,
+            userPhone: regRow.user_phone,
+            userEmail: regRow.user_email,
+            telegramUsername: regRow.telegram_username,
+            price: '—',
+          };
+        }
+      } catch (e) {
+        console.error('DB lookup failed in callback (event_registrations):', e);
+      }
+    }
     
     if (registration) {
       registration.status = 'paid';
       registration.transactionId = authCode;
       registration.paidAt = new Date().toISOString();
 
+      // Оновити статус у БД, якщо запис існує
+      try {
+        const upd = db.prepare(`
+          UPDATE event_registrations
+          SET status = 'paid', transaction_id = ?, paid_at = CURRENT_TIMESTAMP
+          WHERE transaction_id = ?
+        `);
+        upd.run(authCode, orderReference);
+      } catch (e) {
+        console.error('DB update failed (event_registrations):', e);
+      }
+
       console.log('Sending Telegram notification for registration:', registration);
 
-      // Відправити повідомлення в Telegram напряму
+      // Відправити повідомлення в Telegram через утиліту
       const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
       const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+      const message = `
+💰 ПЛАТНА РЕЄСТРАЦІЯ НА ПОДІЮ
 
-      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-        try {
-          const message = `
-💰 *ПЛАТНА РЕЄСТРАЦІЯ НА ПОДІЮ*
+🎯 Подія: ${registration.eventTitle}
+👤 Ім'я: ${registration.userName}
+📱 Телефон: ${registration.userPhone}
+${registration.userEmail ? `📧 Email: ${registration.userEmail}` : ''}
+${registration.telegramUsername ? `📱 Telegram: ${registration.telegramUsername}` : ''}
+💵 Сума: ${registration.price}
+✅ Статус: ОПЛАЧЕНО (callback)
+🔑 ID транзакції: ${authCode}
 
-🎯 *Подія:* ${registration.eventTitle}
-👤 *Ім'я:* ${registration.userName}
-📱 *Телефон:* ${registration.userPhone}
-${registration.userEmail ? `📧 *Email:* ${registration.userEmail}` : ''}
-${registration.telegramUsername ? `📱 *Telegram:* ${registration.telegramUsername}` : ''}
-💵 *Сума:* ${registration.price}
-✅ *Статус:* ОПЛАЧЕНО (callback)
-🔑 *ID транзакції:* ${authCode}
-
-📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
+📅 Дата: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
 `;
-
-          const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-          
-          const telegramResponse = await fetch(telegramUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: message,
-              parse_mode: 'Markdown',
-            }),
-          });
-
-          const telegramData = await telegramResponse.json();
-          console.log('Telegram notification sent:', telegramData);
-        } catch (error) {
-          console.error('Помилка відправки в Telegram:', error);
-        }
-      } else {
-        console.error('Telegram credentials not configured');
+      const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
+      if (!tg.ok) {
+        console.error('Telegram send failed (event):', tg);
       }
          } else if (coursePurchase) {
            coursePurchase.status = 'paid';
@@ -156,50 +174,28 @@ ${registration.telegramUsername ? `📱 *Telegram:* ${registration.telegramUsern
 
       console.log('Sending Telegram notification for course purchase:', coursePurchase);
 
-      // Відправити повідомлення в Telegram напряму
+      // Відправити повідомлення в Telegram через утиліту
       const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
       const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+      const message = `
+🎓 ПОКУПКА КУРСУ - ОПЛАЧЕНО
 
-      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-        try {
-          const message = `
-🎓 *ПОКУПКА КУРСУ - ОПЛАЧЕНО*
+📚 Курс: ${coursePurchase.courseTitle}
+👤 Ім'я: ${coursePurchase.userName}
+📱 Телефон: ${coursePurchase.userPhone}
+${coursePurchase.userEmail ? `📧 Email: ${coursePurchase.userEmail}` : ''}
+${coursePurchase.telegramUsername ? `📱 Telegram: @${coursePurchase.telegramUsername}` : ''}
+💵 Сума: ${coursePurchase.price}
+✅ Статус: ОПЛАЧЕНО (callback)
+🔑 ID транзакції: ${authCode}
 
-📚 *Курс:* ${coursePurchase.courseTitle}
-👤 *Ім'я:* ${coursePurchase.userName}
-📱 *Телефон:* ${coursePurchase.userPhone}
-${coursePurchase.userEmail ? `📧 *Email:* ${coursePurchase.userEmail}` : ''}
-📱 *Telegram:* @${coursePurchase.telegramUsername}
-💵 *Сума:* ${coursePurchase.price}
-✅ *Статус:* ОПЛАЧЕНО (callback)
-🔑 *ID транзакції:* ${authCode}
-
-📅 *Дата:* ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
+📅 Дата: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kiev' })}
 `;
-
-          const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-          
-          const telegramResponse = await fetch(telegramUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: message,
-              parse_mode: 'Markdown',
-            }),
-          });
-
-          const telegramData = await telegramResponse.json();
-          console.log('Telegram notification sent for course purchase:', telegramData);
-          // Позначаємо, що сповіщення відправлено, щоб уникати дублювань
-          if (global.coursePurchases?.[orderReference]) {
-            global.coursePurchases[orderReference].notificationSent = true;
-          }
-        } catch (error) {
-          console.error('Помилка відправки в Telegram для курсу:', error);
-        }
-      } else {
-        console.error('Telegram credentials not configured');
+      const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
+      if (!tg.ok) {
+        console.error('Telegram send failed (course):', tg);
+      } else if (global.coursePurchases?.[orderReference]) {
+        global.coursePurchases[orderReference].notificationSent = true;
       }
     } else {
       console.log('Registration or course purchase not found for orderReference:', orderReference);

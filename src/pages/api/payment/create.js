@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import db from '../../../lib/database';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -75,6 +76,27 @@ export default async function handler(req, res) {
     status: 'pending',
     createdAt: new Date().toISOString()
   };
+
+  // Persist registration to DB to avoid losing data on serverless cold starts
+  try {
+    const insertRegistration = db.prepare(`
+      INSERT INTO event_registrations (
+        event_id, user_name, user_phone, user_email,
+        telegram_username, status, transaction_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+    insertRegistration.run(
+      eventId,
+      userName,
+      userPhone,
+      userEmail || null,
+      telegramUsername || null,
+      'pending',
+      orderReference
+    );
+  } catch (e) {
+    console.error('Database insert error (event_registrations):', e);
+  }
 
   res.status(200).json({ success: true, data: wayforpayData });
 }
