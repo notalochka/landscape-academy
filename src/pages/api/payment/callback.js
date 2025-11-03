@@ -10,13 +10,22 @@ export default async function handler(req, res) {
   // WayForPay може надсилати тіло як application/x-www-form-urlencoded,
   // де весь JSON приходить ключем об'єкту. Обробляємо цей випадок.
   let body = req.body;
-  if (body && typeof body === 'object' && Object.keys(body).length === 1 && !('orderReference' in body)) {
-    const loneKey = Object.keys(body)[0];
-    try {
-      const parsed = JSON.parse(loneKey);
-      body = parsed;
-    } catch (_) {
-      // якщо не JSON — залишаємо як є, але це зламає перевірку підпису нижче
+  console.log('Payment callback raw body:', JSON.stringify(body), 'keys:', Object.keys(body || {}));
+  
+  if (body && typeof body === 'object') {
+    const keys = Object.keys(body);
+    // Якщо тільки один ключ і це не orderReference, це може бути JSON-рядок
+    if (keys.length === 1 && !('orderReference' in body)) {
+      const loneKey = keys[0];
+      if (typeof loneKey === 'string' && (loneKey.startsWith('{') || loneKey.startsWith('['))) {
+        try {
+          const parsed = JSON.parse(loneKey);
+          body = parsed;
+          console.log('Parsed JSON from key:', parsed);
+        } catch (e) {
+          console.warn('Failed to parse JSON from key:', e.message);
+        }
+      }
     }
   }
 
@@ -47,10 +56,23 @@ export default async function handler(req, res) {
     reasonCode
   ].join(';');
 
+  if (!merchantSecretKey) {
+    console.error('MERCHANT_SECRET_KEY not configured');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
   const calculatedSignature = crypto
     .createHmac('md5', merchantSecretKey)
     .update(signatureString)
     .digest('hex');
+
+  console.log('Signature check:', {
+    merchantAccount,
+    orderReference,
+    calculated: calculatedSignature,
+    received: merchantSignature,
+    match: calculatedSignature === merchantSignature
+  });
 
   if (calculatedSignature !== merchantSignature) {
     // Дозволяємо тестові мерчант-акаунти (test_merch_n1) проходити без перевірки підпису,
@@ -58,7 +80,8 @@ export default async function handler(req, res) {
     if (body && body.merchantAccount === 'test_merch_n1') {
       console.warn('Signature mismatch ignored for test_merch_n1 (sandbox).');
     } else {
-      return res.status(400).json({ error: 'Invalid signature' });
+      console.error('Invalid signature - rejecting callback');
+      return res.status(400).json({ error: 'Invalid signature', calculated: calculatedSignature, received: merchantSignature });
     }
   }
 
@@ -117,17 +140,16 @@ export default async function handler(req, res) {
     
     if (registration) {
       registration.status = 'paid';
-      registration.transactionId = authCode;
       registration.paidAt = new Date().toISOString();
 
       // Оновити статус у БД, якщо запис існує
       try {
         const upd = db.prepare(`
           UPDATE event_registrations
-          SET status = 'paid', transaction_id = ?, paid_at = CURRENT_TIMESTAMP
+          SET status = 'paid', paid_at = CURRENT_TIMESTAMP
           WHERE transaction_id = ?
         `);
-        upd.run(authCode, orderReference);
+        upd.run(orderReference);
       } catch (e) {
         console.error('DB update failed (event_registrations):', e);
       }
@@ -154,20 +176,21 @@ ${registration.telegramUsername ? `📱 Telegram: ${registration.telegramUsernam
       const tg = await sendTelegramMessage({ botToken: TELEGRAM_BOT_TOKEN, chatId: TELEGRAM_CHAT_ID, text: message });
       if (!tg.ok) {
         console.error('Telegram send failed (event):', tg);
+      } else if (global.registrations?.[orderReference]) {
+        global.registrations[orderReference].notificationSent = true;
       }
          } else if (coursePurchase) {
-           coursePurchase.status = 'paid';
-           coursePurchase.transactionId = authCode;
-           coursePurchase.paidAt = new Date().toISOString();
+          coursePurchase.status = 'paid';
+          coursePurchase.paidAt = new Date().toISOString();
 
            // Оновлюємо статус в базі даних
            try {
-             const updatePurchase = db.prepare(`
-               UPDATE course_purchases 
-               SET status = 'paid', transaction_id = ?, paid_at = CURRENT_TIMESTAMP 
-               WHERE transaction_id = ?
-             `);
-             updatePurchase.run(authCode, orderReference);
+            const updatePurchase = db.prepare(`
+              UPDATE course_purchases 
+              SET status = 'paid', paid_at = CURRENT_TIMESTAMP 
+              WHERE transaction_id = ?
+            `);
+            updatePurchase.run(orderReference);
            } catch (error) {
              console.error('Database update error:', error);
            }

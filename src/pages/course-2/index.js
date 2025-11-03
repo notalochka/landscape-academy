@@ -65,17 +65,31 @@ const Course2Page = () => {
           const byTypeJson = await byType.json();
           if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
             selectedCourse = byTypeJson.data[0];
+            if (selectedCourse?.id) {
+              try { await router.replace(`/courses/${selectedCourse.id}`); } catch (_) {}
+              return;
+            }
           } else {
             // спробувати без фільтру активності
             byType = await fetch('/api/courses?course_type=course-2&all=1');
             const byTypeAllJson = await byType.json();
             if (byTypeAllJson.success && Array.isArray(byTypeAllJson.data) && byTypeAllJson.data.length > 0) {
               selectedCourse = byTypeAllJson.data[0];
+              if (selectedCourse?.id) {
+                try { await router.replace(`/courses/${selectedCourse.id}`); } catch (_) {}
+                return;
+              }
             }
             // резервний варіант
             const list = await fetch('/api/courses');
             const listJson = await list.json();
-            if (listJson.success) selectedCourse = listJson.data.find(c => c.course_type === 'course-2');
+            if (listJson.success) {
+              selectedCourse = listJson.data.find(c => c.course_type === 'course-2');
+              if (selectedCourse?.id) {
+                try { await router.replace(`/courses/${selectedCourse.id}`); } catch (_) {}
+                return;
+              }
+            }
           }
         }
 

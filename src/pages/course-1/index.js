@@ -62,12 +62,21 @@ const Course1Page = () => {
           const byTypeJson = await byTypeRes.json();
           if (byTypeJson.success && Array.isArray(byTypeJson.data) && byTypeJson.data.length > 0) {
             selectedCourse = byTypeJson.data[0];
+            // Якщо відкрили без id, робимо канонічний редірект на /courses/[id]
+            if (selectedCourse?.id) {
+              try { await router.replace(`/courses/${selectedCourse.id}`); } catch (_) {}
+              return; // припиняємо поточне завантаження, дочекаємось редіректу
+            }
           } else {
           // 2) Фолбек: взяти зі списку курсів перший з course_type === 'course-1'
           const listRes = await fetch('/api/courses');
           const listJson = await listRes.json();
           if (listJson.success && Array.isArray(listJson.data)) {
             selectedCourse = listJson.data.find(c => c.course_type === 'course-1') || null;
+            if (selectedCourse?.id) {
+              try { await router.replace(`/courses/${selectedCourse.id}`); } catch (_) {}
+              return;
+            }
           }
           }
         }

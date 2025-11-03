@@ -14,13 +14,29 @@ export default function handler(req, res) {
   switch (method) {
     case 'GET': {
       try {
-        const { all } = req.query;
+        const { all, course_type } = req.query;
+        const useActiveOnly = !all; // by default return only active
+
+        let whereClauses = [];
+        let params = {};
+
+        if (useActiveOnly) {
+          whereClauses.push('is_active = 1');
+        }
+
+        if (course_type) {
+          whereClauses.push('course_type = @course_type');
+          params.course_type = String(course_type);
+        }
+
         let query = 'SELECT * FROM courses';
-        if (!all) {
-          query += ' WHERE is_active = 1';
+        if (whereClauses.length > 0) {
+          query += ' WHERE ' + whereClauses.join(' AND ');
         }
         query += ' ORDER BY created_at DESC';
-        const courses = db.prepare(query).all();
+
+        const stmt = db.prepare(query);
+        const courses = Object.keys(params).length > 0 ? stmt.all(params) : stmt.all();
         res.status(200).json({ success: true, data: courses });
       } catch (error) {
         console.error('Database error:', error);

@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   }
 
   const { orderReference } = req.body;
+  console.log('Notify webhook called with orderReference:', orderReference);
 
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -28,8 +29,10 @@ export default async function handler(req, res) {
   // DB fallback for course purchases (serverless cold starts may lose globals)
   if (!registration && !coursePurchase) {
     try {
+      console.log('Looking up course purchase in DB for:', orderReference);
       const row = db.prepare('SELECT * FROM course_purchases WHERE transaction_id = ? LIMIT 1').get(orderReference);
       if (row) {
+        console.log('Found course purchase in DB:', row);
         coursePurchase = {
           courseTitle: row.course_title,
           userName: row.user_name,
@@ -38,6 +41,8 @@ export default async function handler(req, res) {
           telegramUsername: row.telegram_username,
           price: row.price,
         };
+      } else {
+        console.log('No course purchase found in DB for:', orderReference);
       }
     } catch (e) {
       console.error('DB lookup failed for course_purchases:', e);
@@ -47,8 +52,10 @@ export default async function handler(req, res) {
   // DB fallback for event registrations by transaction_id
   if (!registration && !coursePurchase) {
     try {
+      console.log('Looking up event registration in DB for:', orderReference);
       const regRow = db.prepare('SELECT * FROM event_registrations WHERE transaction_id = ? LIMIT 1').get(orderReference);
       if (regRow) {
+        console.log('Found event registration in DB:', regRow);
         let eventTitle = '';
         try {
           const ev = db.prepare('SELECT title FROM events WHERE id = ? LIMIT 1').get(regRow.event_id);
@@ -62,6 +69,8 @@ export default async function handler(req, res) {
           telegramUsername: regRow.telegram_username,
           price: '—',
         };
+      } else {
+        console.log('No event registration found in DB for:', orderReference);
       }
     } catch (e) {
       console.error('DB lookup failed for event_registrations:', e);

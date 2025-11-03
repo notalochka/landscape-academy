@@ -23,12 +23,18 @@ const PaymentSuccess = () => {
   useEffect(() => {
     const sendNotify = async () => {
       try {
-        if (!orderRef) return;
-        await fetch('/api/payment/notify', {
+        if (!orderRef) {
+          console.log('No orderRef, skipping notify');
+          return;
+        }
+        console.log('Calling notify webhook with orderReference:', orderRef);
+        const response = await fetch('/api/payment/notify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderReference: orderRef })
         });
+        const result = await response.json();
+        console.log('Notify webhook response:', result);
       } catch (e) {
         console.error('Notify webhook error:', e);
       }
