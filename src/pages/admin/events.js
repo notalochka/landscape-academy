@@ -109,13 +109,31 @@ const AdminEvents = () => {
     }
   };
 
+  // Функція для конвертації дати з ISO формату в формат yyyy-MM-dd для input type="date"
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      // Перевіряємо чи дата валідна
+      if (isNaN(date.getTime())) return "";
+      // Повертаємо дату у форматі yyyy-MM-dd
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } catch (error) {
+      console.error('Помилка форматування дати:', error);
+      return "";
+    }
+  };
+
   const handleEdit = (event) => {
     setEditingEvent(event);
     setFormData({
       title: event.title || "",
       description: event.description || "",
-      startDate: event.startDate || "",
-      endDate: event.endDate || "",
+      startDate: formatDateForInput(event.startDate),
+      endDate: formatDateForInput(event.endDate),
       time: event.time || "",
       price: event.price || "",
       eventType: event.eventType || "offline",

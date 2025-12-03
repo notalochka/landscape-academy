@@ -11,22 +11,69 @@ import EventRegistrationModal from "../components/EventRegistrationModal/EventRe
 import { pagesSEO, organizationSchema, websiteSchema } from "../config/seo";
 
 function toDateOnly(dateLike) {
-  const d = new Date(dateLike);
-  d.setHours(0, 0, 0, 0);
-  return d;
+  if (!dateLike) return null;
+  try {
+    const d = new Date(dateLike);
+    if (isNaN(d.getTime())) {
+      console.warn('Invalid date:', dateLike);
+      return null;
+    }
+    // Використовуємо UTC для правильного порівняння дат
+    const year = d.getUTCFullYear();
+    const month = d.getUTCMonth();
+    const day = d.getUTCDate();
+    return new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+  } catch (error) {
+    console.error('Error parsing date:', dateLike, error);
+    return null;
+  }
 }
 
 function formatRange(startDate, endDate) {
-  const s = new Date(startDate);
-  const e = new Date(endDate);
-  const fmt = (d) =>
-    d.toLocaleDateString("uk-UA", { day: "2-digit", month: "long", year: "numeric" });
-  if (s.toDateString() === e.toDateString()) return fmt(s);
-  return (
-    s.toLocaleDateString("uk-UA", { day: "2-digit", month: "long" }) +
-    " – " +
-    fmt(e)
-  );
+  if (!startDate || !endDate) {
+    console.warn('Missing dates:', { startDate, endDate });
+    return 'Дата не вказана';
+  }
+  
+  try {
+    const s = new Date(startDate);
+    const e = new Date(endDate);
+    
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) {
+      console.warn('Invalid dates:', { startDate, endDate });
+      return 'Невалідна дата';
+    }
+    
+    // Використовуємо UTC для правильного визначення дати
+    const sYear = s.getUTCFullYear();
+    const sMonth = s.getUTCMonth();
+    const sDay = s.getUTCDate();
+    
+    const eYear = e.getUTCFullYear();
+    const eMonth = e.getUTCMonth();
+    const eDay = e.getUTCDate();
+    
+    // Створюємо локальні дати для форматування (але з правильними UTC значеннями)
+    const sLocal = new Date(sYear, sMonth, sDay);
+    const eLocal = new Date(eYear, eMonth, eDay);
+    
+    const fmt = (d) =>
+      d.toLocaleDateString("uk-UA", { day: "2-digit", month: "long", year: "numeric" });
+    
+    // Порівнюємо UTC дати
+    if (sYear === eYear && sMonth === eMonth && sDay === eDay) {
+      return fmt(sLocal);
+    }
+    
+    return (
+      sLocal.toLocaleDateString("uk-UA", { day: "2-digit", month: "long" }) +
+      " – " +
+      fmt(eLocal)
+    );
+  } catch (error) {
+    console.error('Error formatting date range:', error);
+    return 'Помилка форматування дати';
+  }
 }
 
 const WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
@@ -100,12 +147,15 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
   // Calendar state
   const today = useMemo(() => {
     const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
+    // Використовуємо UTC для правильного порівняння з датами подій
+    const year = d.getUTCFullYear();
+    const month = d.getUTCMonth();
+    const day = d.getUTCDate();
+    return new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
   }, []);
 
-  const [viewYear, setViewYear] = useState(today.getFullYear());
-  const [viewMonth, setViewMonth] = useState(today.getMonth());
+  const [viewYear, setViewYear] = useState(today.getUTCFullYear());
+  const [viewMonth, setViewMonth] = useState(today.getUTCMonth());
   const [events, setEvents] = useState(initialEvents);
   const [isLoading, setIsLoading] = useState(false); // Дані вже завантажені через ISR
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,11 +168,24 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
   const defaultEvent = useMemo(() => {
     if (events.length === 0) return null;
     
-    const upcoming = [...events]
-      .map((e) => ({ ...e, start: toDateOnly(e.startDate) }))
-      .filter((e) => e.start >= today)
+    // Фільтруємо події з валідними датами
+    const validEvents = events
+      .map((e) => {
+        const start = toDateOnly(e.startDate);
+        const end = toDateOnly(e.endDate);
+        return { ...e, start, end };
+      })
+      .filter((e) => e.start !== null && e.end !== null);
+    
+    if (validEvents.length === 0) return null;
+    
+    // Знаходимо найближчу майбутню подію
+    const upcoming = validEvents
+      .filter((e) => e.end >= today) // Подія ще не закінчилася
       .sort((a, b) => a.start - b.start)[0];
-    return upcoming || events[0];
+    
+    // Якщо немає майбутніх, показуємо останню подію
+    return upcoming || validEvents.sort((a, b) => b.start - a.start)[0];
   }, [today, events]);
 
   const [selectedEventId, setSelectedEventId] = useState(defaultEvent?.id);
@@ -132,6 +195,30 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
       setSelectedEventId(defaultEvent.id);
     }
   }, [defaultEvent, selectedEventId]);
+
+  // Оновлюємо календар на місяці з найближчою подією після завантаження подій
+  useEffect(() => {
+    if (events.length > 0 && defaultEvent && defaultEvent.start) {
+      // Використовуємо UTC для правильного визначення місяця
+      const eventYear = defaultEvent.start.getUTCFullYear();
+      const eventMonth = defaultEvent.start.getUTCMonth();
+      
+      // Перевіряємо, чи поточний місяць містить події
+      const currentMonthHasEvents = events.some(e => {
+        const start = toDateOnly(e.startDate);
+        if (!start) return false;
+        const eYear = start.getUTCFullYear();
+        const eMonth = start.getUTCMonth();
+        return eYear === viewYear && eMonth === viewMonth;
+      });
+      
+      // Перемикаємо на місяць з найближчою подією, якщо поточний місяць не містить подій
+      if (!currentMonthHasEvents) {
+        setViewYear(eventYear);
+        setViewMonth(eventMonth);
+      }
+    }
+  }, [events, defaultEvent, viewYear, viewMonth]);
 
   const monthLabel = useMemo(() => {
     return new Date(viewYear, viewMonth)
@@ -149,14 +236,22 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
     const leading = Array.from({ length: weekday }).map((_, i) => ({ key: `e-${i}` }));
     const days = Array.from({ length: lastDay }).map((_, i) => {
       const day = i + 1;
-      const date = new Date(viewYear, viewMonth, day);
-      date.setHours(0, 0, 0, 0);
+      // Використовуємо UTC для правильного порівняння з датами подій
+      const dateUTC = new Date(Date.UTC(viewYear, viewMonth, day, 0, 0, 0, 0));
       const dayEvents = events.filter((ev) => {
         const s = toDateOnly(ev.startDate);
         const e = toDateOnly(ev.endDate);
-        return date >= s && date <= e;
+        // Перевіряємо, чи обидві дати валідні
+        if (s === null || e === null) {
+          return false;
+        }
+        // Перевіряємо, чи дата потрапляє в діапазон події (включно з початком і кінцем)
+        return dateUTC >= s && dateUTC <= e;
       });
-      return { key: `d-${day}`, day, date, events: dayEvents };
+      // Створюємо локальну дату для відображення
+      const localDate = new Date(viewYear, viewMonth, day);
+      localDate.setHours(0, 0, 0, 0);
+      return { key: `d-${day}`, day, date: localDate, events: dayEvents };
     });
     return [...leading, ...days];
   }, [viewMonth, viewYear, events]);
@@ -238,7 +333,7 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
                           </div>
                         )}
                         <div className="la-event-card__content">
-                          <h3 className="la-event-card__title">{selectedEvent.title}</h3>
+                          <h3 className="la-event-card__title" style={{ textTransform: 'none' }}>{selectedEvent.title}</h3>
                           <div className="la-event-card__dates">
                             {formatRange(selectedEvent.startDate, selectedEvent.endDate)}
                           </div>
@@ -257,7 +352,12 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
                                 : `${selectedEvent.price.replace(/грн/gi, '').trim()} ₴`}
                             </div>
                           )}
-                          <p className="la-event-card__desc">{selectedEvent.description}</p>
+                          <div 
+                            className="la-event-card__desc"
+                            style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}
+                          >
+                            {selectedEvent.description}
+                          </div>
                         </div>
                       </div>
                       <div className="la-event-cta">
@@ -296,7 +396,16 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
                     {daysGrid.map((cell) => {
                       if (!cell.day) return <div key={cell.key} className="la-calendar__empty" />;
                       const hasEvents = cell.events && cell.events.length > 0;
-                      const isToday = cell.date.getTime() === today.getTime();
+                      
+                      // Порівнюємо UTC дати для правильної перевірки "сьогодні"
+                      const cellDateUTC = new Date(Date.UTC(
+                        cell.date.getFullYear(),
+                        cell.date.getMonth(),
+                        cell.date.getDate(),
+                        0, 0, 0, 0
+                      ));
+                      const isToday = cellDateUTC.getTime() === today.getTime();
+                      
                       return (
                         <button
                           key={cell.key}
@@ -307,8 +416,14 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
                             isToday ? "la-calendar__day--today" : "",
                           ].join(" ")}
                           onClick={() => {
-                            if (hasEvents) setSelectedEventId(cell.events[0].id);
+                            if (hasEvents && cell.events.length > 0) {
+                              setSelectedEventId(cell.events[0].id);
+                              // Прокручуємо до секції події для кращого UX
+                              document.getElementById('events')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
                           }}
+                          style={{ cursor: hasEvents ? 'pointer' : 'default' }}
+                          title={hasEvents ? cell.events.map(e => e.title).join(', ') : ''}
                         >
                           <span>{cell.day}</span>
                           {hasEvents && <span className="la-calendar__dot" />}
@@ -434,7 +549,44 @@ export async function getStaticProps() {
     const db = require('../lib/database');
     
     // Отримуємо активні події
-    const events = db.prepare('SELECT * FROM events WHERE is_active = 1 ORDER BY start_date ASC').all();
+    const eventsRaw = db.prepare('SELECT * FROM events WHERE is_active = 1 ORDER BY start_date ASC').all();
+    
+    // Форматуємо події для правильного відображення
+    const formatDate = (dateString) => {
+      if (!dateString) return null;
+      try {
+        if (dateString.includes('T') || dateString.includes('Z')) {
+          const date = new Date(dateString);
+          return isNaN(date.getTime()) ? null : date.toISOString();
+        }
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateString.trim())) {
+          const date = new Date(dateString + 'T00:00:00.000Z');
+          return isNaN(date.getTime()) ? null : date.toISOString();
+        }
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? null : date.toISOString();
+      } catch (error) {
+        console.error('Error parsing date in getStaticProps:', dateString, error);
+        return null;
+      }
+    };
+    
+    const events = eventsRaw.map(event => {
+      const startDate = event.start_date || event.date;
+      const endDate = event.end_date || event.date;
+      
+      return {
+        ...event,
+        isActive: event.is_active === 1,
+        startDate: formatDate(startDate),
+        endDate: formatDate(endDate),
+        createdAt: event.created_at,
+        time: event.time || '10:00',
+        location: event.location || 'Онлайн',
+        price: event.price || 'Безкоштовно',
+        eventType: event.location && event.location !== 'Онлайн' ? 'offline' : 'online'
+      };
+    }).filter(event => event.startDate && event.endDate);
     
     // Отримуємо опубліковані блоги (перші 3)
     const blogs = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC LIMIT 3').all();
