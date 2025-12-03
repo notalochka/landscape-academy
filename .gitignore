@@ -104,3 +104,6 @@ next-env.d.ts
 
 # database
 landscape_academy.db
+data/landscape_academy.db
+*.db
+data/*.db
