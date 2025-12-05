@@ -34,7 +34,13 @@ export default function handler(req, res) {
             return res.status(404).json({ success: false, message: 'Блог не знайдено' });
           }
           
-          return res.status(200).json({ success: true, data: blog });
+          const blogWithMappedFields = {
+            ...blog,
+            image: blog.featured_image || blog.image || null,
+            tag: blog.tag || null
+          };
+          
+          return res.status(200).json({ success: true, data: blogWithMappedFields });
         }
         
         const blog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
@@ -43,12 +49,14 @@ export default function handler(req, res) {
           return res.status(404).json({ success: false, message: 'Блог не знайдено' });
         }
         
-        // Додаємо час читання
+        // Додаємо час читання та мапимо поля
         const blogWithReadTime = {
           ...blog,
           readTime: calculateReadTime(blog.content || ''),
           isPublished: blog.published === 1,
-          createdAt: blog.created_at
+          createdAt: blog.created_at,
+          image: blog.featured_image || blog.image || null,
+          tag: blog.tag || null
         };
         
         res.status(200).json({ success: true, data: blogWithReadTime });
@@ -61,7 +69,13 @@ export default function handler(req, res) {
           return res.status(404).json({ success: false, message: 'Блог не знайдено' });
         }
         
-        res.status(200).json({ success: true, data: blog });
+        const blogWithMappedFields = {
+          ...blog,
+          image: blog.featured_image || blog.image || null,
+          tag: blog.tag || null
+        };
+        
+        res.status(200).json({ success: true, data: blogWithMappedFields });
       }
       break;
 
@@ -79,20 +93,27 @@ export default function handler(req, res) {
           ? calculateReadTime(req.body.content)
           : calculateReadTime(existingBlog.content || '');
         
+        // Мапимо image на featured_image для збереження в БД
+        const featuredImage = req.body.image !== undefined 
+          ? (req.body.image || null)
+          : (req.body.featured_image !== undefined ? req.body.featured_image : existingBlog.featured_image);
+        const tag = req.body.tag !== undefined ? (req.body.tag || null) : existingBlog.tag;
+        
         const updateBlog = db.prepare(`
           UPDATE blogs 
           SET title = ?, content = ?, excerpt = ?, author = ?, 
-              featured_image = ?, slug = ?, published = ?, updated_at = CURRENT_TIMESTAMP
+              featured_image = ?, tag = ?, slug = ?, published = ?, updated_at = CURRENT_TIMESTAMP
           WHERE id = ?
         `);
         
         updateBlog.run(
-          req.body.title || existingBlog.title,
-          req.body.content || existingBlog.content,
-          req.body.excerpt || existingBlog.excerpt,
-          req.body.author || existingBlog.author,
-          req.body.featured_image || existingBlog.featured_image,
-          req.body.slug || existingBlog.slug,
+          req.body.title !== undefined ? req.body.title : existingBlog.title,
+          req.body.content !== undefined ? req.body.content : existingBlog.content,
+          req.body.excerpt !== undefined ? req.body.excerpt : existingBlog.excerpt,
+          req.body.author !== undefined ? req.body.author : existingBlog.author,
+          featuredImage,
+          tag,
+          req.body.slug !== undefined ? req.body.slug : existingBlog.slug,
           req.body.isPublished !== undefined ? (req.body.isPublished ? 1 : 0) : existingBlog.published,
           blogId
         );
@@ -103,7 +124,9 @@ export default function handler(req, res) {
           ...updatedBlog,
           readTime,
           isPublished: updatedBlog.published === 1,
-          createdAt: updatedBlog.created_at
+          createdAt: updatedBlog.created_at,
+          image: updatedBlog.featured_image || updatedBlog.image || null,
+          tag: updatedBlog.tag || null
         };
         
         res.status(200).json({ success: true, data: blogWithReadTime });

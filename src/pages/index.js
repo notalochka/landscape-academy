@@ -141,8 +141,14 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
   const [libraryRef, libraryVisible] = useScrollAnimation({ threshold: 0.1 });
   const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
   
-  // Combine structured data schemas
-  const structuredData = [organizationSchema, websiteSchema];
+  // Структуровані дані для SEO (використовуємо @graph для кількох схем)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema,
+      websiteSchema
+    ]
+  };
 
   // Calendar state
   const today = useMemo(() => {
@@ -588,8 +594,26 @@ export async function getStaticProps() {
       };
     }).filter(event => event.startDate && event.endDate);
     
+    // Функція для підрахунку часу читання
+    const calculateReadTime = (content) => {
+      const wordsPerMinute = 200;
+      const words = (content || '').trim().split(/\s+/).length;
+      const minutes = Math.ceil(words / wordsPerMinute);
+      return `${minutes} хв читання`;
+    };
+    
     // Отримуємо опубліковані блоги (перші 3)
-    const blogs = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC LIMIT 3').all();
+    const blogsRaw = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC LIMIT 3').all();
+    
+    // Форматуємо блоги
+    const blogs = blogsRaw.map(blog => ({
+      ...blog,
+      readTime: calculateReadTime(blog.content || ''),
+      isPublished: blog.published === 1,
+      createdAt: blog.created_at,
+      image: blog.featured_image || blog.image || null,
+      tag: blog.tag || null
+    }));
     
     // Отримуємо перші 3 курси для секції програм
     const courses = db.prepare('SELECT * FROM courses WHERE is_active = 1 ORDER BY id ASC LIMIT 3').all();

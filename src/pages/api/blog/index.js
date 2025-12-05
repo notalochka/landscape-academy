@@ -28,7 +28,11 @@ export default function handler(req, res) {
         
         // Check if we're in production (Vercel) and use default data
         if (process.env.NODE_ENV === 'production' && !db) {
-          let blogs = defaultBlogs;
+          let blogs = defaultBlogs.map(blog => ({
+            ...blog,
+            image: blog.featured_image || blog.image || null,
+            tag: blog.tag || null
+          }));
           
           if (published === 'true') {
             blogs = blogs.filter(blog => blog.published === 1);
@@ -67,12 +71,14 @@ export default function handler(req, res) {
         
         let blogs = db.prepare(query).all(params);
         
-        // Додаємо час читання до кожного блогу
+        // Додаємо час читання до кожного блогу та мапимо поля
         blogs = blogs.map(blog => ({
           ...blog,
           readTime: calculateReadTime(blog.content || ''),
           isPublished: blog.published === 1,
-          createdAt: blog.created_at
+          createdAt: blog.created_at,
+          image: blog.featured_image || blog.image || null,
+          tag: blog.tag || null
         }));
 
         // Пагінація
@@ -97,7 +103,11 @@ export default function handler(req, res) {
       } catch (error) {
         console.error('Database error:', error);
         // Fallback to default data in case of database error
-        let blogs = defaultBlogs;
+        let blogs = defaultBlogs.map(blog => ({
+          ...blog,
+          image: blog.featured_image || blog.image || null,
+          tag: blog.tag || null
+        }));
         const { published, page, limit } = req.query;
         
         if (published === 'true') {
@@ -130,9 +140,19 @@ export default function handler(req, res) {
       try {
         const readTime = calculateReadTime(req.body.content || '');
         
+        // Мапимо image на featured_image для збереження в БД
+        const featuredImage = req.body.image || req.body.featured_image || null;
+        const tag = req.body.tag || null;
+        
+        // Генеруємо slug з назви, якщо не вказано
+        const slug = req.body.slug || req.body.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        
         const insertBlog = db.prepare(`
-          INSERT INTO blogs (title, content, excerpt, author, featured_image, slug, published)
-          VALUES (?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO blogs (title, content, excerpt, author, featured_image, tag, slug, published)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `);
         
         const result = insertBlog.run(
@@ -140,14 +160,21 @@ export default function handler(req, res) {
           req.body.content,
           req.body.excerpt,
           req.body.author,
-          req.body.featured_image,
-          req.body.slug,
+          featuredImage,
+          tag,
+          slug,
           req.body.isPublished ? 1 : 0
         );
         
         const newBlog = {
           id: result.lastInsertRowid,
-          ...req.body,
+          title: req.body.title,
+          content: req.body.content,
+          excerpt: req.body.excerpt,
+          author: req.body.author,
+          image: featuredImage,
+          tag: tag,
+          slug: slug,
           readTime,
           createdAt: new Date().toISOString(),
           isPublished: req.body.isPublished

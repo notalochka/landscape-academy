@@ -138,27 +138,83 @@ export const courseSchema = (courseData) => ({
   } : undefined
 });
 
-export const blogPostSchema = (postData) => ({
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": postData.title,
-  "description": postData.description,
-  "image": postData.image || `${siteMetadata.siteUrl}/og-blog.jpg`,
-  "datePublished": postData.date,
-  "author": {
-    "@type": "Person",
-    "name": postData.author
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Landscape Academy",
-    "logo": {
-      "@type": "ImageObject",
-      "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}/logo_academy.png`
+// Функція для генерації keywords з тегів та базових ключових слів
+export const generateKeywords = (tag, baseKeywords = []) => {
+  const tagKeywords = tag ? [tag.toLowerCase(), `${tag} ландшафтний дизайн`, `статті про ${tag}`] : [];
+  return [...tagKeywords, ...baseKeywords, ...siteMetadata.keywords].filter(Boolean).join(', ');
+};
+
+// Функція для розширення keywords з тегом
+export const enhanceKeywordsWithTag = (tag, existingKeywords = '') => {
+  if (!tag) return existingKeywords;
+  
+  const tagVariations = [
+    tag,
+    `${tag} ландшафтний дизайн`,
+    `ландшафтний дизайн ${tag}`,
+    `статті про ${tag}`,
+    `${tag} для дизайнерів`,
+    `поради ${tag}`
+  ];
+  
+  const combined = existingKeywords 
+    ? `${existingKeywords}, ${tagVariations.join(', ')}`
+    : tagVariations.join(', ');
+  
+  return `${combined}, ${siteMetadata.keywords.join(', ')}`;
+};
+
+export const blogPostSchema = (postData) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": postData.title,
+    "description": postData.description,
+    "image": postData.image || `${siteMetadata.siteUrl}/og-blog.jpg`,
+    "datePublished": postData.date,
+    "author": {
+      "@type": "Person",
+      "name": postData.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Landscape Academy",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}/logo_academy.png`
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${siteMetadata.siteUrl}/blog/${postData.slug || ''}`
     }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": `${siteMetadata.siteUrl}/blog/${postData.slug || ''}`
+  };
+  
+  // Додаємо keywords як about якщо є тег
+  if (postData.tag) {
+    schema.about = {
+      "@type": "Thing",
+      "name": postData.tag
+    };
+    schema.keywords = postData.tag;
   }
+  
+  // Додаємо articleSection якщо є тег
+  if (postData.tag) {
+    schema.articleSection = postData.tag;
+  }
+  
+  return schema;
+};
+
+// Breadcrumb schema
+export const breadcrumbSchema = (items) => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url
+  }))
 });

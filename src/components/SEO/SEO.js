@@ -16,8 +16,9 @@ const SEO = ({
   const pageTitle = title || siteMetadata.title;
   const pageDescription = description || siteMetadata.description;
   const pageKeywords = keywords || siteMetadata.keywords.join(", ");
+  // Обробляємо ogImage: якщо це повний URL, використовуємо його, інакше додаємо siteUrl
   const pageImage = ogImage 
-    ? `${siteMetadata.siteUrl}${ogImage}` 
+    ? (ogImage.startsWith('http') ? ogImage : `${siteMetadata.siteUrl}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`)
     : `${siteMetadata.siteUrl}${siteMetadata.image}`;
   const canonicalUrl = canonical 
     ? `${siteMetadata.siteUrl}${canonical}` 
@@ -95,7 +96,7 @@ const SEO = ({
       {structuredData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData, null, 0) }}
         />
       )}
     </Head>

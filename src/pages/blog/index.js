@@ -5,7 +5,7 @@ import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { pagesSEO } from "../../config/seo";
+import { pagesSEO, websiteSchema, organizationSchema, enhanceKeywordsWithTag } from "../../config/seo";
 
 const BlogCard = ({ blog }) => {
   const formatDate = (dateString) => {
@@ -30,7 +30,9 @@ const BlogCard = ({ blog }) => {
             <span className="la-blog-card__date">{formatDate(blog.createdAt)}</span>
             <span className="la-blog-card__read-time">{blog.readTime}</span>
           </div>
-          <div className="la-blog-card__category">[{blog.tag}]</div>
+          {blog.tag && (
+            <div className="la-blog-card__category">[{blog.tag}]</div>
+          )}
           <h2 className="la-blog-card__title">{blog.title}</h2>
           <div className="la-blog-card__author">
             <div className="la-blog-card__author-avatar"></div>
@@ -42,11 +44,11 @@ const BlogCard = ({ blog }) => {
   );
 };
 
-const BlogPage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
+const BlogPage = ({ initialBlogs = [], totalPages: initialTotalPages = 1 }) => {
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const blogSEO = pagesSEO.blog;
   const [searchRef, searchVisible] = useScrollAnimation({ threshold: 0.1 });
@@ -55,7 +57,9 @@ const BlogPage = () => {
   const blogsPerPage = 6;
 
   useEffect(() => {
-    fetchBlogs(currentPage);
+    if (currentPage > 1) {
+      fetchBlogs(currentPage);
+    }
   }, [currentPage]);
 
   const fetchBlogs = async (page) => {
@@ -86,14 +90,38 @@ const BlogPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Структуровані дані для SEO (використовуємо масив для кількох схем)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema,
+      websiteSchema,
+      {
+        "@type": "Blog",
+        "name": "Landscape Academy Blog",
+        "description": blogSEO.description,
+        "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}${blogSEO.canonical}`,
+        "publisher": {
+          "@type": "Organization",
+          "name": "Landscape Academy",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}/logo_academy.png`
+          }
+        }
+      }
+    ]
+  };
+
   return (
     <>
       <SEO
         title={blogSEO.title}
         description={blogSEO.description}
-        keywords={blogSEO.keywords}
+        keywords={enhanceKeywordsWithTag(null, blogSEO.keywords)}
         ogImage={blogSEO.ogImage}
         canonical={blogSEO.canonical}
+        structuredData={structuredData}
       />
 
       <Header showBanner={true} bannerTitle="LANDSCAPER ACADEMY БЛОГ" />
@@ -113,7 +141,7 @@ const BlogPage = () => {
             </div>
           </section>
 
-          {isLoading ? (
+          {isLoading && currentPage > 1 ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
               Завантаження...
             </div>
@@ -176,3 +204,58 @@ const BlogPage = () => {
 };
 
 export default BlogPage;
+
+// Server-Side Rendering для SEO
+export async function getServerSideProps(context) {
+  try {
+    const db = require('../../lib/database');
+    const blogsPerPage = 6;
+    const page = parseInt(context.query.page) || 1;
+    
+    // Отримуємо опубліковані блоги
+    const allBlogs = db.prepare(`
+      SELECT * FROM blogs 
+      WHERE published = 1 
+      ORDER BY created_at DESC
+    `).all();
+    
+    // Функція для підрахунку часу читання
+    const calculateReadTime = (content) => {
+      const wordsPerMinute = 200;
+      const words = (content || '').trim().split(/\s+/).length;
+      const minutes = Math.ceil(words / wordsPerMinute);
+      return `${minutes} хв читання`;
+    };
+    
+    // Форматуємо блоги
+    const formattedBlogs = allBlogs.map(blog => ({
+      ...blog,
+      readTime: calculateReadTime(blog.content || ''),
+      isPublished: blog.published === 1,
+      createdAt: blog.created_at,
+      image: blog.featured_image || blog.image || null,
+      tag: blog.tag || null
+    }));
+    
+    // Пагінація
+    const startIndex = (page - 1) * blogsPerPage;
+    const endIndex = startIndex + blogsPerPage;
+    const paginatedBlogs = formattedBlogs.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(formattedBlogs.length / blogsPerPage);
+    
+    return {
+      props: {
+        initialBlogs: paginatedBlogs,
+        totalPages: totalPages
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching blogs:', error);
+    return {
+      props: {
+        initialBlogs: [],
+        totalPages: 1
+      }
+    };
+  }
+}

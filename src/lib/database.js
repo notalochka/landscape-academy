@@ -44,6 +44,7 @@ const initDatabase = () => {
       excerpt TEXT,
       author TEXT,
       featured_image TEXT,
+      tag TEXT,
       slug TEXT UNIQUE,
       published BOOLEAN DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -69,6 +70,11 @@ const initDatabase = () => {
   `);
 
   // Safe migration: add missing columns if the table already exists without them
+  try {
+    db.exec(`ALTER TABLE blogs ADD COLUMN tag TEXT`);
+  } catch (e) {
+    // ignore if column exists
+  }
   try {
     db.exec(`ALTER TABLE event_registrations ADD COLUMN transaction_id TEXT`);
   } catch (e) {

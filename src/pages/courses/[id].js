@@ -8,9 +8,10 @@ import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
 import CoursePurchaseModal from "../../components/CoursePurchaseModal/CoursePurchaseModal";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { pagesSEO } from "../../config/seo";
+import { pagesSEO, courseSchema, organizationSchema } from "../../config/seo";
+import { siteMetadata } from "../../config/seo";
 
-const RegularCoursePage = () => {
+const RegularCoursePage = ({ initialCourseData, initialAudience = [], initialCourseProgram = [] }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -24,7 +25,7 @@ const RegularCoursePage = () => {
 
   const coursesSEO = pagesSEO.courses;
 
-  const [courseData, setCourseData] = useState({
+  const [courseData, setCourseData] = useState(initialCourseData || {
     title: "",
     subtitle: "",
     price: "",
@@ -44,17 +45,19 @@ const RegularCoursePage = () => {
     author_bio_1: "",
     skills: ""
   });
-  const [audience, setAudience] = useState([]);
-  const [courseProgram, setCourseProgram] = useState([]);
+  const [audience, setAudience] = useState(initialAudience);
+  const [courseProgram, setCourseProgram] = useState(initialCourseProgram);
 
+  // Оновлюємо дані клієнтсько, якщо потрібно
   useEffect(() => {
-    if (!id) return;
+    if (!id || initialCourseData) return;
     (async () => {
       try {
         const res = await fetch(`/api/courses/${id}`);
         const json = await res.json();
-        if (!json.success) return;
-        setCourseData(prev => ({ ...prev, ...json.data }));
+        if (json.success) {
+          setCourseData(prev => ({ ...prev, ...json.data }));
+        }
 
         const ta = await fetch(`/api/courses/${id}/target-audience`).then(r => r.json());
         if (ta.success) setAudience(ta.data);
@@ -63,7 +66,7 @@ const RegularCoursePage = () => {
         if (pr.success) setCourseProgram(pr.data);
       } catch (_) {}
     })();
-  }, [id]);
+  }, [id, initialCourseData]);
 
   // Групуємо програму по модулях
   const groupedModules = (() => {
@@ -78,14 +81,28 @@ const RegularCoursePage = () => {
       .map(k => ({ key: k, ...map[k] }));
   })();
 
+  // Структуровані дані для курсу
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema,
+      courseSchema({
+        name: courseData.title || coursesSEO.title,
+        description: courseData.subtitle || courseData.description_1 || coursesSEO.description,
+        price: courseData.price
+      })
+    ]
+  };
+
   return (
     <>
       <SEO
-        title={courseData.title || coursesSEO.title}
-        description={courseData.subtitle || coursesSEO.description}
-        keywords={coursesSEO.keywords}
-        ogImage={coursesSEO.ogImage}
-        canonical={coursesSEO.canonical}
+        title={courseData.title ? `${courseData.title} - Landscape Academy` : coursesSEO.title}
+        description={courseData.subtitle || courseData.description_1 || coursesSEO.description}
+        keywords={`${courseData.title || ''}, ${coursesSEO.keywords}`}
+        ogImage={courseData.author_photo || coursesSEO.ogImage}
+        canonical={`/courses/${id}`}
+        structuredData={structuredData}
       />
 
       <Header showBanner={false} />
@@ -324,5 +341,74 @@ const RegularCoursePage = () => {
 };
 
 export default RegularCoursePage;
+
+// Server-Side Rendering для SEO
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+  
+  try {
+    const db = require('../../lib/database');
+    
+    // Отримуємо курс з бази даних
+    const course = db.prepare('SELECT * FROM courses WHERE id = ? AND is_active = 1').get(parseInt(id));
+    
+    if (!course) {
+      return {
+        notFound: true
+      };
+    }
+
+    // Отримуємо цільову аудиторію
+    const audience = db.prepare(`
+      SELECT * FROM course_target_audience 
+      WHERE course_id = ? 
+      ORDER BY order_index ASC
+    `).all(parseInt(id));
+
+    // Отримуємо програму курсу
+    const courseProgram = db.prepare(`
+      SELECT * FROM course_program 
+      WHERE course_id = ? 
+      ORDER BY module_number ASC, lesson_number ASC
+    `).all(parseInt(id));
+
+    // Форматуємо дані курсу
+    const formattedCourse = {
+      ...course,
+      title: course.title || '',
+      subtitle: course.subtitle || course.description_1 || '',
+      price: course.price || '',
+      old_price: course.old_price || '',
+      start_date: course.start_date || '',
+      experience: course.experience || '',
+      group_info: course.group_info || '',
+      duration: course.duration || '',
+      problem_title: course.problem_title || '',
+      problem_intro1: course.problem_intro1 || '',
+      problem_intro2: course.problem_intro2 || '',
+      result_title: course.result_title || '',
+      result_list: course.result_list || '',
+      result_conclusion: course.result_conclusion || '',
+      author_name: course.author_name || '',
+      author_photo: course.author_photo || '',
+      author_bio_1: course.author_bio_1 || '',
+      description_1: course.description_1 || '',
+      description_2: course.description_2 || ''
+    };
+
+    return {
+      props: {
+        initialCourseData: formattedCourse,
+        initialAudience: audience || [],
+        initialCourseProgram: courseProgram || []
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return {
+      notFound: true
+    };
+  }
+}
 
 

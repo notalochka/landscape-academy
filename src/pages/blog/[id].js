@@ -1,41 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
 import Footer from "../../components/Footer/Footer";
+import { blogPostSchema, enhanceKeywordsWithTag, breadcrumbSchema } from "../../config/seo";
+import { siteMetadata } from "../../config/seo";
 
-const BlogPost = () => {
+const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
   const router = useRouter();
-  const { id } = router.query;
-  const [blog, setBlog] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (id) {
-      fetchBlog();
-    }
-  }, [id]);
-
-  const fetchBlog = async () => {
-    try {
-      const response = await fetch(`/api/blog/${id}`);
-      const result = await response.json();
-      
-      if (result.success) {
-        setBlog(result.data);
-      } else {
-        router.push('/blog');
-      }
-    } catch (error) {
-      console.error('Помилка завантаження блогу:', error);
+  // Якщо помилка або блог не знайдено, перенаправляємо
+  if (error || !blog) {
+    if (typeof window !== 'undefined') {
       router.push('/blog');
-    } finally {
-      setIsLoading(false);
     }
-  };
+    return null;
+  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -46,29 +30,71 @@ const BlogPost = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <>
-        <Header showBanner={true} bannerTitle="BLOG" />
-        <main style={{ padding: '100px 20px', textAlign: 'center' }}>
-          Завантаження...
-        </main>
-        <Footer />
-      </>
-    );
-  }
+  // Форматуємо зображення для structured data
+  const blogImage = blog.image 
+    ? (blog.image.startsWith('http') ? blog.image : `${siteMetadata.siteUrl}${blog.image.startsWith('/') ? blog.image : `/${blog.image}`}`)
+    : `${siteMetadata.siteUrl}/og-blog.jpg`;
+  
+  // Генеруємо покращені keywords з тегом
+  const enhancedKeywords = enhanceKeywordsWithTag(blog.tag, 'ландшафтний дизайн, блог');
+  
+  // Створюємо structured data для блогу з тегом
+  const blogStructuredData = blogPostSchema({
+    title: blog.title,
+    description: blog.content?.substring(0, 160) || blog.excerpt || '',
+    image: blogImage,
+    date: blog.createdAt || new Date().toISOString(),
+    author: blog.author || 'Landscape Academy',
+    slug: blog.id?.toString() || '',
+    tag: blog.tag || null
+  });
+  
+  // Breadcrumbs для кращої навігації
+  const breadcrumbItems = [
+    { name: "Головна", url: siteMetadata.siteUrl },
+    { name: "Блог", url: `${siteMetadata.siteUrl}/blog` },
+    ...(blog.tag ? [{ name: blog.tag, url: `${siteMetadata.siteUrl}/blog?tag=${encodeURIComponent(blog.tag)}` }] : []),
+    { name: blog.title, url: `${siteMetadata.siteUrl}/blog/${blog.id}` }
+  ];
+  
+  const breadcrumbStructuredData = breadcrumbSchema(breadcrumbItems);
+  
+  // Об'єднуємо всі structured data
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Landscape Academy",
+        "url": siteMetadata.siteUrl,
+        "logo": `${siteMetadata.siteUrl}/logo_academy.png`
+      },
+      blogStructuredData,
+      breadcrumbStructuredData
+    ]
+  };
 
-  if (!blog) {
-    return null;
-  }
+  // Article meta для SEO з покращеними тегами
+  const articleMeta = {
+    publishedTime: blog.createdAt || new Date().toISOString(),
+    modifiedTime: blog.updatedAt || blog.createdAt || new Date().toISOString(),
+    author: blog.author || 'Landscape Academy',
+    section: blog.tag || 'Ландшафтний дизайн',
+    tags: blog.tag ? [blog.tag, `${blog.tag} ландшафтний дизайн`, `статті про ${blog.tag}`] : []
+  };
 
   return (
     <>
       <SEO
         title={`${blog.title} - Landscape Academy Blog`}
-        description={blog.content.substring(0, 160)}
-        keywords={`${blog.tag}, ландшафтний дизайн, блог`}
-        ogImage={blog.image}
+        description={blog.content?.substring(0, 160) || blog.excerpt || ''}
+        keywords={enhancedKeywords}
+        ogImage={blog.image ? (blog.image.startsWith('http') ? blog.image : blog.image.startsWith('/') ? blog.image : `/${blog.image}`) : '/og-blog.jpg'}
+        ogType="article"
+        canonical={`/blog/${blog.id}`}
+        article={articleMeta}
+        structuredData={structuredData}
       />
 
       <Header showBanner={true} bannerTitle="BLOG" />
@@ -76,9 +102,28 @@ const BlogPost = () => {
       <main className="la-blog-post">
         <div className="la-blog-post__inner">
           <article className="la-blog-post__article">
+            {/* Breadcrumbs */}
+            <nav className="la-blog-post__breadcrumbs" aria-label="Breadcrumb">
+              <Link href="/">Головна</Link>
+              <span> / </span>
+              <Link href="/blog">Блог</Link>
+              {blog.tag && (
+                <>
+                  <span> / </span>
+                  <Link href={`/blog?tag=${encodeURIComponent(blog.tag)}`}>{blog.tag}</Link>
+                </>
+              )}
+              <span> / </span>
+              <span>{blog.title}</span>
+            </nav>
+            
             {/* Header */}
             <header className="la-blog-post__header">
-              <div className="la-blog-post__category">[{blog.tag}]</div>
+              {blog.tag && (
+                <Link href={`/blog?tag=${encodeURIComponent(blog.tag)}`} className="la-blog-post__category">
+                  [{blog.tag}]
+                </Link>
+              )}
               <h1 className="la-blog-post__title">{blog.title}</h1>
               
               <div className="la-blog-post__meta">
@@ -107,6 +152,34 @@ const BlogPost = () => {
                 {blog.content}
               </ReactMarkdown>
             </div>
+
+            {/* Related Posts */}
+            {relatedBlogs && relatedBlogs.length > 0 && (
+              <section className="la-blog-post__related">
+                <h2 className="la-blog-post__related-title">Пов&apos;язані статті</h2>
+                <div className="la-blog-post__related-list">
+                  {relatedBlogs.map((relatedBlog) => (
+                    <Link 
+                      key={relatedBlog.id} 
+                      href={`/blog/${relatedBlog.id}`}
+                      className="la-blog-post__related-item"
+                    >
+                      {relatedBlog.image && (
+                        <div className="la-blog-post__related-image">
+                          <img src={relatedBlog.image} alt={relatedBlog.title} />
+                        </div>
+                      )}
+                      <div className="la-blog-post__related-content">
+                        {relatedBlog.tag && (
+                          <span className="la-blog-post__related-tag">[{relatedBlog.tag}]</span>
+                        )}
+                        <h3 className="la-blog-post__related-title-item">{relatedBlog.title}</h3>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
           </article>
         </div>
       </main>
@@ -300,6 +373,77 @@ const BlogPost = () => {
           margin: 20px 0;
         }
 
+        .la-blog-post__related {
+          margin-top: 60px;
+          padding-top: 40px;
+          border-top: 2px solid #e0e0e0;
+        }
+
+        .la-blog-post__related-title {
+          font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+          font-size: 28px;
+          font-weight: 700;
+          color: #000;
+          margin-bottom: 30px;
+        }
+
+        .la-blog-post__related-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 24px;
+        }
+
+        .la-blog-post__related-item {
+          display: flex;
+          flex-direction: column;
+          text-decoration: none;
+          color: inherit;
+          background: #f9f9f9;
+          border-radius: 12px;
+          overflow: hidden;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .la-blog-post__related-item:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .la-blog-post__related-image {
+          width: 100%;
+          height: 180px;
+          overflow: hidden;
+        }
+
+        .la-blog-post__related-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .la-blog-post__related-content {
+          padding: 20px;
+        }
+
+        .la-blog-post__related-tag {
+          font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: #666;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        .la-blog-post__related-title-item {
+          font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+          font-size: 18px;
+          font-weight: 600;
+          color: #000;
+          margin: 0;
+          line-height: 1.4;
+        }
+
         @media (max-width: 768px) {
           .la-blog-post__article {
             padding: 40px 24px;
@@ -335,4 +479,72 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
+
+// Server-Side Rendering для SEO
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+  
+  try {
+    const db = require('../../lib/database');
+    
+    // Отримуємо блог з бази даних
+    const blog = db.prepare('SELECT * FROM blogs WHERE id = ? AND published = 1').get(parseInt(id));
+    
+    if (!blog) {
+      return {
+        notFound: true
+      };
+    }
+
+    // Функція для підрахунку часу читання
+    const calculateReadTime = (content) => {
+      const wordsPerMinute = 200;
+      const words = (content || '').trim().split(/\s+/).length;
+      const minutes = Math.ceil(words / wordsPerMinute);
+      return `${minutes} хв читання`;
+    };
+
+    // Отримуємо пов'язані блоги за тегом (якщо є тег)
+    let relatedBlogs = [];
+    if (blog.tag) {
+      relatedBlogs = db.prepare(`
+        SELECT id, title, image, tag, created_at, featured_image 
+        FROM blogs 
+        WHERE tag = ? AND id != ? AND published = 1 
+        ORDER BY created_at DESC 
+        LIMIT 3
+      `).all(blog.tag, parseInt(id));
+    }
+
+    // Форматуємо блог для фронтенду
+    const formattedBlog = {
+      ...blog,
+      readTime: calculateReadTime(blog.content || ''),
+      isPublished: blog.published === 1,
+      createdAt: blog.created_at,
+      updatedAt: blog.updated_at,
+      image: blog.featured_image || blog.image || null,
+      tag: blog.tag || null
+    };
+
+    // Форматуємо пов'язані блоги
+    const formattedRelatedBlogs = relatedBlogs.map(relatedBlog => ({
+      ...relatedBlog,
+      createdAt: relatedBlog.created_at,
+      image: relatedBlog.featured_image || relatedBlog.image || null
+    }));
+
+    return {
+      props: {
+        blog: formattedBlog,
+        relatedBlogs: formattedRelatedBlogs
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    return {
+      notFound: true
+    };
+  }
+}
 
