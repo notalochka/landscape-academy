@@ -17,13 +17,38 @@ const BlogCard = ({ blog }) => {
     });
   };
 
+  // Визначаємо URL зображення
+  const imageUrl = blog.image && blog.image.trim() ? blog.image : '/og-blog.jpg';
+  
   return (
     <Link href={`/blog/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <article className="la-blog-card">
-        <div className="la-blog-card__image">
-          {blog.image && (
-            <img src={blog.image} alt={blog.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          )}
+        <div 
+          className="la-blog-card__image" 
+          style={{
+            backgroundImage: `url('${imageUrl}')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: 'transparent'
+          }}
+        >
+          <img 
+            src={imageUrl} 
+            alt={blog.title} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'cover',
+              display: 'block',
+              minHeight: '200px',
+              backgroundColor: 'transparent'
+            }}
+            onError={(e) => {
+              // Ховаємо img, якщо не завантажиться, background покаже og-blog.jpg
+              e.target.style.display = 'none';
+            }}
+          />
         </div>
         <div className="la-blog-card__content">
           <div className="la-blog-card__meta">
@@ -80,9 +105,9 @@ const BlogPage = ({ initialBlogs = [], totalPages: initialTotalPages = 1 }) => {
   };
 
   const filteredBlogs = blogs.filter(blog =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.tag.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    blog.author.toLowerCase().includes(searchTerm.toLowerCase())
+    blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    blog.tag?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    blog.author?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handlePageChange = (page) => {
@@ -228,14 +253,19 @@ export async function getServerSideProps(context) {
     };
     
     // Форматуємо блоги
-    const formattedBlogs = allBlogs.map(blog => ({
-      ...blog,
-      readTime: calculateReadTime(blog.content || ''),
-      isPublished: blog.published === 1,
-      createdAt: blog.created_at,
-      image: blog.featured_image || blog.image || null,
-      tag: blog.tag || null
-    }));
+    const formattedBlogs = allBlogs.map(blog => {
+      // Визначаємо зображення: спочатку featured_image, потім image, якщо немає - og-blog.jpg
+      const image = blog.featured_image || blog.image || '/og-blog.jpg';
+      
+      return {
+        ...blog,
+        readTime: calculateReadTime(blog.content || ''),
+        isPublished: blog.published === 1,
+        createdAt: blog.created_at,
+        image: image,
+        tag: blog.tag || null
+      };
+    });
     
     // Пагінація
     const startIndex = (page - 1) * blogsPerPage;

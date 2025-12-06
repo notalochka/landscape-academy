@@ -85,12 +85,62 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
+  position: relative;
+  background-image: url('/og-blog.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  min-height: 200px;
+}
+
+/* Додатковий fallback для випадку, коли зображення не завантажиться */
+.la-blog-card__image:empty::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/og-blog.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.la-blog-card__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  min-height: 200px;
+}
+
+.la-blog-card__image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/og-blog.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .la-blog-card__placeholder {
   width: 100%;
   height: 100%;
-  background: #e0e0e0;
+  background-image: url('/og-blog.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .la-blog-card__content {

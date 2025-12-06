@@ -112,7 +112,20 @@ const Header = ({ showBanner = false, bannerTitle = "LANDSCAPER ACADEMY" }) => {
       {showBanner && (
         <div className="la-header__banner">
           <div className="la-header__banner-content">
-            <div className="la-header__banner-placeholder"></div>
+            <div className="la-header__banner-image">
+              <Image 
+                src="/og-blog.jpg" 
+                alt={bannerTitle}
+                width={400}
+                height={250}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  borderRadius: '12px'
+                }}
+              />
+            </div>
             <h1 className="la-header__title">{bannerTitle}</h1>
           </div>
         </div>

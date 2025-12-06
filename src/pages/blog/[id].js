@@ -140,11 +140,15 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
             </header>
 
             {/* Featured Image */}
-            {blog.image && (
-              <div className="la-blog-post__image">
-                <img src={blog.image} alt={blog.title} />
-              </div>
-            )}
+            <div className="la-blog-post__image">
+              <img 
+                src={blog.image || '/og-blog.jpg'} 
+                alt={blog.title}
+                onError={(e) => {
+                  e.target.src = '/og-blog.jpg';
+                }}
+              />
+            </div>
 
             {/* Content */}
             <div className="la-blog-post__content">
@@ -164,11 +168,9 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
                       href={`/blog/${relatedBlog.id}`}
                       className="la-blog-post__related-item"
                     >
-                      {relatedBlog.image && (
-                        <div className="la-blog-post__related-image">
-                          <img src={relatedBlog.image} alt={relatedBlog.title} />
-                        </div>
-                      )}
+                      <div className="la-blog-post__related-image">
+                        <img src={relatedBlog.image || '/og-blog.jpg'} alt={relatedBlog.title} />
+                      </div>
                       <div className="la-blog-post__related-content">
                         {relatedBlog.tag && (
                           <span className="la-blog-post__related-tag">[{relatedBlog.tag}]</span>
@@ -531,7 +533,8 @@ export async function getServerSideProps(context) {
     const formattedRelatedBlogs = relatedBlogs.map(relatedBlog => ({
       ...relatedBlog,
       createdAt: relatedBlog.created_at,
-      image: relatedBlog.featured_image || relatedBlog.image || null
+      image: relatedBlog.featured_image || relatedBlog.image || null,
+      tag: relatedBlog.tag || null
     }));
 
     return {

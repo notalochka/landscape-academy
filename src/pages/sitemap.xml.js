@@ -86,13 +86,13 @@ export async function getServerSideProps({ res }) {
     // Генеруємо sitemap з динамічними даними
     const sitemap = generateSiteMap(blogs, courses);
 
-    res.setHeader('Content-Type', 'text/xml');
-    res.write(sitemap);
-    res.end();
+  res.setHeader('Content-Type', 'text/xml');
+  res.write(sitemap);
+  res.end();
 
-    return {
-      props: {},
-    };
+  return {
+    props: {},
+  };
   } catch (error) {
     console.error('Error generating sitemap:', error);
     // Fallback до статичного sitemap

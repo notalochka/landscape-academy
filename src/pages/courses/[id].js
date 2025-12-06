@@ -56,7 +56,7 @@ const RegularCoursePage = ({ initialCourseData, initialAudience = [], initialCou
         const res = await fetch(`/api/courses/${id}`);
         const json = await res.json();
         if (json.success) {
-          setCourseData(prev => ({ ...prev, ...json.data }));
+        setCourseData(prev => ({ ...prev, ...json.data }));
         }
 
         const ta = await fetch(`/api/courses/${id}/target-audience`).then(r => r.json());

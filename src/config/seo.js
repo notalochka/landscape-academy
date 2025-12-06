@@ -166,28 +166,28 @@ export const enhanceKeywordsWithTag = (tag, existingKeywords = '') => {
 
 export const blogPostSchema = (postData) => {
   const schema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": postData.title,
-    "description": postData.description,
-    "image": postData.image || `${siteMetadata.siteUrl}/og-blog.jpg`,
-    "datePublished": postData.date,
-    "author": {
-      "@type": "Person",
-      "name": postData.author
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Landscape Academy",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}/logo_academy.png`
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${siteMetadata.siteUrl}/blog/${postData.slug || ''}`
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": postData.title,
+  "description": postData.description,
+  "image": postData.image || `${siteMetadata.siteUrl}/og-blog.jpg`,
+  "datePublished": postData.date,
+  "author": {
+    "@type": "Person",
+    "name": postData.author
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Landscape Academy",
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://landscaper.co.ua"}/logo_academy.png`
     }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `${siteMetadata.siteUrl}/blog/${postData.slug || ''}`
+  }
   };
   
   // Додаємо keywords як about якщо є тег
