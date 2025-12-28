@@ -542,7 +542,7 @@ export async function getServerSideProps(context) {
     let relatedBlogs = [];
     if (blog.tag) {
       relatedBlogs = db.prepare(`
-        SELECT id, title, image, tag, created_at, featured_image 
+        SELECT id, title, tag, created_at, featured_image 
         FROM blogs 
         WHERE tag = ? AND id != ? AND published = 1 
         ORDER BY created_at DESC 
@@ -565,7 +565,7 @@ export async function getServerSideProps(context) {
     const formattedRelatedBlogs = relatedBlogs.map(relatedBlog => ({
       ...relatedBlog,
       createdAt: relatedBlog.created_at,
-      image: relatedBlog.featured_image || relatedBlog.image || null,
+      image: relatedBlog.featured_image || null,
       tag: relatedBlog.tag || null
     }));
 
