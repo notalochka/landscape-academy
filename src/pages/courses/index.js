@@ -7,11 +7,16 @@ import Footer from "../../components/Footer/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO } from "../../config/seo";
 
-const CoursesPage = ({ courses: initialCourses = [] }) => {
+const CoursesPage = ({ courses: initialCourses = [], flagshipCourse = null }) => {
   const coursesSEO = pagesSEO.courses;
   const [contentRef, contentVisible] = useScrollAnimation({ threshold: 0.1 });
   const [courses, setCourses] = useState(initialCourses);
   const [contactRef, contactVisible] = useScrollAnimation({ threshold: 0.1 });
+  
+  // Об'єднуємо флагманський курс з іншими курсами (ставимо першим)
+  const allCourses = flagshipCourse 
+    ? [flagshipCourse, ...courses]
+    : courses;
 
   return (
     <>
@@ -50,15 +55,21 @@ const CoursesPage = ({ courses: initialCourses = [] }) => {
             </h1>
             
             <div className="la-courses-content__courses">
-              {courses.map(course => {
-                const href = course.course_type === 'course-1'
-                  ? `/course-1?id=${course.id}`
-                  : course.course_type === 'course-2'
-                    ? `/course-2?id=${course.id}`
-                    : `/courses/${course.id}`;
+              {allCourses.map(course => {
+                const isFlagship = course.course_type === 'flagship';
+                const href = isFlagship
+                  ? '/flagship'
+                  : course.course_type === 'course-1'
+                    ? `/course-1?id=${course.id}`
+                    : course.course_type === 'course-2'
+                      ? `/course-2?id=${course.id}`
+                      : `/courses/${course.id}`;
                 return (
                   <Link key={course.id} href={href} className="la-courses-content__course-link">
-                    <div className="la-courses-content__course">
+                    <div className={`la-courses-content__course ${isFlagship ? 'la-courses-content__course--flagship' : ''}`}>
+                      {isFlagship && (
+                        <div className="la-courses-content__course-badge">ФЛАГМАНСЬКИЙ КУРС</div>
+                      )}
                       <h3 className="la-courses-content__course-title">{course.title}</h3>
                       <div className="la-courses-content__course-details">
                         <div className="la-courses-content__course-duration-row">
@@ -96,12 +107,16 @@ export async function getStaticProps() {
     // Імпортуємо базу даних напряму
     const db = require('../../lib/database');
     
-    // Отримуємо курси з бази даних
+    // Отримуємо флагманський курс
+    const flagshipCourse = db.prepare('SELECT * FROM courses WHERE is_active = 1 AND course_type = ?').get('flagship');
+    
+    // Отримуємо інші курси (без флагманського)
     const courses = db.prepare('SELECT * FROM courses WHERE is_active = 1 AND course_type != ? ORDER BY created_at DESC').all('flagship');
     
     return {
       props: {
-        courses: courses || []
+        courses: courses || [],
+        flagshipCourse: flagshipCourse || null
       },
       // Перегенеруємо сторінку кожні 5 хвилин
       revalidate: 300
@@ -110,7 +125,8 @@ export async function getStaticProps() {
     console.error('Error in getStaticProps for courses:', error);
     return {
       props: {
-        courses: []
+        courses: [],
+        flagshipCourse: null
       },
       revalidate: 300
     };

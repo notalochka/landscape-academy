@@ -487,16 +487,48 @@ export async function getServerSideProps(context) {
   const { id } = context.params;
   
   try {
-    const db = require('../../lib/database');
-    
-    // Отримуємо блог з бази даних
-    const blog = db.prepare('SELECT * FROM blogs WHERE id = ? AND published = 1').get(parseInt(id));
-    
-    if (!blog) {
+    // Перевіряємо валідність ID
+    if (!id || isNaN(parseInt(id))) {
+      console.error(`[Blog ${id}] Invalid blog ID: ${id}`);
       return {
         notFound: true
       };
     }
+    
+    const blogId = parseInt(id);
+    console.log(`[Blog ${blogId}] Fetching blog from database...`);
+    
+    // Використовуємо той самий підхід, що і в blog/index.js
+    const db = require('../../lib/database');
+    
+    if (!db) {
+      console.error(`[Blog ${blogId}] Database is null or undefined`);
+      return {
+        notFound: true
+      };
+    }
+    
+    // Отримуємо блог з бази даних (без фільтру published, щоб знайти будь-який блог)
+    const blog = db.prepare('SELECT * FROM blogs WHERE id = ?').get(blogId);
+    
+    if (!blog) {
+      // Додаткова діагностика: перевіряємо, чи є взагалі блоги в базі
+      try {
+        const allBlogs = db.prepare('SELECT id, title, published FROM blogs ORDER BY id').all();
+        console.error(`[Blog ${blogId}] Blog not found. Total blogs in DB: ${allBlogs.length}`);
+        console.error(`[Blog ${blogId}] Available blog IDs:`, allBlogs.map(b => b.id));
+        if (allBlogs.length > 0) {
+          console.error(`[Blog ${blogId}] Sample blog:`, { id: allBlogs[0].id, title: allBlogs[0].title, published: allBlogs[0].published });
+        }
+      } catch (e) {
+        console.error(`[Blog ${blogId}] Error checking available blogs:`, e);
+      }
+      return {
+        notFound: true
+      };
+    }
+    
+    console.log(`[Blog ${blogId}] Blog found: "${blog.title}", published: ${blog.published}`);
 
     // Функція для підрахунку часу читання
     const calculateReadTime = (content) => {
