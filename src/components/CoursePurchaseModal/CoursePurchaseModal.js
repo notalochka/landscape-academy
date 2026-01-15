@@ -92,11 +92,15 @@ const CoursePurchaseModal = ({ isOpen, onClose, courseData }) => {
       const result = await response.json();
 
       if (result.success) {
+        // Визначаємо, чи це мобільний пристрій
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         // Перенаправляємо на Wayforpay
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = 'https://secure.wayforpay.com/pay';
-        form.target = '_blank';
+        // На мобільних використовуємо _self, щоб форма відкрилася в поточному вікні
+        form.target = isMobile ? '_self' : '_blank';
 
         Object.keys(result.data).forEach(key => {
           const input = document.createElement('input');
@@ -107,10 +111,20 @@ const CoursePurchaseModal = ({ isOpen, onClose, courseData }) => {
         });
 
         document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
-
-        onClose();
+        
+        if (isMobile) {
+          // На мобільних: відправляємо форму в поточному вікні
+          // Модальне вікно закриється автоматично при перенаправленні на Wayforpay
+          // Не закриваємо модальне вікно вручну, щоб уникнути конфліктів
+          form.submit();
+        } else {
+          // На десктопі: відкриваємо в новій вкладці
+          form.submit();
+          setTimeout(() => {
+            document.body.removeChild(form);
+            onClose();
+          }, 500);
+        }
       } else {
         setError('Помилка при створенні платежу. Спробуйте пізніше.');
       }
