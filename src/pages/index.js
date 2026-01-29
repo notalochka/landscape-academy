@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import SEO from "../components/SEO/SEO";
@@ -195,6 +195,7 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
   }, [today, events]);
 
   const [selectedEventId, setSelectedEventId] = useState(defaultEvent?.id);
+  const initialCalendarSynced = useRef(false);
 
   useEffect(() => {
     if (defaultEvent && !selectedEventId) {
@@ -202,29 +203,15 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
     }
   }, [defaultEvent, selectedEventId]);
 
-  // Оновлюємо календар на місяці з найближчою подією після завантаження подій
+  // Встановлюємо календар на місяць найближчої події лише один раз при завантаженні (не скидаємо після ручного гортання)
   useEffect(() => {
-    if (events.length > 0 && defaultEvent && defaultEvent.start) {
-      // Використовуємо UTC для правильного визначення місяця
-      const eventYear = defaultEvent.start.getUTCFullYear();
-      const eventMonth = defaultEvent.start.getUTCMonth();
-      
-      // Перевіряємо, чи поточний місяць містить події
-      const currentMonthHasEvents = events.some(e => {
-        const start = toDateOnly(e.startDate);
-        if (!start) return false;
-        const eYear = start.getUTCFullYear();
-        const eMonth = start.getUTCMonth();
-        return eYear === viewYear && eMonth === viewMonth;
-      });
-      
-      // Перемикаємо на місяць з найближчою подією, якщо поточний місяць не містить подій
-      if (!currentMonthHasEvents) {
-        setViewYear(eventYear);
-        setViewMonth(eventMonth);
-      }
-    }
-  }, [events, defaultEvent, viewYear, viewMonth]);
+    if (initialCalendarSynced.current || events.length === 0 || !defaultEvent?.start) return;
+    initialCalendarSynced.current = true;
+    const eventYear = defaultEvent.start.getUTCFullYear();
+    const eventMonth = defaultEvent.start.getUTCMonth();
+    setViewYear(eventYear);
+    setViewMonth(eventMonth);
+  }, [events, defaultEvent]);
 
   const monthLabel = useMemo(() => {
     return new Date(viewYear, viewMonth)

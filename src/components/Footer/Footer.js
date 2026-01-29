@@ -39,7 +39,7 @@ const Footer = () => {
       <div className="la-footer__bottom">
         <p className="la-footer__credit">
           <a 
-            href="https://telebots.site/" 
+            href="https://new.telebots.site/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="la-footer__credit-link"
