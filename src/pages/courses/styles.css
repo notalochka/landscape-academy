@@ -123,16 +123,50 @@
 
 .la-courses-content__course {
   background: #000000;
-  padding: 40px;
+  padding: 0;
   border-radius: 0;
   border: none;
   transition: all 0.3s ease;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   text-align: left;
   display: flex;
   flex-direction: column;
   height: 450px;
+}
+
+.la-courses-content__course-image {
+  width: 100%;
+  height: 180px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.la-courses-content__course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.la-courses-content__course:not(:has(.la-courses-content__course-image)) {
+  padding: 40px;
+}
+
+.la-courses-content__course:has(.la-courses-content__course-image) .la-courses-content__course-title,
+.la-courses-content__course:has(.la-courses-content__course-image) .la-courses-content__course-details {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.la-courses-content__course:has(.la-courses-content__course-image) .la-courses-content__course-title {
+  padding-top: 24px;
+  margin-bottom: 20px;
+}
+
+.la-courses-content__course:has(.la-courses-content__course-image) .la-courses-content__course-details {
+  padding-bottom: 40px;
 }
 
 .la-courses-content__course--flagship {

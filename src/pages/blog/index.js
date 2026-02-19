@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
@@ -7,62 +9,68 @@ import Footer from "../../components/Footer/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { pagesSEO, websiteSchema, organizationSchema, enhanceKeywordsWithTag } from "../../config/seo";
 
+const DEFAULT_BLOG_IMAGE = '/og-blog.jpg';
+
+/** Перші ~1200 символів контенту для прев’ю (форматування + медіа) */
+const previewContent = (content) => {
+  if (!content || typeof content !== 'string') return '';
+  const trimmed = content.trim();
+  const max = 1200;
+  if (trimmed.length <= max) return trimmed;
+  const slice = trimmed.slice(0, max);
+  const lastImg = slice.lastIndexOf('](');
+  const closeParen = lastImg >= 0 ? trimmed.indexOf(')', lastImg + 2) + 1 : -1;
+  if (closeParen > 0 && closeParen <= max + 200) return trimmed.slice(0, closeParen) + '…';
+  return slice + '…';
+};
+
 const BlogCard = ({ blog }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('uk-UA', { 
-      day: '2-digit', 
+    return date.toLocaleDateString('uk-UA', {
+      day: '2-digit',
       month: 'long',
       year: 'numeric'
-    });
+    }).toLowerCase();
   };
 
-  // Визначаємо URL зображення
-  const imageUrl = blog.image && blog.image.trim() ? blog.image : '/og-blog.jpg';
-  
+  const imageUrl = blog.featured_image?.trim() || blog.image?.trim() ? (blog.featured_image || blog.image) : DEFAULT_BLOG_IMAGE;
+  const contentPreview = previewContent(blog.content);
+
   return (
-    <Link href={`/blog/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <article className="la-blog-card">
-        <div 
-          className="la-blog-card__image" 
-          style={{
-            backgroundImage: `url('${imageUrl}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: 'transparent'
-          }}
-        >
-          <img 
-            src={imageUrl} 
-            alt={blog.title} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'cover',
-              display: 'block',
-              minHeight: '200px',
-              backgroundColor: 'transparent'
-            }}
-            onError={(e) => {
-              // Ховаємо img, якщо не завантажиться, background покаже og-blog.jpg
-              e.target.style.display = 'none';
-            }}
-          />
-        </div>
-        <div className="la-blog-card__content">
+    <Link href={`/blog/${blog.id}`} className="la-blog-card-link" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <article className="la-blog-card la-blog-card--tile">
+        <div
+          className="la-blog-card__bg"
+          style={{ backgroundImage: `url('${imageUrl}')` }}
+          aria-hidden
+        />
+        <div className="la-blog-card__overlay" aria-hidden />
+        <div className="la-blog-card__body">
           <div className="la-blog-card__meta">
             <span className="la-blog-card__date">{formatDate(blog.createdAt)}</span>
-            <span className="la-blog-card__read-time">{blog.readTime}</span>
+            {blog.readTime && <span className="la-blog-card__read-time">{blog.readTime}</span>}
           </div>
           {blog.tag && (
-            <div className="la-blog-card__category">[{blog.tag}]</div>
+            <span className="la-blog-card__tag">[{blog.tag}]</span>
           )}
           <h2 className="la-blog-card__title">{blog.title}</h2>
-          <div className="la-blog-card__author">
-            <div className="la-blog-card__author-avatar"></div>
-            <span className="la-blog-card__author-name">{blog.author}</span>
-          </div>
+          {contentPreview && (
+            <div className="la-blog-card__excerpt la-blog-card__excerpt--md">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {contentPreview}
+              </ReactMarkdown>
+            </div>
+          )}
+          {blog.author && (
+            <div className="la-blog-card__author">
+              <span className="la-blog-card__author-name">{blog.author}</span>
+            </div>
+          )}
+          <span className="la-blog-card__cta">
+            Дізнатися більше
+            <span className="la-blog-card__cta-arrow" aria-hidden>→</span>
+          </span>
         </div>
       </article>
     </Link>

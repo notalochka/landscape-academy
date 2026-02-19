@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
+import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditor";
 import CourseProgramEditor from "../../components/CourseProgramEditor/CourseProgramEditor";
 
 const AdminCourses = () => {
@@ -15,6 +16,7 @@ const AdminCourses = () => {
   const [formData, setFormData] = useState({
     title: "",
     subtitle: "",
+    featuredImage: "",
     description1: "",
     description2: "",
     price: "",
@@ -99,9 +101,8 @@ const AdminCourses = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('/api/courses?all=1');
+      const response = await fetch('/api/courses?all=1', { cache: 'no-store' });
       if (response.status === 304) {
-        // Немає змін — залишаємо поточний список
         return;
       }
       const contentType = response.headers.get('content-type') || '';
@@ -112,7 +113,7 @@ const AdminCourses = () => {
       const result = await response.json();
       
       if (result.success) {
-        setCourses(result.data);
+        setCourses(Array.isArray(result.data) ? result.data : []);
       }
     } catch (error) {
       console.error('Помилка завантаження курсів:', error);
@@ -139,6 +140,7 @@ const AdminCourses = () => {
         setFormData({
           title: courseResult.data.title || "",
           subtitle: courseResult.data.subtitle || "",
+          featuredImage: courseResult.data.featured_image || "",
           description1: courseResult.data.description_1 || "",
           description2: courseResult.data.description_2 || "",
           price: courseResult.data.price || "",
@@ -337,6 +339,7 @@ const AdminCourses = () => {
     setFormData({
       title: "",
       subtitle: "",
+      featuredImage: "",
       description1: "",
       description2: "",
       price: "",
@@ -458,33 +461,36 @@ const AdminCourses = () => {
                   />
                 </div>
 
-                
-              
-                {isFlagship && (
+              {/* Головне фото курсу */}
+              <div className="admin-form__field admin-form__field--full">
+                <label className="admin-form__label">Головне фото курсу</label>
+                <ImageUpload
+                  name="featuredImage"
+                  value={formData.featuredImage}
+                  onChange={handleInputChange}
+                />
+                <small style={{ color: '#666', fontSize: '12px', marginTop: '8px', display: 'block' }}>
+                  Відображається на картці курсу та на сторінці курсу
+                </small>
+              </div>
 
+                {isFlagship && (
                   <>
                   <div className="admin-form__field admin-form__field--full">
-                    <label className="admin-form__label">Опис 1 *</label>
-                    <textarea
+                    <label className="admin-form__label">Опис 1 * (Markdown, можна додавати фото)</label>
+                    <MarkdownEditor
                       name="description1"
                       value={formData.description1}
                       onChange={handleInputChange}
-                      className="admin-form__textarea"
-                      required
-                      placeholder="ЗА 6 ТИЖНІВ РАЗОМ ПРОЙДЕМО ШЛЯХ ВІД ЧІТКОГО ПЛАНУВАННЯ ДО ЗАЛУЧЕННЯ КЛІЄНТІВ ТА МАСШТАБУВАННЯ ДОХОДІВ"
-                      rows="3"
                     />
                   </div>
 
                   <div className="admin-form__field admin-form__field--full">
-                    <label className="admin-form__label">Опис 2</label>
-                    <textarea
+                    <label className="admin-form__label">Опис 2 (Markdown, можна додавати фото)</label>
+                    <MarkdownEditor
                       name="description2"
                       value={formData.description2}
                       onChange={handleInputChange}
-                      className="admin-form__textarea"
-                      placeholder="ОСВІТНІЙ КУРС ДЛЯ ЛАНДШАФТНИКІВ, ДИЗАЙНЕРІВ, САДІВНИКІВ, ТОПІАРНИКІВ ТА ВЛАСНИКІВ САДОВИХ ЦЕНТРІВ"
-                      rows="2"
                     />
                   </div>
                 </>

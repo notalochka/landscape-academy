@@ -46,6 +46,7 @@ export default function handler(req, res) {
         try { db.exec('ALTER TABLE courses ADD COLUMN solution_how_title TEXT'); } catch (e) {}
         try { db.exec('ALTER TABLE courses ADD COLUMN solution_list TEXT'); } catch (e) {}
         try { db.exec('ALTER TABLE courses ADD COLUMN solution_conclusion TEXT'); } catch (e) {}
+        try { db.exec('ALTER TABLE courses ADD COLUMN featured_image TEXT'); } catch (e) {}
         const update = db.prepare(`
           UPDATE courses SET
             title = ?, subtitle = ?, description_1 = ?, description_2 = ?, price = ?, old_price = ?, start_date = ?,
@@ -53,7 +54,7 @@ export default function handler(req, res) {
             result_title = ?, result_list = ?, result_conclusion = ?, solution_title = ?, solution_intro = ?,
             solution_how_title = ?, solution_list = ?, solution_conclusion = ?, modules = ?, themes = ?, curators = ?,
             author_name = ?, author_bio_1 = ?, author_bio_2 = ?, author_photo = ?, telegram_link = ?, course_type = ?, is_active = ?,
-            updated_at = CURRENT_TIMESTAMP
+            featured_image = ?, updated_at = CURRENT_TIMESTAMP
           WHERE id = ?
         `);
         update.run(
@@ -88,6 +89,7 @@ export default function handler(req, res) {
           c.telegramLink ?? existing.telegram_link,
           c.courseType ?? existing.course_type,
           c.isActive !== undefined ? (c.isActive ? 1 : 0) : existing.is_active,
+          c.featuredImage ?? c.featured_image ?? existing.featured_image ?? null,
           courseId
         );
         const updated = db.prepare('SELECT * FROM courses WHERE id = ?').get(courseId);

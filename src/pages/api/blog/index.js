@@ -144,11 +144,17 @@ export default function handler(req, res) {
         const featuredImage = req.body.image || req.body.featured_image || null;
         const tag = req.body.tag || null;
         
-        // Генеруємо slug з назви, якщо не вказано
-        const slug = req.body.slug || req.body.title
+        // Генеруємо slug з назви, якщо не вказано; робимо унікальним при колізії
+        let baseSlug = req.body.slug || (req.body.title || '')
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
+          .replace(/(^-|-$)/g, '') || 'post';
+        let slug = baseSlug;
+        let n = 1;
+        const exists = db.prepare('SELECT 1 FROM blogs WHERE slug = ?');
+        while (exists.get(slug)) {
+          slug = `${baseSlug}-${++n}`;
+        }
         
         const insertBlog = db.prepare(`
           INSERT INTO blogs (title, content, excerpt, author, featured_image, tag, slug, published)

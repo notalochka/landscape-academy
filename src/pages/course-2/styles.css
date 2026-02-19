@@ -54,6 +54,23 @@
   transform: translateY(-50%) rotate(45deg);
 }
 
+.la-course-2__hero-image {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.la-course-2__hero-image img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
 .la-course-2__container {
     width: 100%;
     background: #D9D9D9;

@@ -10,6 +10,9 @@ import useScrollAnimation from "../hooks/useScrollAnimation";
 import EventRegistrationModal from "../components/EventRegistrationModal/EventRegistrationModal";
 import { pagesSEO, organizationSchema, websiteSchema } from "../config/seo";
 
+/** Дефолтне зображення для блогів без фото (public/og-blog.jpg) */
+const DEFAULT_BLOG_IMAGE = '/og-blog.jpg';
+
 function toDateOnly(dateLike) {
   if (!dateLike) return null;
   try {
@@ -127,8 +130,12 @@ const BlogCard = ({ blog, delay = "" }) => {
         <h3 className="la-blog__title">{blog.title}</h3>
         <div className="la-blog__footer">
           <span className="la-blog__date">{formatDate(blog.createdAt)}</span>
-          <span className="la-blog__description">[{blog.tag}]</span>
+          <span className="la-blog__description">[{blog.tag || ''}]</span>
         </div>
+        <span className="la-blog__more">
+          Дізнатися більше
+          <span className="la-blog__more-arrow" aria-hidden>→</span>
+        </span>
       </div>
     </div>
   );
@@ -168,6 +175,8 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
   const [featuredBlogs, setFeaturedBlogs] = useState(initialBlogs);
   const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
   const [programCourses, setProgramCourses] = useState(initialCourses);
+  const libraryCarouselRef = useRef(null);
+  const LIBRARY_GAP = 30;
 
   // Дані завантажуються через getStaticProps (ISR) для швидшого завантаження
 
@@ -265,17 +274,40 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
     } else setViewMonth((m) => m + 1);
   };
 
+  const scrollLibraryToIndex = (index) => {
+    const el = libraryCarouselRef.current;
+    if (!el || featuredBlogs.length === 0) return;
+    const slide = el.querySelector(".la-library__slide");
+    if (!slide) return;
+    const slideWidth = slide.offsetWidth;
+    el.scrollTo({ left: index * (slideWidth + LIBRARY_GAP), behavior: "smooth" });
+    setCurrentBlogIndex(index);
+  };
+
   const goPrevBlog = () => {
-    setCurrentBlogIndex((prev) => 
-      prev === 0 ? featuredBlogs.length - 1 : prev - 1
-    );
+    const next = currentBlogIndex === 0 ? featuredBlogs.length - 1 : currentBlogIndex - 1;
+    scrollLibraryToIndex(next);
   };
 
   const goNextBlog = () => {
-    setCurrentBlogIndex((prev) => 
-      prev === featuredBlogs.length - 1 ? 0 : prev + 1
-    );
+    const next = currentBlogIndex === featuredBlogs.length - 1 ? 0 : currentBlogIndex + 1;
+    scrollLibraryToIndex(next);
   };
+
+  useEffect(() => {
+    const el = libraryCarouselRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const slide = el.querySelector(".la-library__slide");
+      if (!slide) return;
+      const slideWidth = slide.offsetWidth;
+      const index = Math.round(el.scrollLeft / (slideWidth + LIBRARY_GAP));
+      const clamped = Math.max(0, Math.min(index, featuredBlogs.length - 1));
+      setCurrentBlogIndex(clamped);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [featuredBlogs.length]);
 
   return (
     <>
@@ -485,20 +517,34 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
               <span className="la-library__eyebrow">БІБЛІОТЕКА КОРИСНИХ МАТЕРІАЛІВ</span>
             </div>
 
-            <div className="la-library__carousel">
-              {featuredBlogs.length > 0 && featuredBlogs.map((blog, index) => (
-                <div 
-                  key={blog.id}
-                  className={`la-library__slide ${index === currentBlogIndex ? 'la-library__slide--active' : ''}`}
-                >
-                  <Link href={`/blog/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <BlogCard 
-                      blog={blog}
-                      delay=""
+            <div
+              ref={libraryCarouselRef}
+              className="la-library__carousel"
+              role="region"
+              aria-label="Карусель блогів"
+            >
+              {featuredBlogs.length > 0 && featuredBlogs.map((blog, index) => {
+                const img = blog.featured_image?.trim() || blog.image?.trim();
+                const bgImage = img ? img : DEFAULT_BLOG_IMAGE;
+                return (
+                  <div 
+                    key={blog.id}
+                    className={`la-library__slide ${index === currentBlogIndex ? 'la-library__slide--active' : ''}`}
+                  >
+                    <div 
+                      className="la-library__slide-bg" 
+                      style={{ backgroundImage: `url(${bgImage})` }}
+                      aria-hidden
                     />
-                  </Link>
-                </div>
-              ))}
+                    <Link href={`/blog/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }} className="la-library__slide-link">
+                      <BlogCard 
+                        blog={blog}
+                        delay=""
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="la-library__navigation">
@@ -516,8 +562,23 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
               >
                 <span></span>
               </button>
-        </div>
-        </div>
+            </div>
+            {featuredBlogs.length > 0 && (
+              <div className="la-library__dots" role="tablist" aria-label="Індикатори слайдів">
+                {featuredBlogs.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    role="tab"
+                    aria-selected={index === currentBlogIndex}
+                    aria-label={`Слайд ${index + 1}`}
+                    className={`la-library__dot ${index === currentBlogIndex ? 'la-library__dot--active' : ''}`}
+                    onClick={() => scrollLibraryToIndex(index)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
         <div ref={contactRef} className={`animate-fade-in-up ${contactVisible ? 'is-visible' : ''}`}>
@@ -589,8 +650,8 @@ export async function getStaticProps() {
       return `${minutes} хв читання`;
     };
     
-    // Отримуємо опубліковані блоги (перші 3)
-    const blogsRaw = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC LIMIT 3').all();
+    // Отримуємо всі опубліковані блоги для бібліотеки на головній
+    const blogsRaw = db.prepare('SELECT * FROM blogs WHERE published = 1 ORDER BY created_at DESC').all();
     
     // Форматуємо блоги
     const blogs = blogsRaw.map(blog => ({

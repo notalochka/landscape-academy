@@ -101,6 +101,7 @@ const Course2Page = () => {
             id: json.data.id || courseId,
             title: json.data.title || 'Метод роботи практикуючого ландшафтного дизайнера',
             subtitle: json.data.subtitle || 'Або в чому секрет виходу на високий чек',
+            featured_image: json.data.featured_image || null,
             price: json.data.price || '',
             old_price: json.data.old_price || '',
             start_date: json.data.start_date || '',
@@ -158,6 +159,11 @@ const Course2Page = () => {
             <span>ПОВЕРНУТИСЯ НАЗАД</span>
             
           </Link>
+        {courseData.featured_image && (
+          <div className="la-course-2__hero-image">
+            <img src={courseData.featured_image} alt={courseData.title} />
+          </div>
+        )}
         <div className="la-course-2__container">
           
           

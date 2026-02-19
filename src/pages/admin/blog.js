@@ -263,6 +263,9 @@ const AdminBlog = () => {
                   value={formData.content}
                   onChange={handleInputChange}
                 />
+                <small style={{ color: '#666', fontSize: '12px', marginTop: '8px', display: 'block' }}>
+                  Кнопка «Зображення» — вставка фото в будь-яке місце з вибором розміру (малий / середній / великий / вся ширина). У тексті можна вручну змінити розмір: <code>![опис | small](url)</code> — варіанти: small, medium, large, full.
+                </small>
               </div>
 
               <div className="admin-form__field">

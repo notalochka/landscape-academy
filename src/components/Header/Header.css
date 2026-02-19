@@ -2,9 +2,16 @@
 .la-header {
   background: #ffffff;
   position: relative;
+  padding-top: var(--la-header-nav-height, 80px);
 }
 
 .la-header__nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #ffffff;
   border-bottom: 1px solid #e0e0e0;
 }
 
@@ -73,6 +80,32 @@
   right: 0;
   height: 2px;
   background: #000;
+}
+
+.la-header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.la-header__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: #303030;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.la-header__social:hover {
+  color: #000;
+  transform: scale(1.08);
+}
+
+.la-header__social-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .la-header__cta--desktop {
@@ -207,6 +240,24 @@
 .la-header__mobile-link--active {
   text-decoration: underline;
   font-weight: 600;
+}
+
+.la-header__mobile-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 0;
+  color: #000;
+  text-decoration: none;
+  font-family: "Bender", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.la-header__mobile-social .la-header__social-icon {
+  width: 28px;
+  height: 28px;
 }
 
 /* Banner Section */

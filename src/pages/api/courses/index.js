@@ -43,6 +43,7 @@ export default function handler(req, res) {
   switch (method) {
     case 'GET': {
       try {
+        try { db.exec('ALTER TABLE courses ADD COLUMN featured_image TEXT'); } catch (e) {}
         const { all, course_type } = req.query;
         const useActiveOnly = !all; // by default return only active
 
@@ -99,8 +100,8 @@ export default function handler(req, res) {
             experience, group_info, duration, problem_title, problem_intro1, problem_intro2,
             result_title, result_list, result_conclusion, solution_title, solution_intro,
             solution_how_title, solution_list, solution_conclusion, modules, themes, curators,
-            author_name, author_bio_1, author_bio_2, author_photo, telegram_link, course_type, is_active
-          ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            author_name, author_bio_1, author_bio_2, author_photo, telegram_link, course_type, is_active, featured_image
+          ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `);
 
         const result = insert.run(
@@ -134,7 +135,8 @@ export default function handler(req, res) {
           c.authorPhoto || null,
           c.telegramLink || null,
           c.courseType || 'regular',
-          c.isActive ? 1 : 0
+          c.isActive ? 1 : 0,
+          c.featuredImage || c.featured_image || null
         );
 
         const created = db.prepare('SELECT * FROM courses WHERE id = ?').get(result.lastInsertRowid);

@@ -10,6 +10,38 @@ import Footer from "../../components/Footer/Footer";
 import { blogPostSchema, enhanceKeywordsWithTag, breadcrumbSchema } from "../../config/seo";
 import { siteMetadata } from "../../config/seo";
 
+/** Парсить alt: "опис | 400" (px) або "опис | small|medium|large|full" */
+function parseImageAlt(alt) {
+  if (!alt || typeof alt !== 'string') return { alt: '', size: null };
+  const parts = alt.split(/\s*\|\s*/);
+  const last = parts[parts.length - 1]?.trim();
+  const numMatch = last?.match(/^(\d+)(px)?$/i);
+  if (numMatch) {
+    const caption = parts.slice(0, -1).join(' | ').trim();
+    return { alt: caption, size: parseInt(numMatch[1], 10) };
+  }
+  const preset = last?.toLowerCase();
+  const valid = ['small', 'medium', 'large', 'full'];
+  if (valid.includes(preset)) {
+    const caption = parts.slice(0, -1).join(' | ').trim();
+    return { alt: caption, size: preset };
+  }
+  return { alt: alt.trim(), size: null };
+}
+
+const markdownImageSizes = {
+  img: ({ node, src, alt, ...props }) => {
+    const { alt: cleanAlt, size } = parseImageAlt(alt);
+    const isPx = typeof size === 'number';
+    const className = isPx ? 'la-blog-img' : `la-blog-img la-blog-img--${size || 'medium'}`;
+    const style = isPx ? { maxWidth: `${size}px` } : undefined;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={src} alt={cleanAlt || ''} className={className} style={style} {...props} />
+    );
+  },
+};
+
 const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
   const router = useRouter();
 
@@ -152,7 +184,7 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
 
             {/* Content */}
             <div className="la-blog-post__content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownImageSizes}>
                 {blog.content}
               </ReactMarkdown>
             </div>
@@ -368,11 +400,29 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
           text-decoration: underline;
         }
 
-        .la-blog-post__content img {
+        .la-blog-post__content img,
+        .la-blog-post__content .la-blog-img {
           max-width: 100%;
           height: auto;
           border-radius: 8px;
           margin: 20px 0;
+        }
+
+        .la-blog-post__content .la-blog-img--small {
+          max-width: 220px;
+        }
+
+        .la-blog-post__content .la-blog-img--medium {
+          max-width: 480px;
+        }
+
+        .la-blog-post__content .la-blog-img--large {
+          max-width: 720px;
+        }
+
+        .la-blog-post__content .la-blog-img--full {
+          width: 100%;
+          max-width: 100%;
         }
 
         .la-blog-post__related {

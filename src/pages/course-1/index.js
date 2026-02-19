@@ -159,6 +159,11 @@ const Course1Page = () => {
             <span>ПОВЕРНУТИСЯ НАЗАД</span>
             
           </Link>
+        {courseData.featured_image && (
+          <div className="la-course-1__hero-image">
+            <img src={courseData.featured_image} alt={courseData.title} />
+          </div>
+        )}
         <div className="la-course-1__container">
           
           

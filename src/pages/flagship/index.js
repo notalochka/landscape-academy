@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import SEO from "../../components/SEO/SEO";
 import Header from "../../components/Header/Header";
 import Contact from "../../components/Contact/Contact";
@@ -17,6 +19,7 @@ const FlagshipPage = () => {
   const [courseData, setCourseData] = useState({
     mainTitle: "LANDSCAPER 5.0",
     subtitle: "ПЕРЕТВОРИ ХОБІ У БІЗНЕС",
+    featured_image: null,
     description1: "ЗА 6 ТИЖНІВ РАЗОМ ПРОЙДЕМО ШЛЯХ ВІД ЧІТКОГО ПЛАНУВАННЯ ДО ЗАЛУЧЕННЯ КЛІЄНТІВ ТА МАСШТАБУВАННЯ ДОХОДІВ",
     description2: "ОСВІТНІЙ КУРС ДЛЯ ЛАНДШАФТНИКІВ, ДИЗАЙНЕРІВ, САДІВНИКІВ, ТОПІАРНИКІВ ТА ВЛАСНИКІВ САДОВИХ ЦЕНТРІВ",
     price: "13900",
@@ -86,6 +89,7 @@ const FlagshipPage = () => {
             authorBio1: courseResult.data.author_bio_1 || "МАГІСТР САДОВО-ПАРКОВОГО ГОСПОДАРСТВА ТА МИСТЕЦТВА. ПРАКТИКУЮЧИЙ ЛАНДШАФТНИЙ ДИЗАЙНЕР. АВТОР КУРСУ LANDSCAPER, СПІВЗАСНОВНИК LANDSCAPR ACADEMY, ТОВ «ВАШВИMIP» TA KAVAFM.",
             authorBio2: courseResult.data.author_bio_2 || "17 РОКІВ НА РИНКУ, СТОВРИВ 100+ САДІВ ВІД 30 М.КВ ДО 11 ГА.",
             authorPhoto: courseResult.data.author_photo || "",
+            featured_image: courseResult.data.featured_image || null,
             skills: courseResult.data.skills || ""
           };
           
@@ -262,6 +266,11 @@ const FlagshipPage = () => {
       {/* Main Content */}
       <main ref={mainRef} className="la-flagship-main">
         <div className="la-flagship-main__inner">
+          {courseData.featured_image && (
+            <div className="la-flagship-content__hero-image">
+              <img src={courseData.featured_image} alt={courseData.mainTitle} />
+            </div>
+          )}
           <section className="la-flagship-content">
             <div className="la-flagship-content__header">
               <span className="la-flagship-content__label">ПРОГРАМА</span>
@@ -269,13 +278,17 @@ const FlagshipPage = () => {
               <h2 className="la-flagship-content__subtitle">{courseData.subtitle}</h2>
             </div>
             
-            <div className="la-flagship-content__description">
-              <p className="la-flagship-content__text">
-                {courseData.description1}
-              </p>
-              <p className="la-flagship-content__text">
-                {courseData.description2}
-              </p>
+            <div className="la-flagship-content__description la-flagship-content__description--md">
+              {courseData.description1 && (
+                <div className="la-flagship-content__text">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{courseData.description1}</ReactMarkdown>
+                </div>
+              )}
+              {courseData.description2 && (
+                <div className="la-flagship-content__text">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{courseData.description2}</ReactMarkdown>
+                </div>
+              )}
             </div>
 
             <button 

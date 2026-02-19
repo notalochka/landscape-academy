@@ -64,9 +64,15 @@ const CoursesPage = ({ courses: initialCourses = [], flagshipCourse = null }) =>
                     : course.course_type === 'course-2'
                       ? `/course-2?id=${course.id}`
                       : `/courses/${course.id}`;
+                const courseImage = course.featured_image || course.featuredImage || null;
                 return (
                   <Link key={course.id} href={href} className="la-courses-content__course-link">
                     <div className={`la-courses-content__course ${isFlagship ? 'la-courses-content__course--flagship' : ''}`}>
+                      {courseImage && (
+                        <div className="la-courses-content__course-image">
+                          <img src={courseImage} alt={course.title} />
+                        </div>
+                      )}
                       {isFlagship && (
                         <div className="la-courses-content__course-badge">ФЛАГМАНСЬКИЙ КУРС</div>
                       )}
