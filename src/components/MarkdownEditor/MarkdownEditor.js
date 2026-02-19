@@ -5,6 +5,12 @@ import styles from './MarkdownEditor.module.css';
 
 const UPLOAD_IMAGE_API = '/api/upload/blog';
 
+/** URL для зображень з uploads — через API, щоб працювало в прев’ю та без ребілду */
+function uploadsImageSrc(src) {
+  if (!src || typeof src !== 'string') return src;
+  return src.startsWith('/uploads/') ? `/api${src}` : src;
+}
+
 const IMAGE_SIZE_MIN = 200;
 const IMAGE_SIZE_MAX = 1000;
 const IMAGE_SIZE_DEFAULT = 480;
@@ -66,7 +72,7 @@ const previewImageSizes = {
       : styles.previewImgMedium;
     return (
       <img
-        src={src}
+        src={uploadsImageSrc(src)}
         alt={cleanAlt || ''}
         className={`${styles.previewImg} ${!isPx ? sizeClass : ''}`}
         style={style}
@@ -237,7 +243,7 @@ const MarkdownEditor = ({ value, onChange, name }) => {
         <div className={styles.imageSizeBlock}>
           <div className={styles.imageSizePreview}>
             <img
-              src={pendingImage.url}
+              src={uploadsImageSrc(pendingImage.url)}
               alt={pendingImage.alt}
               className={styles.imageSizePreviewImg}
               style={{ maxWidth: `${imageSizePx}px` }}
@@ -298,7 +304,7 @@ const MarkdownEditor = ({ value, onChange, name }) => {
                 <div key={index} className={styles.inlineImageBlock}>
                   <div className={styles.inlineImagePreview}>
                     <img
-                      src={seg.url}
+                      src={uploadsImageSrc(seg.url)}
                       alt={seg.alt}
                       className={styles.inlineImageImg}
                       style={{ maxWidth: `${seg.size}px` }}

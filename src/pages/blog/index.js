@@ -34,7 +34,8 @@ const BlogCard = ({ blog }) => {
     }).toLowerCase();
   };
 
-  const imageUrl = blog.featured_image?.trim() || blog.image?.trim() ? (blog.featured_image || blog.image) : DEFAULT_BLOG_IMAGE;
+  const rawImage = blog.featured_image?.trim() || blog.image?.trim() ? (blog.featured_image || blog.image) : DEFAULT_BLOG_IMAGE;
+  const imageUrl = rawImage.startsWith('/uploads/') ? `/api${rawImage}` : rawImage;
   const contentPreview = previewContent(blog.content);
 
   return (

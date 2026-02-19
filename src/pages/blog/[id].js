@@ -29,6 +29,12 @@ function parseImageAlt(alt) {
   return { alt: alt.trim(), size: null };
 }
 
+/** URL для зображень з uploads — віддаємо через API, щоб працювало без ребілду */
+function uploadsImageSrc(src) {
+  if (!src || typeof src !== 'string') return src;
+  return src.startsWith('/uploads/') ? `/api${src}` : src;
+}
+
 const markdownImageSizes = {
   img: ({ node, src, alt, ...props }) => {
     const { alt: cleanAlt, size } = parseImageAlt(alt);
@@ -37,7 +43,7 @@ const markdownImageSizes = {
     const style = isPx ? { maxWidth: `${size}px` } : undefined;
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={src} alt={cleanAlt || ''} className={className} style={style} {...props} />
+      <img src={uploadsImageSrc(src)} alt={cleanAlt || ''} className={className} style={style} {...props} />
     );
   },
 };
@@ -174,7 +180,7 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
             {/* Featured Image */}
             <div className="la-blog-post__image">
               <img 
-                src={blog.image || '/og-blog.jpg'} 
+                src={uploadsImageSrc(blog.image) || '/og-blog.jpg'} 
                 alt={blog.title}
                 onError={(e) => {
                   e.target.src = '/og-blog.jpg';
@@ -201,7 +207,7 @@ const BlogPost = ({ blog, error, relatedBlogs = [] }) => {
                       className="la-blog-post__related-item"
                     >
                       <div className="la-blog-post__related-image">
-                        <img src={relatedBlog.image || '/og-blog.jpg'} alt={relatedBlog.title} />
+                        <img src={uploadsImageSrc(relatedBlog.image) || '/og-blog.jpg'} alt={relatedBlog.title} />
                       </div>
                       <div className="la-blog-post__related-content">
                         {relatedBlog.tag && (

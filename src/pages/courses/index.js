@@ -70,7 +70,7 @@ const CoursesPage = ({ courses: initialCourses = [], flagshipCourse = null }) =>
                     <div className={`la-courses-content__course ${isFlagship ? 'la-courses-content__course--flagship' : ''}`}>
                       {courseImage && (
                         <div className="la-courses-content__course-image">
-                          <img src={courseImage} alt={course.title} />
+                          <img src={courseImage.startsWith('/uploads/') ? `/api${courseImage}` : courseImage} alt={course.title} />
                         </div>
                       )}
                       {isFlagship && (

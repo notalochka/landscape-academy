@@ -161,7 +161,7 @@ const Course2Page = () => {
           </Link>
         {courseData.featured_image && (
           <div className="la-course-2__hero-image">
-            <img src={courseData.featured_image} alt={courseData.title} />
+            <img src={courseData.featured_image.startsWith('/uploads/') ? `/api${courseData.featured_image}` : courseData.featured_image} alt={courseData.title} />
           </div>
         )}
         <div className="la-course-2__container">

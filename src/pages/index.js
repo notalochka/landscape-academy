@@ -525,7 +525,7 @@ export default function Home({ events: initialEvents = [], blogs: initialBlogs =
             >
               {featuredBlogs.length > 0 && featuredBlogs.map((blog, index) => {
                 const img = blog.featured_image?.trim() || blog.image?.trim();
-                const bgImage = img ? img : DEFAULT_BLOG_IMAGE;
+                const bgImage = img ? (img.startsWith('/uploads/') ? `/api${img}` : img) : DEFAULT_BLOG_IMAGE;
                 return (
                   <div 
                     key={blog.id}

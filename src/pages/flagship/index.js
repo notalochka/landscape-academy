@@ -268,7 +268,7 @@ const FlagshipPage = () => {
         <div className="la-flagship-main__inner">
           {courseData.featured_image && (
             <div className="la-flagship-content__hero-image">
-              <img src={courseData.featured_image} alt={courseData.mainTitle} />
+              <img src={courseData.featured_image.startsWith('/uploads/') ? `/api${courseData.featured_image}` : courseData.featured_image} alt={courseData.mainTitle} />
             </div>
           )}
           <section className="la-flagship-content">
